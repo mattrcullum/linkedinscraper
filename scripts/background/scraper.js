@@ -33,12 +33,13 @@ var scrape = (function () {
                         description: description
                     });
                     load_tab_then_close(person.profile_url, function () {
-                        if (index == unsorted_people.length - 1)
+                        if (index == unsorted_people.length - 1) {
                             send_to.tab(scrape_tab_id, 'next_page', function (response) {
                                 if (!response.next) {
                                     running = false;
                                 }
                             });
+                        }
                     })
                 });
             }
