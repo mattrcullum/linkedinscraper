@@ -102,4 +102,4 @@ var scrape = (function () {
     }
 }
 
-)
+);
