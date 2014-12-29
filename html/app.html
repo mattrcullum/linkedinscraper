@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <title>LinkedIn Company Scraper</title>
+  <link rel="stylesheet" href="../vendor/bootstrap/dist/css/bootstrap.css"/>
+  <script src="../scripts/vendor/jquery-2.1.1.min.js"></script>
+  <script src="../vendor/bootstrap/dist/js/bootstrap.js"></script>
+  <script src="../scripts/helper.js"></script>
+  <script src="../scripts/app.js"></script>
+</head>
+<body>
+<div class="col-md-4 col-md-offset-4">
+  <div class="text-center">
+    <h2 id="company-name">Company name: </h2>
+
+    <h3 id="company-IDs">Company ID(s): </h3>
+  </div>
+  <hr/>
+  <div id="content">
+    <div class="form-horizontal" id="options">
+      <h3>Options:</h3>
+
+      <div class="form-group">
+        <label>Title filter. Separate entries by space. You can use "." in place of "*" for ease of typing.
+        </label>
+        <input type="text" id="position-filter" class="form-control" placeholder="cp c.o chief lead"/>
+      </div>
+      <div class="form-group">
+        <label>Email domain</label>
+
+        <div class="input-group">
+          <span class="input-group-addon">@</span>
+          <input class="form-control" placeholder="domain" type="text" id="domain"/>
+
+           <span class="input-group-btn">
+        <select class="btn" id="tld">
+          <option>.com</option>
+          <option>.net</option>
+          <option>.org</option>
+        </select>
+      </span>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="steps">
+      <h2 id="current-step" style="display: none"></h2>
+
+      <div id="scrape" style="display: none">
+        <h2>retrieving names and descriptions from LinkedIn</h2>
+
+        <h3>Names retrieved: <span id="names-retrieved">0</span></h3>
+      </div>
+      <div id="last-name-retrieval" style="display: none">
+        <h2>Retrieving missing last names from Google.</h2>
+      </div>
+      <div id="get-emails" style="display: none;">
+        <h2>Retrieving email addresses</h2>
+      </div>
+      <div id="results" style="display: none;">
+        <h2>Scrape completed</h2>
+        <br/>
+        <button class="btn btn-info" id="download">Download CSV</button>
+        <button class="btn btn-danger" id="im-done">I'm done with this search</button>
+
+      </div>
+    </div>
+  </div>
+  <div class="form-horizontal">
+    <div class="form-group">
+      <button class="btn btn-primary form-control" id="scrape-link">Start Scraping</button>
+    </div>
+  </div>
+</div>
+</body>
+</html>
