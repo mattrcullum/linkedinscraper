@@ -18,33 +18,14 @@ var scrape = (function () {
     }
 
     // retrieves the list of people on the current page
-    function scrape_current_page() {
+    function retrievePeopleList(callback) {
         scrape_ready = false;
         send_to.tab(scrape_tab_id, "get_people_list", function (unsorted_people) {
             if (unsorted_people) {
-                $.each(unsorted_people, function (index, person) {
-                    var name = person.name.split(' ');
-                    var description = person.description;
-                    var first_name = name[0];
-                    var last_name = name[1].replace(/\(|\)|,/g, '');
-                    people.push({
-                        name: {first: first_name, last: last_name},
-                        full_name: (first_name + ' ' + last_name),
-                        description: description
-                    });
-                    load_tab_then_close(person.profile_url, function () {
-                        if (index == unsorted_people.length - 1) {
-                            send_to.tab(scrape_tab_id, 'next_page', function (response) {
-                                if (!response.next) {
-                                    running = false;
-                                }
-                            });
-                        }
-                    })
-                });
+                people = unsorted_people;
+                callback()
             }
         })
-
     }
 
     // creates a tab we'll use for screen scraping
@@ -57,16 +38,44 @@ var scrape = (function () {
         })
     }
 
-    // checks a few things before calling the scrape_current_page function
+    // checks a few things before calling the retrievePeopleList function
     function prepare_scrape(tabId, info) {
         if (tabId == scrape_tab_id) {
             if (people.length > 9) {
                 stop();
             }
-            if (info.status == "complete" && tabId == scrape_tab_id && running) {
-                scrape_current_page();
+            else {
+                // the scrape tab has loaded
+                if (info.status == "complete" && tabId == scrape_tab_id) {
+                    retrievePeopleList(function () {
+                        retrieve_people_info()
+                    });
+                }
             }
         }
+    }
+
+    function retrieve_people_info() {
+        $.each(people, function (index, person) {
+            var name = person.name.split(' ');
+            var description = person.description;
+            var first_name = name[0];
+            var last_name = name[1].replace(/\(|\)|,/g, '');
+            people.push({
+                name: {first: first_name, last: last_name},
+                full_name: (first_name + ' ' + last_name),
+                description: description
+            });
+            load_tab_then_close(person.profile_url, function () {
+                if (index == people.length - 1) {
+                    send_to.tab(scrape_tab_id, 'next_page', function (response) {
+                        if (!response.next) {
+                            running = false;
+                        }
+                    });
+                }
+            })
+        });
     }
 
     // opens a tab, waits for it to load, then closes it
