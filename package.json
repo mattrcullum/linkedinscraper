@@ -1,0 +1,19 @@
+{
+  "name": "linkedincompanyscraper",
+  "version": "1.0.0",
+  "description": "linkedinscraper ===============",
+  "main": "scripts/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/marocu/linkedinscraper.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/marocu/linkedinscraper/issues"
+  },
+  "homepage": "https://github.com/marocu/linkedinscraper"
+}

@@ -5,6 +5,7 @@
 
 //chrome.tabs.create({url:'http://linkedin.com'});
 //chrome.tabs.create({url:'http://gmail.com'});
+var people = [];
 
 var $form, $steps, $contents,
     domain, $form, $steps, $contents,
@@ -16,81 +17,71 @@ var background = chrome.extension.getBackgroundPage();
 
 // if a people object is present in memory, that means we've already run the scraping process
 // rather than running it again, we'll just show the results
-if (background.people.length) {
-    show_step('results')
-}
-else {
-    $(document).ready(function () {
 
-        /****
-         * Variable assignment
-         */
+$(document).ready(function () {
 
-            // get the company name and IDs from the URL
-        company = helper.getParameterByName('company', location);
-        companyIDs = helper.getParameterByName('companyID', location);
-        $scrapeBtn = $('#scrape-link.btn-primary');
-        $form = $('#options');
-        $contents = $('#content');
+    /****
+     * Variable assignment
+     */
 
-        // Populate the page with the company name and IDs
-        $('#company-name').append(company);
-        $('#company-IDs').append(companyIDs);
+        // get the company name and IDs from the URL
+    company = helper.getParameterByName('company', location);
+    companyIDs = helper.getParameterByName('companyID', location);
+    $scrapeBtn = $('#scrape-link.btn-primary');
+    $form = $('#options');
+    $contents = $('#content');
 
-        /******
-         * Event listeners
-         */
+    // Populate the page with the company name and IDs
+    $('#company-name').append(company);
+    $('#company-IDs').append(companyIDs);
 
-            // click handler for scrape button
-        $scrapeBtn.click(function () {
-            skip_email_retrieval = $('#skip-email-retrieval').is(':checked');
-            var $self = $(this);
-            position_filter = form_helper.format_position_filter($('#position-filter').val());
-            domain = $('#domain').val();
-            if (domain.length == 0) {
-                alert("Domain cannot be empty");
-                return;
-            }
-            domain += $('#tld').val();
-            domain = '@' + domain;
-            // if the button hasn't been clicked yet
-            if ($self.hasClass('btn-primary')) {
-                $self.removeClass('btn-primary').addClass('btn-danger').blur();
-                start_scraping();
-                $self.text('Cancel Scrape');
-            }
-            // the button has been clicked, which means it's now a cancel scrape button
-            else {
-                chrome.runtime.reload()
-            }
-        });
+    /******
+     * Event listeners
+     */
+
+        // click handler for scrape button
+    $scrapeBtn.click(function () {
+        skip_email_retrieval = $('#skip-email-retrieval').is(':checked');
+        var $self = $(this);
+        position_filter = form_helper.format_position_filter($('#position-filter').val());
+        domain = $('#domain').val();
+        if (domain.length == 0) {
+            alert("Domain cannot be empty");
+            return;
+        }
+        domain += $('#tld').val();
+        domain = '@' + domain;
+        // if the button hasn't been clicked yet
+        if ($self.hasClass('btn-primary')) {
+            $self.removeClass('btn-primary').addClass('btn-danger').blur();
+            start_scraping();
+            $self.text('Cancel Scrape');
+        }
+        // the button has been clicked, which means it's now a cancel scrape button
+        else {
+            chrome.runtime.reload()
+        }
     });
-}
+});
 
 // starts the scraper goes to next step when finished
 function start_scraping() {
-
     show_step('scrape');
+    var settings = {
+        CompanyIDs: companyIDs,
+        positionFilter: position_filter
+    }
+    background.scraper.start(settings, callback());
 
-    var LinkedInHost = 'http://linkedin.com/';
-    var advancedSearchPath = 'vsearch/';
-    var scrape_url =
-        LinkedInHost +
-        advancedSearchPath +
-        'p?title=' + position_filter +
-        '&f_CC=' + companyIDs +
-        '&openAdvancedForm=true&titleScope=C&locationType=I';
-
-    background.scraper.start(scrape_url);
-
-    var cycle = setInterval(function () {
+    var showProgressGui = setInterval(function () {
         var $names_retrieved = $('#names-retrieved');
         $names_retrieved.text(background.people.length);
-        if (!background.scraper.running()) {
-            clearInterval(cycle);
-            get_last_names();
-        }
     }, 100)
+
+    function callback() {
+        clearInterval(showProgressGui);
+        get_last_names();
+    }
 }
 
 function get_last_names() {
