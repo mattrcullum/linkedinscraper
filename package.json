@@ -4,7 +4,7 @@
   "description": "linkedinscraper ===============",
   "main": "scripts/app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "buildjs": "browserify app/scripts/background/main.js > app/scripts/static/bundle.js"
   },
   "repository": {
     "type": "git",

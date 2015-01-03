@@ -2,9 +2,10 @@
  * Created by matthew on 12/31/14.
  */
 var gulp = require('gulp');
+var browserify = require('gulp-browserify');
 
-gulp.task('default', function() {
-    // place code for your default task here
+gulp.task('build', function() {
+
 });
 
 var watcher = gulp.watch('js/**/*.js', ['uglify','reload']);
