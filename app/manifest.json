@@ -7,7 +7,7 @@
     "scripts": [
       "scripts/vendor/jquery-2.1.1.min.js",
       "scripts/helper.js",
-      "scripts/background/static.js"
+      "scripts/static/bundle.js"
     ]
   },
   "content_scripts": [
