@@ -4,7 +4,7 @@ chrome.runtime.onMessage.addListener(
   function (request, sender, callback) {
     if (request.to == "background") {
       switch (request.action) {
-        case 'open_extension_path':
+        case 'open_app':
           var path = chrome.extension.getURL(request.path);
           chrome.tabs.create({url: path}, function (tab) {
             app = tab;

@@ -15,7 +15,7 @@ chrome.runtime.onMessage.addListener(function (request, message_sender, callback
                 break;
 
             case 'get_profile_links':
-                var $paginationNext = $('#results-pagination .next a');
+                var $paginationNext = $('#results-pagination .next a').length;
                 var profile_links = [];
                 var response = {};
 
@@ -35,8 +35,17 @@ chrome.runtime.onMessage.addListener(function (request, message_sender, callback
                 callback(response);
                 break;
 
-            case 'get_last_name':
+            case 'nextPage':
+                $('#results-pagination .next a')[0].click();
+                var waitForNextPage = setInterval(function (callback) {
+                    if (!$('#voltron-overlay').length) {
+                        clearInterval(waitForNextPage);
+                        callback();
+                    }
+                }, 20, callback);
+                break;
 
+            case 'get_last_name':
                 var cycle = setInterval(function (callback) {
                     if ($('#rso').length) {
                         var name = $('#rso .srg .g:first-child a:first-child').text().split('|')[0].trim().split(' ');

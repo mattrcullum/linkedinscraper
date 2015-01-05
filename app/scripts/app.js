@@ -34,57 +34,74 @@ $(document).ready(function () {
     // Populate the page with the company name and IDs
     $('#company-name').append(company);
     $('#company-IDs').append(companyIDs);
+    $('#domain').val(company.toLowerCase())
 
     /******
      * Event listeners
      */
 
-        // click handler for scrape button
     $scrapeBtn.click(function () {
-        skip_email_retrieval = $('#skip-email-retrieval').is(':checked');
         var $self = $(this);
-        position_filter = form_helper.format_position_filter($('#position-filter').val());
-        domain = $('#domain').val();
-        if (domain.length == 0) {
-            alert("Domain cannot be empty");
-            return;
-        }
-        domain += $('#tld').val();
-        domain = '@' + domain;
+
         // if the button hasn't been clicked yet
         if ($self.hasClass('btn-primary')) {
-            $self.removeClass('btn-primary').addClass('btn-danger').blur();
-            start_scraping();
-            $self.text('Cancel Scrape');
+            if(processScrapeForm()){
+                $self.text('Cancel Scrape');
+                $self.removeClass('btn-primary').addClass('btn-danger').blur();
+                start_scraper();
+            };
         }
+
         // the button has been clicked, which means it's now a cancel scrape button
         else {
             chrome.runtime.reload()
         }
     });
+
+    function processScrapeForm() {
+        skip_email_retrieval = $('#skip-email-retrieval').is(':checked');
+        position_filter = form_helper.format_position_filter($('#position-filter').val());
+        domain = $('#domain').val();
+
+        // if the domain was left empty
+        if (domain.length == 0) {
+            alert("Domain cannot be empty");
+            return;
+        }
+        else{
+            domain += $('#tld').val();
+            domain = '@' + domain;
+            return true;
+        }
+
+    }
 });
 
 // starts the scraper goes to next step when finished
-function start_scraping() {
+function start_scraper() {
     show_step('scrape');
+
     var settings = {
         CompanyIDs: companyIDs,
         positionFilter: position_filter
-    }
-    background.scraper.start(settings, callback());
+    };
 
-    var showProgressGui = setInterval(function () {
-        var $names_retrieved = $('#names-retrieved');
-        $names_retrieved.text(background.people.length);
-    }, 100)
+    background.scraper.start(settings, callback);
+
+    /*
+     var showProgressGui = setInterval(function () {
+     var $names_retrieved = $('#names-retrieved');
+     $names_retrieved.text(background.people.length);
+     }, 100)
+     */
 
     function callback() {
-        clearInterval(showProgressGui);
-        get_last_names();
+        //get_last_names();
+        alert('done');
     }
 }
 
-function get_last_names() {
+function startGettingLastNames() {
 
     show_step('last-name-retrieval');
 

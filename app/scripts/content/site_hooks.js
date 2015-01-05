@@ -45,7 +45,7 @@
       var path = 'html/app.html';
       path += '?company=' + companyName;
       path += '&companyID=' + companyIDs;
-      chrome.runtime.sendMessage({to:"background", action:"open_extension_path", path: path})
+      chrome.runtime.sendMessage({to:"background", action:"open_app", path: path})
     });
 
     $scrape_btn_container.html($scrape_btn);

@@ -4,7 +4,7 @@
   "description": "linkedinscraper ===============",
   "main": "scripts/app.js",
   "scripts": {
-    "buildjs": "browserify app/scripts/background/main.js > app/scripts/static/bundle.js"
+    "build": "browserify app/scripts/background/main.js > app/scripts/static/bundle.js"
   },
   "repository": {
     "type": "git",
