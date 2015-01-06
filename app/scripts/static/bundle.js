@@ -18,7 +18,7 @@ var scrape_tab = 0;
 
 var settings;
 var masterCallback;
-var people = [];
+var people = window.people = [];
 
 
 function start(settingsArg, callbackArg) {
@@ -27,40 +27,44 @@ function start(settingsArg, callbackArg) {
     running = true;
     settings = settingsArg;
     masterCallback = callbackArg;
+    settings.limit = 45;
 
     // program control
     create_scrape_tab(function () {
         scrape(function () {
-            console.log(people)
+            debugger;
+            masterCallback(people);
         })
     });
+
 }
 
 // recursively retrieves the profiles links for every member of the company
 function scrape(callback) {
-
     // ask content script for all the profile links on the page
-    send_to.tab(scrape_tab, "get_profile_links", function (response) {
+    send_to.tab(scrape_tab, "get_profile_links", processResponse);
+
+    function processResponse(response) {
 
         // if we received a valid response
         if (response) {
-            people.concat(response.profile_links);
+            people = people.concat(response.profile_links);
 
-            if (response.paginationHasNext) {
+            if (response.paginationHasNext && (people.length < settings.limit)) {
                 send_to.tab(scrape_tab, "nextPage", function () {
                     scrape(callback);
                 })
             }
 
             else {
-                //masterCallback();
+                callback();
             }
         }
 
         else {
             throw "Invalid response from content transponder at get_profile_links"
         }
-    })
+    }
 }
 
 // creates a tab we'll use for screen scraping
@@ -87,7 +91,7 @@ function create_scrape_tab(callback) {
 }
 
 // stops the scraping process
-function cancelScrape() {
+function cleanup() {
     if (scrape_tab) {
         chrome.tabs.remove(scrape_tab);
         scrape_tab = false;
@@ -96,19 +100,20 @@ function cancelScrape() {
 }
 
 window.addEventListener("cancel_scrape", function () {
-    cancelScrape()
+    cleanup()
 });
 
 // the api for this module
 module.exports = {
+
     start: start,
     stop: function () {
-        cancelScrape;
+        cleanup();
     },
     isRunning: function () {
         return running
     }
-}
+};
 
 
 

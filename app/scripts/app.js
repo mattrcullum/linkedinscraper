@@ -45,11 +45,11 @@ $(document).ready(function () {
 
         // if the button hasn't been clicked yet
         if ($self.hasClass('btn-primary')) {
-            if(processScrapeForm()){
+            if (processScrapeForm()) {
                 $self.text('Cancel Scrape');
                 $self.removeClass('btn-primary').addClass('btn-danger').blur();
                 start_scraper();
-            };
+            }
         }
 
         // the button has been clicked, which means it's now a cancel scrape button
@@ -68,7 +68,7 @@ $(document).ready(function () {
             alert("Domain cannot be empty");
             return;
         }
-        else{
+        else {
             domain += $('#tld').val();
             domain = '@' + domain;
             return true;
@@ -86,7 +86,6 @@ function start_scraper() {
         positionFilter: position_filter
     };
 
-    background.scraper.start(settings, callback);
 
     /*
      var showProgressGui = setInterval(function () {
@@ -95,10 +94,11 @@ function start_scraper() {
      }, 100)
      */
 
-    function callback() {
-        //get_last_names();
-        alert('done');
+    function finished(people) {
+console.log(people)
     }
+
+    background.scraper.start(settings, finished);
 }
 
 function startGettingLastNames() {

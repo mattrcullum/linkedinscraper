@@ -37,8 +37,9 @@ chrome.runtime.onMessage.addListener(function (request, message_sender, callback
 
             case 'nextPage':
                 $('#results-pagination .next a')[0].click();
+
                 var waitForNextPage = setInterval(function (callback) {
-                    if (!$('#voltron-overlay').length) {
+                    if ($('#voltron-overlay').is(':empty')) {
                         clearInterval(waitForNextPage);
                         callback();
                     }
