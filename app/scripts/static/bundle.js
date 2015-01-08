@@ -18,7 +18,7 @@ var scrape_tab = 0;
 
 var settings;
 var masterCallback;
-var people = window.people = [];
+var people = [];
 
 
 function start(settingsArg, callbackArg) {
@@ -32,7 +32,6 @@ function start(settingsArg, callbackArg) {
     // program control
     create_scrape_tab(function () {
         scrape(function () {
-            debugger;
             masterCallback(people);
         })
     });
@@ -41,18 +40,24 @@ function start(settingsArg, callbackArg) {
 
 // recursively retrieves the profiles links for every member of the company
 function scrape(callback) {
+    console.log('scrape called')
     // ask content script for all the profile links on the page
-    send_to.tab(scrape_tab, "get_profile_links", processResponse);
+    send_to.tab(scrape_tab, "get_profile_links", function () {
+        console.log('hello')
+    });
 
     function processResponse(response) {
-
+        console.log('response received: ' + response)
         // if we received a valid response
-        if (response) {
+        if (response.profile_links) {
+            console.log(response.profile_links)
             people = people.concat(response.profile_links);
 
             if (response.paginationHasNext && (people.length < settings.limit)) {
                 send_to.tab(scrape_tab, "nextPage", function () {
+
                     scrape(callback);
+                    console.log('recursively calling scrape')
                 })
             }
 
