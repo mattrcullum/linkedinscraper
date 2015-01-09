@@ -5,7 +5,7 @@
 
   "background": {
     "scripts": [
-      "scripts/vendor/jquery-2.1.1.min.js",
+      "scripts/vendor/dist/jquery.js",
       "scripts/helper.js",
       "scripts/background/bg_transponder.js",
       "scripts/static/bundle.js"
@@ -17,7 +17,7 @@
         "<all_urls>"
       ],
       "js": [
-        "scripts/vendor/jquery-2.1.1.min.js",
+        "scripts/vendor/dist/jquery.js",
         "scripts/helper.js",
         "scripts/content/ct_transponder.js",
         "scripts/content/site_hooks.js"

@@ -91,6 +91,7 @@ function create_scrape_tab(callback) {
     function waitForTab(tabId, info) {
         if (info.status == "complete" && tabId == scrape_tab) {
             callback();
+            chrome.tabs.onUpdated.removeListener(waitForTab)
         }
     }
 }

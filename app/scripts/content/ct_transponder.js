@@ -41,6 +41,7 @@ chrome.runtime.onMessage.addListener(function (request, message_sender, callback
                 var waitForNextPage = setInterval(function (callback) {
                     if ($('#voltron-overlay').is(':empty')) {
                         clearInterval(waitForNextPage);
+                        console.log('case nextPage')
                         callback();
                     }
                 }, 20, callback);

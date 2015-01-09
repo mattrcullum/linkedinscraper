@@ -13,7 +13,7 @@ var masterCallback;
 var people = [];
 
 
-function start(settingsArg, callbackArg) {
+function initialize(settingsArg, callbackArg) {
 
     //initialization
     running = true;
@@ -31,22 +31,22 @@ function start(settingsArg, callbackArg) {
 }
 
 // recursively retrieves the profiles links for every member of the company
-function scrape(callback) {
-    console.log('scrape called')
+function start(callback) {
+    console.log('scrape called');
     // ask content script for all the profile links on the page
-    send_to.tab(scrape_tab, "get_profile_links", function () {
-        console.log('hello')
-    });
+    sendTabMessage(scrape_tab, {linkedin: 'getProfileLinks'}, processProfileLinkBatch);
 
-    function processResponse(response) {
-        console.log('response received: ' + response)
+
+    function processProfileLinkBatch(links) {
+        console.log('response received: ' + response);
+
         // if we received a valid response
         if (response.profile_links) {
             console.log(response.profile_links)
             people = people.concat(response.profile_links);
 
             if (response.paginationHasNext && (people.length < settings.limit)) {
-                send_to.tab(scrape_tab, "nextPage", function () {
+                sendTabMessage(processPageScrapeResults, "nextPage", function () {
 
                     scrape(callback);
                     console.log('recursively calling scrape')
@@ -64,6 +64,15 @@ function scrape(callback) {
     }
 }
 
+// stops the scraping process
+function stop() {
+    if (scrape_tab) {
+        chrome.tabs.remove(scrape_tab);
+        scrape_tab = false;
+        running = false;
+    }
+}
+
 // creates a tab we'll use for screen scraping
 function create_scrape_tab(callback) {
     var url =
@@ -74,25 +83,17 @@ function create_scrape_tab(callback) {
         '&openAdvancedForm=true&titleScope=C&locationType=I';
 
     // create the tab
-    chrome.tabs.create({url: url, active: false}, function (tab) {
+    chrome.tabs.create({url: url}, function (tab) {
         scrape_tab = tab.id;
         chrome.tabs.onUpdated.addListener(waitForTab)
-    })
+    });
 
     // after tab creation return control to the calling function
     function waitForTab(tabId, info) {
         if (info.status == "complete" && tabId == scrape_tab) {
             callback();
+            chrome.tabs.onUpdated.removeListener(waitForTab)
         }
-    }
-}
-
-// stops the scraping process
-function cleanup() {
-    if (scrape_tab) {
-        chrome.tabs.remove(scrape_tab);
-        scrape_tab = false;
-        running = false;
     }
 }
 
@@ -102,14 +103,8 @@ window.addEventListener("cancel_scrape", function () {
 
 // the api for this module
 module.exports = {
-
-    start: start,
-    stop: function () {
-        cleanup();
-    },
-    isRunning: function () {
-        return running
-    }
+    start: initialize,
+    stop: stop
 };
 
 
