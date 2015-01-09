@@ -42,7 +42,7 @@ function start(settingsArg, callbackArg) {
 function scrape(callback) {
     console.log('scrape called')
     // ask content script for all the profile links on the page
-    send_to.tab(scrape_tab, "get_profile_links", function () {
+    sendTabMessage(scrape_tab, "get_profile_links", function () {
         console.log('hello')
     });
 
@@ -54,7 +54,7 @@ function scrape(callback) {
             people = people.concat(response.profile_links);
 
             if (response.paginationHasNext && (people.length < settings.limit)) {
-                send_to.tab(scrape_tab, "nextPage", function () {
+                sendTabMessage(scrape_tab, "nextPage", function () {
 
                     scrape(callback);
                     console.log('recursively calling scrape')
