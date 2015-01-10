@@ -5,7 +5,8 @@
 
   "background": {
     "scripts": [
-      "scripts/vendor/dist/jquery.js",
+      "vendor/jquery/dist/jquery.js",
+      "vendor/async/lib/async.js",
       "scripts/helper.js",
       "scripts/background/bg_transponder.js",
       "scripts/static/bundle.js"

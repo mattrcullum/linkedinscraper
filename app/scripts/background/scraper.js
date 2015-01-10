@@ -21,50 +21,20 @@ function initialize(settingsArg, callbackArg) {
     masterCallback = callbackArg;
     settings.limit = 45;
 
+    start();
+}
+
+function start() {
+
     // program control
-    create_scrape_tab(function () {
-        scrape(function () {
-            masterCallback(people);
-        })
-    });
-
+    async.series([
+        create_scrape_tab,
+        getProfileLinks,
+        masterCallback
+    ])
 }
 
-// recursively retrieves the profiles links for every member of the company
-function start(callback) {
-    console.log('scrape called');
-    // ask content script for all the profile links on the page
-    sendTabMessage(scrape_tab, {linkedin: 'getProfileLinks'}, processProfileLinkBatch);
-
-
-    function processProfileLinkBatch(links) {
-        console.log('response received: ' + response);
-
-        // if we received a valid response
-        if (response.profile_links) {
-            console.log(response.profile_links)
-            people = people.concat(response.profile_links);
-
-            if (response.paginationHasNext && (people.length < settings.limit)) {
-                sendTabMessage(processPageScrapeResults, "nextPage", function () {
-
-                    scrape(callback);
-                    console.log('recursively calling scrape')
-                })
-            }
-
-            else {
-                callback();
-            }
-        }
-
-        else {
-            throw "Invalid response from content transponder at get_profile_links"
-        }
-    }
-}
-
-// stops the scraping process
+// stops module and ties loose ends
 function stop() {
     if (scrape_tab) {
         chrome.tabs.remove(scrape_tab);
@@ -97,8 +67,40 @@ function create_scrape_tab(callback) {
     }
 }
 
-window.addEventListener("cancel_scrape", function () {
-    cleanup()
+function getProfileLinks() {
+    // ask content script for all the profile links on the page
+    sendTabMessage(scrape_tab, {li: 'getProfileLinks'}, processLinkBatch);
+
+    function processLinkBatch(response) {
+
+        // if we received a valid response
+        if (response.profile_links) {
+            console.log(response.profile_links)
+            people = people.concat(response.profile_links);
+
+            if (response.paginationHasNext && (people.length < settings.limit)) {
+                sendTabMessage(processPageScrapeResults, "nextPage", function () {
+
+                    scrape(callback);
+                    console.log('recursively calling scrape')
+                })
+            }
+
+            else {
+                callback();
+            }
+        }
+
+        else {
+            throw "Invalid response from content transponder at get_profile_links"
+        }
+    }
+}
+
+
+// stops module on cancelScrape event
+window.addEventListener("cancelScrape", function () {
+    stop();
 });
 
 // the api for this module
