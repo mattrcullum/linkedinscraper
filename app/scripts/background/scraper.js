@@ -75,7 +75,7 @@ function getProfileLinks() {
 
         // if we received a valid response
         if (response.profile_links) {
-            console.log(response.profile_links)
+            console.log(response.profile_links);
             people = people.concat(response.profile_links);
 
             if (response.paginationHasNext && (people.length < settings.limit)) {
