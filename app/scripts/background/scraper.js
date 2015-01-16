@@ -35,7 +35,9 @@ function start() {
     }
 
     function finish() {
-        masterCallback()
+        chrome.tabs.remove(scrape_tab);
+        scrape_tab = false;
+        masterCallback(people);
     }
 
     // program control
@@ -49,17 +51,6 @@ function start() {
     }
 
     controller();
-}
-
-// stops module and ties loose ends
-function stop() {
-    if (scrape_tab) {
-        chrome.tabs.remove(scrape_tab);
-        scrape_tab = false;
-        running = false;
-        status.done = true;
-        masterCallback();
-    }
 }
 
 // creates a tab we'll use for screen scraping
@@ -90,40 +81,59 @@ function create_scrape_tab(callback) {
         }
     }
 }
-
 function getProfileLinks(callback) {
     // ask content script for all the profile links on the page
     callTabAction(scrape_tab, 'getProfileLinks', processLinkBatch);
 
     function processLinkBatch(response) {
+        if (!response) {
+            console.error(chrome.runtime.lastError)
+        }
+        // if response is empty, we have an issue
+        if (response.error) {
+            console.error("Response for processLinkBatch is:" + response.error);
+            return;
+        }
+
         var hasNextPage = response.hasNextPage;
         var limit = settings.limit;
 
-        // if response is empty, we have a serious issue
-        if (!response) {
-            console.error("Response for processLinkBatch is:" + response);
-            debugger;
-        }
-
         // if there are no more pages, we're done!
-        else if (!hasNextPage) {
+        if (!hasNextPage) {
             status.done = true;
             callback();
         }
 
         // at this point we're guaranteed to have a response and a next page. we'll check a few things and keep going
-        else if (
-            response.profileLinks.length != 0 &&
-            people.length < limit
-        ) {
+        else if (response.profileLinks.length != 0) {
 
             // concatenate the response to our existing array
             people = people.concat(response.profileLinks);
 
-            callTabAction(scrape_tab, "nextPage", function () {
-                log('asking for next page')
+            if (people.length >= limit) {
+                status.done = true;
                 callback();
-            })
+            }
+            else {
+
+                chrome.tabs.update({url: "http://" + response.nextPage}, function () {
+                    function pageChange(tabId, info, tab) {
+                        var url = tab.url;
+
+                        if (url != undefined && tabId == scrape_tab && info.status == "complete") {
+                            console.log('page done loading');
+
+                            chrome.tabs.onUpdated.removeListener(pageChange);
+
+                            setTimeout(function (callback) {
+                                callback();
+                            }, 2000, callback);
+                        }
+                    }
+
+                    chrome.tabs.onUpdated.addListener(pageChange);
+                });
+            }
         }
         else {
             debugger;

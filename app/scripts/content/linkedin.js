@@ -4,10 +4,14 @@
 
 var getProfileLinks = function () {
     var profileLinks = [];
+    var error = false;
 
     // grab each profile link and push it to profileLinks[]
     var $profileLinks = $('#results .mod.result.people .bd h3 a.title');
 
+    if ($profileLinks.length == 0) {
+        error = "People container doesn't exist"
+    }
     $.each($profileLinks, function (index, link) {
         var link = $(link).attr('href');
         profileLinks.push({
@@ -15,29 +19,19 @@ var getProfileLinks = function () {
         })
     });
 
-    return {profileLinks: profileLinks, hasNextPage: pagination.hasNextPage()}
+    return {
+        profileLinks: profileLinks,
+        hasNextPage: pagination.hasNextPage(),
+        nextPage: pagination.nextPage(),
+        error: error
+    }
 };
 
 var pagination =
 {
-    goNextPage: function (callback) {
+    nextPage: function () {
         var $nextPaginationBtn = $('#results-pagination .next a');
-        var dataLiPage = $nextPaginationBtn.attr('data-li-page');
-        var $currentPaginationBtn =
-            $nextPaginationBtn
-                .parent('li')
-                .siblings('.link')
-                .find('[data-li-page=' + dataLiPage + "]")
-                .prev('.link');
-
-        $nextPaginationBtn[0].click();
-
-        var waitForNextPage = setInterval(function (callback) {
-            if (!$currentPaginationBtn.hasClass('active')) {
-                clearInterval(waitForNextPage);
-                callback();
-            }
-        }, 20, callback);
+        return location.hostname + $nextPaginationBtn.attr('href');
     },
 
     hasNextPage: function () {

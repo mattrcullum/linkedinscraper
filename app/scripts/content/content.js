@@ -14,7 +14,9 @@ function messageReceived(message, sender, sendResponse) {
             );
             break;
         case 'nextPage':
-            linkedin.pagination.goNextPage(sendResponse)
+            sendResponse(
+                linkedin.pagination.goNextPage()
+            )
     }
 
     return true;
