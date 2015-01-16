@@ -14,6 +14,7 @@ chrome.runtime.onMessage.addListener(
         }
     });
 
-function sendTabMessage(tabId, message, callback, args) {
-    chrome.tabs.sendMessage(tabId, {to: 'content', message: message, args: args}, callback)
+function callTabAction(tabId, action, callback, args) {
+    var message = {to: 'content', action: action};
+    chrome.tabs.sendMessage(tabId, message, callback)
 }

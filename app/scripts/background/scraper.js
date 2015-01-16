@@ -12,9 +12,10 @@ var settings;
 var masterCallback;
 var people = [];
 
+var status = {};
+
 
 function initialize(settingsArg, callbackArg) {
-
     //initialization
     running = true;
     settings = settingsArg;
@@ -25,13 +26,29 @@ function initialize(settingsArg, callbackArg) {
 }
 
 function start() {
+    function getBatch(callback) {
+        async.series([
+            create_scrape_tab,
+            getProfileLinks,
+            callback
+        ])
+    }
+
+    function finish() {
+        masterCallback()
+    }
 
     // program control
-    async.series([
-        create_scrape_tab,
-        getProfileLinks,
-        masterCallback
-    ])
+    function controller() {
+        getBatch(function () {
+            if (status.done) {
+                finish();
+            }
+            else getBatch(controller)
+        })
+    }
+
+    controller();
 }
 
 // stops module and ties loose ends
@@ -40,11 +57,18 @@ function stop() {
         chrome.tabs.remove(scrape_tab);
         scrape_tab = false;
         running = false;
+        status.done = true;
+        masterCallback();
     }
 }
 
 // creates a tab we'll use for screen scraping
 function create_scrape_tab(callback) {
+    if (scrape_tab) {
+        callback();
+        return;
+    }
+
     var url =
         'http://linkedin.com/' +
         'vsearch/' +
@@ -61,38 +85,49 @@ function create_scrape_tab(callback) {
     // after tab creation return control to the calling function
     function waitForTab(tabId, info) {
         if (info.status == "complete" && tabId == scrape_tab) {
+            chrome.tabs.onUpdated.removeListener(waitForTab);
             callback();
-            chrome.tabs.onUpdated.removeListener(waitForTab)
         }
     }
 }
 
-function getProfileLinks() {
+function getProfileLinks(callback) {
     // ask content script for all the profile links on the page
-    sendTabMessage(scrape_tab, {li: 'getProfileLinks'}, processLinkBatch);
+    callTabAction(scrape_tab, 'getProfileLinks', processLinkBatch);
 
     function processLinkBatch(response) {
+        var hasNextPage = response.hasNextPage;
+        var limit = settings.limit;
 
-        // if we received a valid response
-        if (response.profile_links) {
-            console.log(response.profile_links);
-            people = people.concat(response.profile_links);
-
-            if (response.paginationHasNext && (people.length < settings.limit)) {
-                sendTabMessage(processPageScrapeResults, "nextPage", function () {
-
-                    scrape(callback);
-                    console.log('recursively calling scrape')
-                })
-            }
-
-            else {
-                callback();
-            }
+        // if response is empty, we have a serious issue
+        if (!response) {
+            console.error("Response for processLinkBatch is:" + response);
+            debugger;
         }
 
+        // if there are no more pages, we're done!
+        else if (!hasNextPage) {
+            status.done = true;
+            callback();
+        }
+
+        // at this point we're guaranteed to have a response and a next page. we'll check a few things and keep going
+        else if (
+            response.profileLinks.length != 0 &&
+            people.length < limit
+        ) {
+
+            // concatenate the response to our existing array
+            people = people.concat(response.profileLinks);
+
+            callTabAction(scrape_tab, "nextPage", function () {
+                log('asking for next page')
+                callback();
+            })
+        }
         else {
-            throw "Invalid response from content transponder at get_profile_links"
+            debugger;
+            console.error('reached else statement in processLinkBatch')
         }
     }
 }
@@ -106,10 +141,12 @@ window.addEventListener("cancelScrape", function () {
 // the api for this module
 module.exports = {
     start: initialize,
-    stop: stop
+    stop: stop,
+    people: people
 };
 
 
-
-
+function log(message) {
+    console.log(message)
+}
 

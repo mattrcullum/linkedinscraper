@@ -8,97 +8,57 @@
 var people = [];
 
 var $form, $steps, $contents,
-    domain, $form, $steps, $contents,
-    tld, position_filter, company,
-    companyIDs, skip_email_retrieval,
+    emailDomain, $form, $steps, $contents,
+    employeePositionFilter, company,
+    companyIDs, shouldFindEmails,
     $scrapeBtn;
 
-var background = chrome.extension.getBackgroundPage();
+var backgroundPage = chrome.extension.getBackgroundPage();
+
+var steps = {scraper: '#scraper', results: '#results'}
 
 // if a people object is present in memory, that means we've already run the scraping process
 // rather than running it again, we'll just show the results
 
-$(document).ready(function () {
+function submitScrapeForm() {
 
-    /****
-     * Variable assignment
-     */
+    function validateForm() {
+        var emailDomain = $('#emailDomain').val();
 
-        // get the company name and IDs from the URL
-    company = helper.getParameterByName('company', location);
-    companyIDs = helper.getParameterByName('companyID', location);
-    $scrapeBtn = $('#scrape-link.btn-primary');
-    $form = $('#options');
-    $contents = $('#content');
-
-    // Populate the page with the company name and IDs
-    $('#company-name').append(company);
-    $('#company-IDs').append(companyIDs);
-    $('#domain').val(company.toLowerCase())
-
-    /******
-     * Event listeners
-     */
-
-    $scrapeBtn.click(function () {
-        var $self = $(this);
-
-        // if the button hasn't been clicked yet
-        if ($self.hasClass('btn-primary')) {
-            if (processScrapeForm()) {
-                $self.text('Cancel Scrape');
-                $self.removeClass('btn-primary').addClass('btn-danger').blur();
-                start_scraper();
-            }
-        }
-
-        // the button has been clicked, which means it's now a cancel scrape button
-        else {
-            chrome.runtime.reload()
-        }
-    });
-
-    function processScrapeForm() {
-        skip_email_retrieval = $('#skip-email-retrieval').is(':checked');
-        position_filter = form_helper.format_position_filter($('#position-filter').val());
-        domain = $('#domain').val();
-
-        // if the domain was left empty
-        if (domain.length == 0) {
+        if (emailDomain.length == 0) {
             alert("Domain cannot be empty");
-            return;
+            return false;
         }
-        else {
-            domain += $('#tld').val();
-            domain = '@' + domain;
-            return true;
-        }
-
+        return true
     }
-});
 
-// starts the scraper goes to next step when finished
-function start_scraper() {
-    show_step('scrape');
+    if (!validateForm()) return;
+
+    var $employeePositionFilter = $('#position-filter');
+
+    shouldFindEmails = $('#skip-email-retrieval').is(':checked');
+
+    employeePositionFilter = formHelpers.format_position_filter($employeePositionFilter.val());
+
+    emailDomain =
+        '@' +
+        $('#emailDomain').val() +
+        $('#tld').val();
+    return true
+}
+
+// starts the scraper and goes to next step when finished
+function startScraper() {
+    ui.show_step(steps.scraper);
 
     var settings = {
         CompanyIDs: companyIDs,
-        positionFilter: position_filter
+        positionFilter: employeePositionFilter
     };
 
-
-    /*
-     var showProgressGui = setInterval(function () {
-     var $names_retrieved = $('#names-retrieved');
-     $names_retrieved.text(background.people.length);
-     }, 100)
-     */
-
-    function finished(people) {
-console.log(people)
-    }
-
-    background.scraper.start(settings, finished);
+    backgroundPage.scraper.start(settings, function(people){
+        console.log(people)
+    });
 }
 
 function startGettingLastNames() {
@@ -106,20 +66,20 @@ function startGettingLastNames() {
     show_step('last-name-retrieval');
 
     // yo backend - i need last names. NOW!
-    background.last_names.start();
+    backgroundPage.last_names.start();
 
-    // similar to a wife, this block will yap at the backend every 100ms asking if it's done
+
     var cycle = setInterval(function () {
 
         // note to self: change this names. Really bad var name to describe an html element
         var $names_retrieved = $('#names-retrieved');
-        $names_retrieved.text(background.people.length);
+        $names_retrieved.text(backgroundPage.people.length);
 
-        if (background.last_names.done()) {
+        if (backgroundPage.last_names.done()) {
             clearInterval(cycle);
             show_step('get-emails');
             // got email addresses?
-            if (skip_email_retrieval) {
+            if (shouldFindEmails) {
                 show_step('results')
             }
             else {
@@ -130,70 +90,71 @@ function startGettingLastNames() {
 }
 
 function get_emails() {
-    background.permuter.start(function () {
-        background.email_checker.start(domain);
+    backgroundPage.permuter.start(function () {
+        backgroundPage.email_checker.start(emailDomain);
     });
 
     var cycle = setInterval(function () {
 
-        if (background.email_checker.done()) {
+        if (backgroundPage.email_checker.done()) {
             clearInterval(cycle);
             show_step('results')
         }
     }, 100)
 }
 
+function initializeResultsStep() {
+    $form.hide();
+    $('#scrape-link').hide()
+    $('.steps div').hide();
+    $('#results').show();
 
-/**
- * UI related
- * @param step
- */
-function show_step(step) {
-    if (step == 'results') {
-        $('#start_csv_download').click(start_csv_download);
-        $form.hide();
-        $('#scrape-link').hide()
-        $('.steps div').hide();
-        $('#results').show();
+    $('#start_csv_download').click(downloadResults());
 
-        $('#im-done').click(function () {
-            chrome.runtime.reload();
-        })
-    }
-    else {
+    $('#im-done').click(function () {
+        chrome.runtime.reload();
+    })
+}
+
+var ui = {
+    show_step: function (step) {
+
         var $current_step = $('#current-step');
         $current_step.show();
 
-        hide_contents(function () {
+        ui.hideContents(function () {
             $form.hide();
 
             $steps = $('.steps div');
             $steps.hide();
 
-            var $step = $('#' + step);
+            var $step = $(step);
             $step.show('results');
 
             $current_step.text('Step ' + ($steps.index($step) + 1) + '/' + $steps.length)
-        })
+        });
+
+        switch (step) {
+            case 'results':
+                initializeResultsStep();
+        }
+    },
+    hideContents: function (callback) {
+        $contents.slideUp(600, function () {
+            callback();
+            $contents.delay(100).slideDown(200)
+        });
+    },
+    update: {
+        profilesRetrieved: function () {
+            var $names_retrieved = $('#names-retrieved');
+            $names_retrieved.text(backgroundPage.people.length);
+        }
     }
-}
+};
 
-/**
- * UI related
- * @param callback
- */
-function hide_contents(callback) {
-    $contents.slideUp(600, function () {
-        callback();
-        $contents.delay(100).slideDown(200)
-    });
-}
-
-/**
- * Converts people object to CSV and invokes a download of the CSV file
- */
-function start_csv_download() {
-    var people = background.people;
+function downloadResults() {
+    var people = backgroundPage.people;
     var csv = "";
     $.each(people, function (index, person) {
         var full_name = person.full_name;
@@ -209,8 +170,7 @@ function start_csv_download() {
     pom.click();
 }
 
-// just a few helpers for the form
-var form_helper = {
+var formHelpers = {
 
     format_position_filter: function (title_filter) {
         var titles = title_filter.split(' ');
@@ -226,3 +186,49 @@ var form_helper = {
         return parsedString;
     }
 };
+
+$(document).ready(function () {
+
+    function pageModifications() {
+        // Populate the page with the company name and IDs
+        $('#company-name').append(company);
+        $('#company-IDs').append(companyIDs);
+        $('#emailDomain').val(company.toLowerCase());
+    }
+
+    function eventListeners() {
+        $scrapeBtn.click(function () {
+            var $self = $(this);
+
+            // if the button hasn't been clicked yet
+            if ($self.hasClass('btn-primary')) {
+                if (submitScrapeForm()) {
+                    $self.text('Cancel Scrape');
+                    $self.removeClass('btn-primary').addClass('btn-danger').blur();
+                    startScraper();
+                }
+            }
+
+            // the button has been clicked, which means it's now a cancel scrape button
+            else {
+                chrome.runtime.reload()
+            }
+        });
+    }
+
+    function initializers() {
+        // get the company name and IDs from the URL
+        company = helper.getParameterByName('company', location);
+        companyIDs = helper.getParameterByName('companyID', location);
+
+
+        $form = $('#options');
+        $scrapeBtn = $('#scrape-link.btn-primary');
+
+        $contents = $('#content');
+    }
+
+    initializers();
+    pageModifications();
+    eventListeners();
+});

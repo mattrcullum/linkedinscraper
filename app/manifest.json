@@ -2,14 +2,13 @@
   "manifest_version": 2,
   "name": "LinkedIn Company Scraper",
   "version": "0.0.1",
-
   "background": {
     "scripts": [
       "vendor/jquery/dist/jquery.js",
       "vendor/async/lib/async.js",
       "scripts/helper.js",
       "scripts/background/bg_transponder.js",
-      "scripts/static/bundle.js"
+      "scripts/static/background.js"
     ]
   },
   "content_scripts": [
@@ -18,12 +17,12 @@
         "<all_urls>"
       ],
       "js": [
-        "scripts/vendor/dist/jquery.js",
         "scripts/helper.js",
-        "scripts/content/ct_transponder.js",
+        "vendor/jquery/dist/jquery.js",
+        "scripts/static/content.js",
         "scripts/content/site_hooks.js"
       ],
-      "run_at": "document_end"
+      "run_at": "document_idle"
     }
   ],
   "permissions": [

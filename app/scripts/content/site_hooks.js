@@ -1,7 +1,7 @@
 /**
  * Created by matthew on 12/12/14.
  */
-+(function (site_hooks, $) {
+(function (site_hooks, $) {
   var path_segments = helper.url.get_path_segments(location);
   var first_path_segment = path_segments[0] || null;
   var host_title = helper.url.get_host_title(location).toLowerCase();
@@ -9,7 +9,7 @@
   if (host_title == "linkedin")
     switch (first_path_segment) {
       case 'company':
-        add_scrape_button()
+        add_scrape_button();
         break;
     }
 

@@ -1,14 +1,41 @@
 /**
  * Created by matthew on 12/31/14.
  */
+
+// modules
 var gulp = require('gulp');
-var browserify = require('gulp-browserify');
+var browserify = require('browserify');
+var transform = require('vinyl-transform');
 
-gulp.task('build', function() {
+var scripts = ['app/scripts/content/*', 'app/scripts/background/*'];
+var mainFiles = ['app/scripts/content/content.js', 'app/scripts/background/background.js'];
 
+gulp.task('browserify', function () {
+
+    var dest = 'app/scripts/static/';
+
+    var browserified = transform(function (filename) {
+
+        file = filename;
+        var b = browserify(filename, {
+            debug: true
+        });
+        // you can now further configure/manipulate your bundle
+        // you can perform transforms, for e.g.: 'coffeeify'
+        // b.transform('coffeeify');
+        // or even use browserify plugins, for e.g. 'minifyiy'
+        // b.plugins('minifyify');
+        // consult browserify documentation at: https://github.com/substack/node-browserify#methods for more available APIs
+        return b.bundle();
+    });
+
+    return gulp.src(mainFiles)
+        .pipe(browserified)
+        .pipe(gulp.dest(dest));
 });
 
-var watcher = gulp.watch('js/**/*.js', ['uglify','reload']);
-watcher.on('change', function(event) {
-    console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
+gulp.task('watch', function () {
+    gulp.watch(scripts, ['browserify'])
 });
+
+gulp.task('default', ['browserify', 'watch']);

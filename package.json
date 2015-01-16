@@ -4,7 +4,7 @@
   "description": "linkedinscraper ===============",
   "main": "scripts/app.js",
   "scripts": {
-    "build": "browserify app/scripts/background/main.js > app/scripts/static/bundle.js"
+    "watch": "watchify app/scripts/background/main.js -o app/scripts/static/background.js & app/scripts/content/main.js -o app/scripts/static/content.js"
   },
   "repository": {
     "type": "git",
@@ -17,6 +17,9 @@
   },
   "homepage": "https://github.com/marocu/linkedinscraper",
   "devDependencies": {
-    "gulp": "^3.8.10"
+    "gulp": "^3.8.10",
+    "gulp-watch": "^3.0.0",
+    "vinyl-transform": "^1.0.0",
+    "watchify": "^2.2.1"
   }
 }
