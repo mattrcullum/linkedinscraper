@@ -4,7 +4,7 @@
 // google search
 //var google_tab_id = 0;
 
-var last_name = function () {
+/**
   var done = false;
 
   function start() {
@@ -15,7 +15,7 @@ var last_name = function () {
     function wait_for_google(callback) {
       function listen(tabId, changeInfo, tab) {
         if (changeInfo.status == "complete" && tabId == search_tab && tab.url != "https://google.com") {
-          callback()
+          callback();
           chrome.tabs.onUpdated.removeListener(listen)
         }
       }
@@ -29,18 +29,18 @@ var last_name = function () {
         if (person.name.last.indexOf('.') != -1) {
           wait_for_google(function () {
             send_to.tab(search_tab,
-              "get_last_name",
-              function (response) {
-                if (!response) {
-                  throw "Expected a last name from content script, instead received undefined."
-                }
-                else {
-                  person.name.last = response.last_name.replace(/\(|\)|,/g, '');
-                  person.full_name = person.name.first + ' ' + person.name.last;
-                  ++iteration;
-                  recursively_get_last_names();
-                }
-              })
+                "get_last_name",
+                function (response) {
+                  if (!response) {
+                    throw "Expected a last name from content script, instead received undefined."
+                  }
+                  else {
+                    person.name.last = response.last_name.replace(/\(|\)|,/g, '');
+                    person.full_name = person.name.first + ' ' + person.name.last;
+                    ++iteration;
+                    recursively_get_last_names();
+                  }
+                })
           });
           chrome.tabs.update(search_tab, {
             url: "https://www.google.com/#q=site:linkedin.com+" +
@@ -62,16 +62,14 @@ var last_name = function () {
 
     // google, anyone?
     chrome.tabs.create(
-      {url: "https://google.com", active: true}, function (tab) {
-        search_tab = tab.id;
-        recursively_get_last_names();
-      });
+        {url: "https://google.com", active: true}, function (tab) {
+          search_tab = tab.id;
+          recursively_get_last_names();
+        });
   }
 
-  return {
+  module.exports = {
     start: start,
     done: function () {
       return done
     }
-  }
-};

@@ -27,6 +27,15 @@ var getProfileLinks = function () {
     }
 };
 
+var getBasicInfo = function () {
+    var $profileContainer = $('.profile-overview-content');
+
+    var fullName = $profileContainer.find('.full-name').text();
+    var headline = $profileContainer.find('#headline .title').text();
+
+    return {fullName: fullName, headline: headline}
+}
+
 var pagination =
 {
     nextPage: function () {
@@ -39,5 +48,8 @@ var pagination =
     }
 };
 
-exports.pagination = pagination;
-exports.getProfileLinks = getProfileLinks;
+module.exports = {
+    pagination: pagination,
+    getProfileLinks: getProfileLinks,
+    getBasicInfo: getBasicInfo
+    };

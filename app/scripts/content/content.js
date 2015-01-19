@@ -15,7 +15,12 @@ function messageReceived(message, sender, sendResponse) {
             break;
         case 'nextPage':
             sendResponse(
-                linkedin.pagination.goNextPage()
+                linkedin.pagination.nextPage()
+            );
+            break;
+        case 'getBasicInfo':
+            sendResponse(
+                linkedin.getBasicInfo()
             )
     }
 

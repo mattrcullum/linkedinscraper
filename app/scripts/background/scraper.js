@@ -10,18 +10,20 @@ var scrape_tab = 0;
 
 var settings;
 var masterCallback;
-var people = [];
+
+var isFinished = false;
 
 var status = {};
+var results;
 
 
-function initialize(settingsArg, callbackArg) {
+function initialize(settingsArg, resultsArg, callbackArg) {
     //initialization
     running = true;
     settings = settingsArg;
+    settings.limit = 20;
+    results = resultsArg;
     masterCallback = callbackArg;
-    settings.limit = 45;
-
     start();
 }
 
@@ -37,7 +39,8 @@ function start() {
     function finish() {
         chrome.tabs.remove(scrape_tab);
         scrape_tab = false;
-        masterCallback(people);
+        isFinished = true;
+        masterCallback();
     }
 
     // program control
@@ -108,9 +111,9 @@ function getProfileLinks(callback) {
         else if (response.profileLinks.length != 0) {
 
             // concatenate the response to our existing array
-            people = people.concat(response.profileLinks);
+            results.profileLinks = results.profileLinks.concat(response.profileLinks);
 
-            if (people.length >= limit) {
+            if (results.profileLinks.length >= limit) {
                 status.done = true;
                 callback();
             }
@@ -151,8 +154,12 @@ window.addEventListener("cancelScrape", function () {
 // the api for this module
 module.exports = {
     start: initialize,
-    stop: stop,
-    people: people
+    profileLinks: function () {
+        return results.profileLinks
+    },
+    isFinished: function () {
+        return isFinished
+    }
 };
 
 
