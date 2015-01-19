@@ -14,9 +14,7 @@ var getProfileLinks = function () {
     }
     $.each($profileLinks, function (index, link) {
         var link = $(link).attr('href');
-        profileLinks.push({
-            profile_url: link
-        })
+        profileLinks.push(link)
     });
 
     return {

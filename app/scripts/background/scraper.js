@@ -113,6 +113,7 @@ function getProfileLinks(callback) {
             // concatenate the response to our existing array
             results.profileLinks = results.profileLinks.concat(response.profileLinks);
 
+
             if (results.profileLinks.length >= limit) {
                 status.done = true;
                 callback();
