@@ -21,7 +21,6 @@ function initialize(settingsArg, resultsArg, callbackArg) {
     //initialization
     running = true;
     settings = settingsArg;
-    settings.limit = 20;
     results = resultsArg;
     masterCallback = callbackArg;
     start();
@@ -66,8 +65,8 @@ function create_scrape_tab(callback) {
     var url =
         'http://linkedin.com/' +
         'vsearch/' +
-        'p?title=' + settings.positionFilter +
-        '&f_CC=' + settings.CompanyIDs +
+        'p?title=' + settings.general.positionFilter +
+        '&f_CC=' + settings.general.CompanyIDs +
         '&openAdvancedForm=true&titleScope=C&locationType=I';
 
     // create the tab
@@ -99,7 +98,7 @@ function getProfileLinks(callback) {
         }
 
         var hasNextPage = response.hasNextPage;
-        var limit = settings.limit;
+        var limit = settings.scraper.limit;
 
         // if there are no more pages, we're done!
         if (!hasNextPage) {

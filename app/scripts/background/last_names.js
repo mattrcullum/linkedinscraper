@@ -4,7 +4,6 @@
 // google search
 //var google_tab_id = 0;
 
-/**
   var done = false;
 
   function start() {
@@ -22,6 +21,7 @@
 
       chrome.tabs.onUpdated.addListener(listen);
     }
+
 
     function recursively_get_last_names() {
       person = people[iteration];
@@ -73,3 +73,4 @@
     done: function () {
       return done
     }
+  }

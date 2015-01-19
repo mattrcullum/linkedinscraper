@@ -128,9 +128,13 @@ function submitScrapeForm() {
         $('#tld').val();
 
     var settings = {
-        scraper: {
+        general: {
             CompanyIDs: companyIDs,
+            companyName: company,
             positionFilter: employeePositionFilter
+        },
+        scraper:{
+
         }
     };
 

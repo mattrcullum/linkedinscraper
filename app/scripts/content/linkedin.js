@@ -27,12 +27,19 @@ var getProfileLinks = function () {
 
 var getBasicInfo = function () {
     var $profileContainer = $('.profile-overview-content');
+    var $currentPositionDiv = $('#background-experience .current-position');
 
     var fullName = $profileContainer.find('.full-name').text();
     var headline = $profileContainer.find('#headline .title').text();
 
-    return {fullName: fullName, headline: headline}
-}
+    var currentPosition = $currentPositionDiv.find('a[name=title]').first().text();
+
+    return {
+        name: {full: fullName},
+        headline: headline,
+        currentPosition: currentPosition
+    }
+};
 
 var pagination =
 {
@@ -50,4 +57,4 @@ module.exports = {
     pagination: pagination,
     getProfileLinks: getProfileLinks,
     getBasicInfo: getBasicInfo
-    };
+};
