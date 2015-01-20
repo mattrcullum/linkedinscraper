@@ -2,41 +2,55 @@
  * Created by matthew on 1/11/15.
  */
 
-var getProfileLinks = function () {
-    var profileLinks = [];
-    var error = false;
+var scrapeProfileList = function () {
+    var results = [];
+    var error = null;
 
-    // grab each profile link and push it to profileLinks[]
-    var $profileLinks = $('#results .mod.result.people .bd h3 a.title');
+    // grab each profile link and push it to results[]
+    var $peopleDiv = $('#results .mod.result.people');
 
-    if ($profileLinks.length == 0) {
-        error = "People container doesn't exist"
-    }
-    $.each($profileLinks, function (index, link) {
-        var link = $(link).attr('href');
-        profileLinks.push(link)
+    $.each($peopleDiv, function (index, person) {
+        var $person = $(person);
+        var $nameLink = $person.find('bd h3 a.title');
+
+        var fullName = $nameLink.text();
+        var profileLink = $nameLink.attr('href');
+        var headline = $person.find('.description').text();
+        var location = $person.find('.demographic bdi').text();
+        var industry = $person.find('.demographic dd:last-child').text();
+
+        var person = {
+            name: {
+                full: fullName
+            },
+            profileLink: profileLink,
+            headline: headline,
+            location: location,
+            industry: industry
+        };
+
+        results.push(person);
     });
 
+    if (results.length == 0) {
+        error = "People container doesn't exist"
+    }
+
     return {
-        profileLinks: profileLinks,
+        results: results,
         hasNextPage: pagination.hasNextPage(),
         nextPage: pagination.nextPage(),
         error: error
     }
 };
 
-var getBasicInfo = function () {
+var scrapeProfileView = function () {
     var $profileContainer = $('.profile-overview-content');
     var $currentPositionDiv = $('#background-experience .current-position');
-
-    var fullName = $profileContainer.find('.full-name').text();
-    var headline = $profileContainer.find('#headline .title').text();
 
     var currentPosition = $currentPositionDiv.find('a[name=title]').first().text();
 
     return {
-        name: {full: fullName},
-        headline: headline,
         currentPosition: currentPosition
     }
 };
@@ -55,6 +69,6 @@ var pagination =
 
 module.exports = {
     pagination: pagination,
-    getProfileLinks: getProfileLinks,
-    getBasicInfo: getBasicInfo
+    scrapeProfileList: scrapeProfileList,
+    scrapeProfileView: scrapeProfileView
 };
