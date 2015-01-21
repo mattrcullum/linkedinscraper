@@ -11,7 +11,7 @@ var scrapeProfileList = function () {
 
     $.each($peopleDiv, function (index, person) {
         var $person = $(person);
-        var $nameLink = $person.find('bd h3 a.title');
+        var $nameLink = $person.find('.bd h3 a.title');
 
         var fullName = $nameLink.text();
         var profileLink = $nameLink.attr('href');
@@ -45,13 +45,23 @@ var scrapeProfileList = function () {
 };
 
 var scrapeProfileView = function () {
-    var $profileContainer = $('.profile-overview-content');
-    var $currentPositionDiv = $('#background-experience .current-position');
 
-    var currentPosition = $currentPositionDiv.find('a[name=title]').first().text();
+
+    var currentPosition = $('#overview-summary-current td ol li a').text();
+
+    var pastPositions = $('#overview-summary-past td ol li a').map(function () {
+        return $.trim($(this).text());
+    }).get();
+
+    var education = $('#overview-summary-education td ol li a').map(function () {
+        return $.trim($(this).text());
+    }).get();
+
 
     return {
-        currentPosition: currentPosition
+        currentPosition: currentPosition,
+        pastPositions: pastPositions,
+        education: education
     }
 };
 

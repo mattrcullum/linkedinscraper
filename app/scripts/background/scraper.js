@@ -85,7 +85,7 @@ function create_scrape_tab(callback) {
 }
 function getProfileLinks(callback) {
     // ask content script for all the profile links on the page
-    callTabAction(scrape_tab, 'getProfileLinks', processLinkBatch);
+    callTabAction(scrape_tab, 'scrapeProfileList', processLinkBatch);
 
     function processLinkBatch(response) {
         if (!response) {
@@ -107,13 +107,13 @@ function getProfileLinks(callback) {
         }
 
         // at this point we're guaranteed to have a response and a next page. we'll check a few things and keep going
-        else if (response.profileLinks.length != 0) {
+        else if (response.results.length != 0) {
 
             // concatenate the response to our existing array
-            results.profileLinks = results.profileLinks.concat(response.profileLinks);
+            results.people = results.people.concat(response.results);
 
 
-            if (results.profileLinks.length >= limit) {
+            if (results.people.length >= limit) {
                 status.done = true;
                 callback();
             }
@@ -139,7 +139,6 @@ function getProfileLinks(callback) {
             }
         }
         else {
-            debugger;
             console.error('reached else statement in processLinkBatch')
         }
     }

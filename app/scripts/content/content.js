@@ -8,9 +8,9 @@ function messageReceived(message, sender, sendResponse) {
     if (message.to != 'content') return;
 
     switch (message.action) {
-        case 'getProfileLinks':
+        case 'scrapeProfileList':
             sendResponse(
-                linkedin.getProfileLinks()
+                linkedin.scrapeProfileList()
             );
             break;
         case 'nextPage':
@@ -20,7 +20,7 @@ function messageReceived(message, sender, sendResponse) {
             break;
         case 'getBasicInfo':
             sendResponse(
-                linkedin.getBasicInfo()
+                linkedin.scrapeProfileView()
             )
     }
 

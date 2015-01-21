@@ -134,7 +134,7 @@ function submitScrapeForm() {
             positionFilter: employeePositionFilter
         },
         scraper:{
-
+                
         }
     };
 
