@@ -64,13 +64,6 @@ function handleResponse(response) {
     }
 }
 
-function stringContainsPeriod(string) {
-    return string.indexOf('.') != 0
-}
-
-function stringEquals(string, comparableString) {
-    return string.trim().toLowerCase() == comparableString
-}
 
 function iterate() {
     getBasicInfo(results.people[i++]);

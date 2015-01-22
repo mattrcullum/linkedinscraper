@@ -21,7 +21,15 @@ function messageReceived(message, sender, sendResponse) {
         case 'getBasicInfo':
             sendResponse(
                 linkedin.scrapeProfileView()
-            )
+            );
+            break;
+        case 'getName':
+            setInterval(function (callback) {
+                var $results = $('#res');
+                if ($results.length) {
+                    sendResponse(getName());
+                }
+            }, 50, sendResponse)
     }
 
     return true;

@@ -7,7 +7,6 @@
       "vendor/jquery/dist/jquery.js",
       "vendor/async/lib/async.js",
       "scripts/helper.js",
-      "scripts/background/bg_transponder.js",
       "scripts/static/background.js"
     ]
   },
