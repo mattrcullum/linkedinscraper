@@ -25,6 +25,9 @@ function iterate() {
         masterCallback();
     }
     else {
+        var fullNameSplit = currentPersonFullName.split('|')[0].split(' ');
+        currentPerson.name.first = fullNameSplit[0];
+        currentPerson.name.last = fullNameSplit[1];
         iterate()
     }
 }

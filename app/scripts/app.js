@@ -131,7 +131,8 @@ function submitScrapeForm() {
         general: {
             CompanyIDs: companyIDs,
             companyName: company,
-            positionFilter: employeePositionFilter
+            positionFilter: employeePositionFilter,
+            emailDomain: emailDomain
         },
         scraper:{
                 

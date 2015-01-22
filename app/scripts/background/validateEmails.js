@@ -1,7 +1,7 @@
 /**
  * Created by matthew on 12/15/14.
  */
-var email_check = (function () {
+var validateEmails = (function () {
 
   var done = false;
 

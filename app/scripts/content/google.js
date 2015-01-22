@@ -14,7 +14,7 @@ var getName = function () {
             var fName = fullName[0];
             var lName = fullName[1];
 
-            name = {first: fName, last: lName}
+            name = {first: fName, last: lName};
             return false
         }
     });

@@ -14,6 +14,7 @@ var scrapeProfileList = function () {
         var $nameLink = $person.find('.bd h3 a.title');
 
         var fullName = $nameLink.text();
+
         var profileLink = $nameLink.attr('href');
         var headline = $person.find('.description').text();
         var location = $person.find('.demographic bdi').text();
