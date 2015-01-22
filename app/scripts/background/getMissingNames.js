@@ -2,7 +2,7 @@
  * Created by matthew on 1/21/15.
  */
 var settings, results, masterCallback;
-var i = 0;
+var i = -1;
 var currentPerson;
 
 function init(settingsArg, resultsArg, callbackArg) {
@@ -13,23 +13,23 @@ function init(settingsArg, resultsArg, callbackArg) {
 }
 
 function iterate() {
-    currentPerson = results.people[i];
+    currentPerson = results.people[++i];
     var currentPersonFullName = currentPerson.name.full;
 
     if (isNameHidden(currentPersonFullName) || isNameAbbreviated(currentPersonFullName)) {
-        getMissingName()
+        getMissingName(function () {
+            iterate();
+        })
     }
     else if (i + 1 == results.people.length) {
         masterCallback();
-        return;
     }
     else {
-        i++;
         iterate()
     }
 }
 
-function getMissingName() {
+function getMissingName(callback) {
     //debugger;
     var searchText = (
     "site:linkedin.com " +
@@ -50,35 +50,21 @@ function getMissingName() {
     function tabUpdated(tabId, info, tab) {
 
         if (tabId == tabid && info.status == "complete") {
-            callTabAction(tabid, "getGoogleResult", googleResultResponse)
-            chrome.tabs.onUpdated.removeListener(tabUpdated)
+            callTabAction(tabid, "getName", googleResultResponse);
+            chrome.tabs.onUpdated.removeListener(tabUpdated);
         }
     }
 
-    function googleResultResponse(response) {
-
-        var fullName = response.split('|').trim();
-
-        response = response.split('|').trim().split(' ');
-        var fname = response[0];
-        var lname = response[1];
-
-        currentPerson.name.full = fullName;
-        currentPerson.name.first = fname;
-        currentPerson.name.last = lname;
+    function googleResultResponse(name) {
+        console.table(name)
+        currentPerson.name.last = name;
+        chrome.tabs.remove(tabid);
+        callback();
     }
 
     chrome.tabs.create({url: url}, function (tab) {
         tabid = tab.id;
-        i++;
-        iterate();
     });
-}
-
-function processGoogleResponse(response) {
-    if (response) {
-        response.name.full
-    }
 }
 
 function isNameHidden(name) {

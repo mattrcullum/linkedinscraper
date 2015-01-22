@@ -2,6 +2,7 @@
  * Created by matthew on 1/12/15.
  */
 var linkedin = require('./linkedin.js');
+var google = require('./google.js');
 
 function messageReceived(message, sender, sendResponse) {
 
@@ -24,11 +25,14 @@ function messageReceived(message, sender, sendResponse) {
             );
             break;
         case 'getName':
-            setInterval(function (callback) {
-                var $results = $('#res');
+            var waitForSearchResults = setInterval(function (callback) {
+                var $results = $('#rso');
+
                 if ($results.length) {
-                    sendResponse(getName());
+                    callback(google.getName());
+                    clearInterval(waitForSearchResults)
                 }
+
             }, 50, sendResponse)
     }
 

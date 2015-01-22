@@ -25,3 +25,7 @@ var getName = function () {
 
     return name;
 };
+
+module.exports = {
+    getName: getName
+}
