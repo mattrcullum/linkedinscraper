@@ -24,8 +24,6 @@ function initializeResultsStep() {
     $('.steps div').hide();
     $('#results').show();
 
-    $('#start_csv_download').click(downloadResults());
-
     $('#im-done').click(function () {
         chrome.runtime.reload();
     })
@@ -69,19 +67,28 @@ var ui = {
 };
 
 function downloadResults() {
-    var people = backgroundPage.people;
-    var csv = "";
+    var people = backgroundPage.results.people;
+    var csv = "FirstName, LastName, Title, Company, Profile_URL \n";
     $.each(people, function (index, person) {
-        var full_name = person.full_name;
-        var email = person.email;
-        var description = person.description;
-        var dataString = [full_name, email, description];
-        dataString = dataString.join(",");
+        if(typeof person.name.last == "object"){
+            debugger;
+        }
+        var dataString = [
+            person.name.first || '',
+            person.name.last || '',
+            person.headline.replace(/at(.*)/, "").trim(),
+            company,
+            person.profileLink
+        ].map(function (item) {
+                return '"' + item + '"'
+            });
+
+        dataString = dataString.join(',');
         csv += index < people.length ? dataString + "\n" : dataString;
     });
     var pom = document.createElement('a');
     pom.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv));
-    pom.setAttribute('start_csv_download', 'results.csv');
+    pom.setAttribute('download', company.trim() + 'Employees.csv');
     pom.click();
 }
 
@@ -114,7 +121,7 @@ function submitScrapeForm() {
         return true
     }
 
-    if (!validateForm()) return;
+    if (!validateForm()) return false;
 
     var $employeePositionFilter = $('#position-filter');
 
@@ -134,12 +141,17 @@ function submitScrapeForm() {
             positionFilter: employeePositionFilter,
             emailDomain: emailDomain
         },
-        scraper:{
-                
-        }
+        scraper: {}
     };
 
     backgroundPage.go(settings);
+
+    var waitForCompletion = setInterval(function (backgroundPage, downloadResults) {
+        if (backgroundPage.isFinished) {
+            downloadResults();
+            clearInterval(waitForCompletion);
+        }
+    }, 500, backgroundPage, downloadResults);
 
     return true;
 }
@@ -166,6 +178,8 @@ $(document).ready(function () {
     }
 
     function eventListeners() {
+        $('#download').click(downloadResults);
+
         $scrapeBtn.click(function () {
             var $self = $(this);
 

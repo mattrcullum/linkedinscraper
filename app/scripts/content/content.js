@@ -33,7 +33,12 @@ function messageReceived(message, sender, sendResponse) {
                     clearInterval(waitForSearchResults)
                 }
 
-            }, 50, sendResponse)
+            }, 50, sendResponse);
+            break;
+
+        case 'tryEmail':
+            google.tryEmail(message.args.email, sendResponse);
+            break;
     }
 
     return true;

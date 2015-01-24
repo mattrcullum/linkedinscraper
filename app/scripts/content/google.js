@@ -26,6 +26,16 @@ var getName = function () {
     return name;
 };
 
+var isGmailReady = function () {
+
+};
+
+var tryEmail = function (email, callback) {
+
+};
+
 module.exports = {
-    getName: getName
-}
+    getName: getName,
+    isGmailReady: isGmailReady,
+    tryEmail: tryEmail
+};

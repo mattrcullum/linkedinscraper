@@ -19,6 +19,7 @@ function init(settingsArg, resultsArg, callbackArg) {
 }
 
 function getBasicInfo(person) {
+if(!currentPerson){debugger;}
     currentPerson = person;
     currentPerson.company = settings.general.companyName;
 
@@ -44,6 +45,7 @@ function handleResponse(response) {
 
     $.extend(currentPerson, response);
 
+
     /*
      var name.full = response.name.full.trim().toLowerCase();
      var headline = response.headline;
@@ -66,7 +68,7 @@ function handleResponse(response) {
 
 
 function iterate() {
-    getBasicInfo(results.people[i++]);
+    getBasicInfo(results.people[++i]);
 }
 
 module.exports = {

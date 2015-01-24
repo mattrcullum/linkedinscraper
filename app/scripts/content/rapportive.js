@@ -2,33 +2,51 @@
  * Created by matthew on 1/12/15.
  */
 
-exports.checkEmail = function (email) {
-    email = email.replace(' ', '');
+var checkEmail = function (message, callback) {
+    var email = message.email.replace(' ', '');
     var name = message.args.full_name;
-    console.log('email: ' + email);
-    console.log('name: ' + name);
-    var $element = $("textarea").first();
 
-    $element.focus();
-    $element.text(email);
-    $element.blur();
-    setTimeout(function (callback) {
-        var wait_for_rapportive_sidebar = setInterval(function (callback) {
+    var $emailInput = $("textarea").first();
+
+    $emailInput.focus();
+    $emailInput.text(email);
+    $emailInput.blur();
+
+    setTimeout(function (callback) { // give rapportive 1500 milliseconds to initialize
+
+        var waitForRapportive = setInterval(function (callback) { // now we wait for rapportive to load the results
+
             var $rapportive = $('#rapportive-sidebar');
-            if ($rapportive.length != 0 && !$rapportive.has('.wip-spinner').length && !$rapportive.find('.links li a:contains("Looking up...")').length) {
-                clearInterval(wait_for_rapportive_sidebar)
+            
+            function rapportiveSidebarExists(){
+                return $rapportive.length != 0;
+            }
+            function isLoadingResults(){
+                return $rapportive.has('.wip-spinner').length || $rapportive.find('.links li a:contains("Looking up...")').length;
+            }
+            
+
+            if (rapportiveSidebarExists() && !isLoadingResults()) {
+
+                clearInterval(waitForRapportive);
+                
                 var $name = $rapportive.find('h1.name').first().text().trim().toLowerCase();
-                $('[data-tooltip="Discard draft"]').click();
-                var wait_for_draft_discard = setInterval(function (callback) {
-                    $send_button = $('div[role="button"]:contains("Send")').length
-                    if (!$send_button) {
-                        clearInterval(wait_for_draft_discard);
+                var $discardDraftBtn = $('[data-tooltip="Discard draft"]');
+
+                $discardDraftBtn.click();
+
+                var waitForDraftDiscard = setInterval(function (callback) {
+
+                    var $hasSendButton = $('div[role="button"]:contains("Send")').length;
+
+                    if (!$hasSendButton) {
+                        clearInterval(waitForDraftDiscard);
                         if ($name == name) {
-                            callback({correct: true})
+                            callback({correct: true});
                             console.log('found email')
                         }
                         else {
-                            console.log('wrong')
+                            console.log('wrong');
                             callback({correct: false})
                         }
                     }
@@ -36,5 +54,5 @@ exports.checkEmail = function (email) {
             }
         }, 100, callback);
     }, 1500, callback);
-}
+};
 

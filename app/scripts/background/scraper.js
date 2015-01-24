@@ -144,12 +144,6 @@ function getProfileLinks(callback) {
     }
 }
 
-
-// stops module on cancelScrape event
-window.addEventListener("cancelScrape", function () {
-    stop();
-});
-
 // the api for this module
 module.exports = {
     start: initialize,

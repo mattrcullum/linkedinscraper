@@ -45,10 +45,10 @@
       var path = 'html/app.html';
       path += '?company=' + companyName;
       path += '&companyID=' + companyIDs;
-      chrome.runtime.sendMessage({to:"background", action:"open_app", path: path})
+      chrome.runtime.sendMessage({to:"background", action:"openApp", path: path})
     });
 
     $scrape_btn_container.html($scrape_btn);
     $scrape_btn_container.insertAfter($follow_button)
   }
-})(window.site_hooks = {}, jQuery)
+})(window.site_hooks = {}, jQuery);

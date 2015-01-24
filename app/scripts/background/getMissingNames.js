@@ -16,13 +16,15 @@ function iterate() {
     currentPerson = results.people[++i];
     var currentPersonFullName = currentPerson.name.full;
 
+    if (i + 1 == results.people.length) {
+        masterCallback();
+        return;
+    }
+
     if (isNameHidden(currentPersonFullName) || isNameAbbreviated(currentPersonFullName)) {
         getMissingName(function () {
             iterate();
         })
-    }
-    else if (i + 1 == results.people.length) {
-        masterCallback();
     }
     else {
         var fullNameSplit = currentPersonFullName.split('|')[0].split(' ');
@@ -33,6 +35,14 @@ function iterate() {
 }
 
 function getMissingName(callback) {
+    if (!(currentPerson &&
+        currentPerson.headline &&
+        currentPerson.pastPositions &&
+        currentPerson.education &&
+        currentPerson.company)) {
+        callback();
+        return;
+    }
     //debugger;
     var searchText = (
     "site:linkedin.com " +
@@ -59,9 +69,10 @@ function getMissingName(callback) {
     }
 
     function googleResultResponse(name) {
-        console.table(name)
-        currentPerson.name.last = name;
-        chrome.tabs.remove(tabid);
+        if(name && name.first && name.last){
+            currentPerson.name.last = name.last;
+            chrome.tabs.remove(tabid);
+        }
         callback();
     }
 

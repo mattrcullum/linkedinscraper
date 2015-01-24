@@ -31,6 +31,7 @@ var scrapeProfileList = function () {
         };
 
         results.push(person);
+        debugger;
     });
 
     if (results.length == 0) {
