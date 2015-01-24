@@ -65,7 +65,7 @@ function findCurrentPersonsEmail(callback) {
         var index = prioritizedComboIndexes.splice(0, 1);
         email = possibleEmails.splice(index, 1);
 
-        tryEmail(email, processResponse)
+        tryEmail(convertStringToAscii(email), processResponse)
     }
 
     else {
@@ -73,7 +73,7 @@ function findCurrentPersonsEmail(callback) {
     }
 
     function tryEmail(email, callback) {
-        callTabAction(gmailTab, 'tryEmail', processResponse, {email:email})
+        callTabAction(gmailTab, 'tryEmail', processResponse, {email: email})
     }
 
     function processResponse(response) {
@@ -81,4 +81,14 @@ function findCurrentPersonsEmail(callback) {
             currentPerson.email = email;
         }
     }
+}
+function convertStringToAscii(email) {
+    //Convert Characters
+    return email
+        .replace(/ö/g, 'o')
+        .replace(/ç/g, 'c')
+        .replace(/ş/g, 's')
+        .replace(/ı/g, 'i')
+        .replace(/ğ/g, 'g')
+        .replace(/ü/g, 'u');
 }
