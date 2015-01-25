@@ -11,7 +11,7 @@ var people = [];
 var $form, $steps, $contents,
     emailDomain, $form, $steps, $contents,
     employeePositionFilter, company,
-    companyIDs, shouldFindEmails,
+    companyIDs, getEmails,
     $scrapeBtn;
 
 var backgroundPage = chrome.extension.getBackgroundPage();
@@ -125,7 +125,7 @@ function submitScrapeForm() {
 
     var $employeePositionFilter = $('#position-filter');
 
-    shouldFindEmails = $('#skip-email-retrieval').is(':checked');
+    getEmails = $('#skip-email-retrieval').is(':checked');
 
     employeePositionFilter = formHelpers.format_position_filter($employeePositionFilter.val());
 
@@ -139,7 +139,8 @@ function submitScrapeForm() {
             CompanyIDs: companyIDs,
             companyName: company,
             positionFilter: employeePositionFilter,
-            emailDomain: emailDomain
+            emailDomain: emailDomain,
+            getEmails: !getEmails
         },
         scraper: {}
     };

@@ -92,3 +92,7 @@ function convertStringToAscii(email) {
         .replace(/ğ/g, 'g')
         .replace(/ü/g, 'u');
 }
+
+module.exports = {
+    start: init
+}
