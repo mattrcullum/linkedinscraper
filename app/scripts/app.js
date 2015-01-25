@@ -68,7 +68,7 @@ var ui = {
 
 function downloadResults() {
     var people = backgroundPage.results.people;
-    var csv = "FirstName, LastName, Title, Company, Profile_URL \n";
+    var csv = "FirstName,LastName,Title,Company,Profile_URL\n";
     $.each(people, function (index, person) {
         if(typeof person.name.last == "object"){
             debugger;
