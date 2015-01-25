@@ -23,7 +23,7 @@ var getName = function () {
         return string.indexOf(char) != -1;
     }
 
-    return name;
+    return name || false;
 };
 
 var isGmailReady = function () {

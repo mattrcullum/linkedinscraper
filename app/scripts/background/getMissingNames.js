@@ -69,12 +69,13 @@ function getMissingName(callback) {
     }
 
     function googleResultResponse(name) {
-        if(name && name.first && name.last){
+        if (name && name.first && name.last) {
             currentPerson.name.last = name.last;
-            chrome.tabs.remove(tabid);
         }
+        chrome.tabs.remove(tabid);
         callback();
     }
+
 
     chrome.tabs.create({url: url}, function (tab) {
         tabid = tab.id;

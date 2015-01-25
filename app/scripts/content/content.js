@@ -25,15 +25,34 @@ function messageReceived(message, sender, sendResponse) {
             );
             break;
         case 'getName':
-            var waitForSearchResults = setInterval(function (callback) {
-                var $results = $('#rso');
+            var time = {
+                total: 0,
+                interval: 50,
+                out: 5000 //time.out ;)
+            };
 
-                if ($results.length) {
-                    callback(google.getName());
+            var waitForSearchResults = setInterval(function (callback, time) {
+
+                time.total += time.interval;
+
+                var $results = $('#rso');
+                var hasResults = $results.find('li').length;
+
+                if (hasResults) {
+                    setTimeout(function (callback) {
+                        callback(google.getName());
+                    }, 350, callback);
+
                     clearInterval(waitForSearchResults)
                 }
 
-            }, 50, sendResponse);
+                else if ($results.length) {
+                    clearInterval(waitForSearchResults);
+                    callback(false);
+                }
+                console.log(time.total)
+
+            }, time.interval, sendResponse, time);
             break;
 
         case 'tryEmail':
