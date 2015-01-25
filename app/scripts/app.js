@@ -76,7 +76,7 @@ function downloadResults() {
         var dataString = [
             person.name.first || '',
             person.name.last || '',
-            person.headline.replace(/at(.*)/, "").trim(),
+            person.headline.replace(/ at(.*)/, "").trim(),
             company,
             person.profileLink
         ].map(function (item) {

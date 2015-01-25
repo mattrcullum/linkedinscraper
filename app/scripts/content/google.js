@@ -7,21 +7,23 @@ var getName = function () {
     var name = {};
 
     $.each($results, function (index, item) {
-        var title = $results.find('h3').text();
+        var title = $(item).find('h3').text();
 
-        if (hasChar(title, '|')) {
-            var fullName = title.split('|')[0].split(' ');
+        // The google result we want will look like one of the following:
+        // "John Smith | LinkedIn"
+        // "John S. | LinkedIn"
+        // "John J. Smith | LinkedIn"
+        if (helpers.hasChar(title, '|')) {
+            var fullName =
+                title.split('|')[0].trim().split(' ');
+
             var fName = fullName[0];
             var lName = fullName[1];
 
-            name = {first: fName, last: lName};
+            name = {first: fName, last: lName, full: fullName};
             return false
         }
     });
-
-    function hasChar(string, char) {
-        return string.indexOf(char) != -1;
-    }
 
     return name || false;
 };

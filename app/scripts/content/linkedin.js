@@ -13,25 +13,55 @@ var scrapeProfileList = function () {
         var $person = $(person);
         var $nameLink = $person.find('.bd h3 a.title');
 
-        var fullName = $nameLink.text();
-
         var profileLink = $nameLink.attr('href');
         var headline = $person.find('.description').text();
         var location = $person.find('.demographic bdi').text();
         var industry = $person.find('.demographic dd:last-child').text();
 
+        var fullName = $nameLink.text().trim();
+        var name = {};
+
+        // if the fullName has a period, we'll assume it's abbreviated
+        if (helpers.hasChar(fullName, '.')) {
+            name.first = fullName.split(' ')[0];
+        }
+
+        // if the fullName is hidden
+        else if (fullName == "LinkedIn Member") {
+            name.isHidden = true;
+        }
+
+        // if it's it's not abbreviated, we'll assume it looks like "John Smith", "John J. Smith" or "John J. Smith II"
+        else {
+            fullName = fullName.split(' ');
+            name.first = fullName[0];
+
+            // "John J. Smith or John J. Smith II"
+            if (fullName.length > 2) {
+                name.last = fullName[2];
+            }
+
+            // "John Smith"
+            else {
+                name.first = fullName[0];
+                name.last = fullName[1];
+            }
+
+        }
+
         var person = {
-            name: {
-                full: fullName
-            },
+            name: name,
             profileLink: profileLink,
             headline: headline,
             location: location,
             industry: industry
         };
 
+        if (fullName == "LinkedIn Member") {
+            person.name = {isHidden: true}
+        }
+
         results.push(person);
-        debugger;
     });
 
     if (results.length == 0) {

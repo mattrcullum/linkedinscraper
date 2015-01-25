@@ -19,8 +19,10 @@ function init(settingsArg, resultsArg, callbackArg) {
 }
 
 function getBasicInfo(person) {
-if(!currentPerson){debugger;}
     currentPerson = person;
+    if (!currentPerson) {
+        debugger;
+    }
     currentPerson.company = settings.general.companyName;
 
     // create the tab with link argument

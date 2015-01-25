@@ -14,22 +14,23 @@ function init(settingsArg, resultsArg, callbackArg) {
 
 function iterate() {
     currentPerson = results.people[++i];
+    var currentName = currentPerson.name;
     var currentPersonFullName = currentPerson.name.full;
 
-    if (i + 1 == results.people.length) {
+    if (i == results.people.length) {
         masterCallback();
         return;
     }
 
-    if (isNameHidden(currentPersonFullName) || isNameAbbreviated(currentPersonFullName)) {
+    if (currentName.isHidden || !currentName.last) {
         getMissingName(function () {
             iterate();
         })
     }
     else {
-        var fullNameSplit = currentPersonFullName.split('|')[0].split(' ');
-        currentPerson.name.first = fullNameSplit[0];
-        currentPerson.name.last = fullNameSplit[1];
+        /*var fullNameSplit = currentPersonFullName.split('|')[0].split(' ');
+         currentPerson.name.first = fullNameSplit[0];
+         currentPerson.name.last = fullNameSplit[1];*/
         iterate()
     }
 }
@@ -44,18 +45,18 @@ function getMissingName(callback) {
         return;
     }
     //debugger;
-    var searchText = (
-    "site:linkedin.com " +
-    currentPerson.headline + ' ' +
-    currentPerson.currentPosition + ' ' +
-    currentPerson.pastPositions.join(' ') + ' ' +
-    currentPerson.education.join(' ') + ' ' +
-    currentPerson.company).replace(/\s+/g, " ").replace(/([a-z])([A-Z])/g, '$1 $2');
-
+    var searchText =
+        "site:linkedin.com " +
+        (currentPerson.name.first ? currentPerson.name.first + ' ' : '') +
+        (currentPerson.name.last ? currentPerson.name.last + ' ' : '') +
+        currentPerson.headline + ' ' +
+        currentPerson.pastPositions.join(' ') + ' ' +
+        currentPerson.education.join(' ') + ' ';
     var url =
         "http://google.com" +
         "#q=" +
         searchText;
+
     var tabid;
 
     chrome.tabs.onUpdated.addListener(tabUpdated);
@@ -70,7 +71,7 @@ function getMissingName(callback) {
 
     function googleResultResponse(name) {
         if (name && name.first && name.last) {
-            currentPerson.name.last = name.last;
+            currentPerson.name = name;
         }
         chrome.tabs.remove(tabid);
         callback();
@@ -80,14 +81,6 @@ function getMissingName(callback) {
     chrome.tabs.create({url: url}, function (tab) {
         tabid = tab.id;
     });
-}
-
-function isNameHidden(name) {
-    return name.trim().toLowerCase() == "linkedin member"
-}
-
-function isNameAbbreviated(name) {
-    return name.indexOf('.') != -1
 }
 
 module.exports = {

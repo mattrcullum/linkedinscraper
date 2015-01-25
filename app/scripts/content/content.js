@@ -1,6 +1,5 @@
-/**
- * Created by matthew on 1/12/15.
- */
+window.helpers = require('../helpers');
+
 var linkedin = require('./linkedin.js');
 var google = require('./google.js');
 
