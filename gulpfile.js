@@ -7,8 +7,8 @@ var gulp = require('gulp');
 var browserify = require('browserify');
 var transform = require('vinyl-transform');
 
-var scripts = ['app/scripts/content/*', 'app/scripts/background/*'];
-var mainFiles = ['app/scripts/content/content.js', 'app/scripts/background/background.js'];
+var scripts = ['app/scripts/content/*', 'app/scripts/background/*', 'app/scripts/app/*'];
+var mainFiles = ['app/scripts/content/content.js', 'app/scripts/background/background.js', 'app/scripts/app/app.js'];
 
 gulp.task('browserify', function () {
 
@@ -16,7 +16,7 @@ gulp.task('browserify', function () {
 
     var browserified = transform(function (filename) {
 
-        file = filename;
+        var file = filename;
         var b = browserify(filename, {
             debug: true
         });

@@ -13,7 +13,7 @@ var scrapeProfileList = function () {
         var $person = $(person);
         var $nameLink = $person.find('.bd h3 a.title');
 
-        var profileLink = $nameLink.attr('href');
+        var profileLink = $nameLink.attr('href').replace(/&authType(.*)/, '');
         var headline = $person.find('.description').text();
         var location = $person.find('.demographic bdi').text();
         var industry = $person.find('.demographic dd:last-child').text();

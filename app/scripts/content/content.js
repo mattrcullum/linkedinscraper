@@ -2,6 +2,7 @@ window.helpers = require('../helpers');
 
 var linkedin = require('./linkedin.js');
 var google = require('./google.js');
+require('./showScrapeBtn')();
 
 function messageReceived(message, sender, sendResponse) {
 
@@ -55,7 +56,8 @@ function messageReceived(message, sender, sendResponse) {
             break;
 
         case 'tryEmail':
-            google.tryEmail(message.args.email, sendResponse);
+            console.log('try email')
+            google.tryEmail(message.args, sendResponse);
             break;
     }
 

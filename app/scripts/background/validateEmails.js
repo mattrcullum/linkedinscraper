@@ -4,7 +4,7 @@
 var settings, results, masterCallback;
 var gmailTab;
 var currentPerson;
-var successfulEmailComboIndexes = [];
+var successfulEmailFormats = [];
 var emailFound = false;
 
 function init(settingsArg, resultsArg, callbackArg) {
@@ -15,7 +15,7 @@ function init(settingsArg, resultsArg, callbackArg) {
 }
 
 function validateEmails() {
-    var i = 0;
+    var i = -1;
 
     async.series([
         createGmailTab,
@@ -23,66 +23,90 @@ function validateEmails() {
     ]);
 
     function nextPerson() {
-        currentPerson = results.people[i];
 
-        async.series(
-            composeNewEmail,
-            findCurrentPersonsEmail()
-        )
+        currentPerson = results.people[++i];
+        if (currentPerson) {
+
+
+            if (currentPerson.possibleEmails) {
+                async.series([
+                    composeEmail,
+                    findCurrentPersonsEmail,
+                    nextPerson
+                ])
+            }
+            else {
+                nextPerson();
+            }
+        }
+        else {
+            masterCallback();
+        }
     }
 }
 
 function createGmailTab(callback) {
     chrome.tabs.create({url: "https://google.com"}, function (tab) {
         gmailTab = tab.id;
-        callback()
+        setTimeout(callback, 2500);
     })
 }
-function composeNewEmail(callback) {
-    function waitForLoad(tabId, status) {
-        if (tabId == gmailTab && status == "complete") {
 
-            chrome.tabs.onUpdated.removeListener(waitForLoad);
+function findCurrentPersonsEmail(callback) {
 
-            setTimeout(function (callback) {
-                callback()
-            }, 1200, callback);
+    // these are the email combinations we permuted in the previous step
+    var possibleEmails = currentPerson.possibleEmails;
 
+    if (successfulEmailFormats.length) {
+        $.each(successfulEmailFormats.reverse(), function (index, item) {
+            possibleEmails.move(item, 0)
+        })
+    }
+
+    var i = 0;
+
+    function tryVariation() {
+        // decide on what email to try next
+        var email = possibleEmails[i++];
+
+        if (email) {
+
+            email = convertStringToAscii(email);
+
+            callTabAction(gmailTab, 'tryEmail', processResponse, {email: email, name: currentPerson.name});
+
+            function processResponse(response) {
+                if (response) {
+                    if (response.correct) {
+                        currentPerson.email = email;
+                    }
+                    else {
+                        composeEmail(tryVariation());
+                    }
+                }
+            }
         }
+        else {
+            callback()
+        }
+    }
+
+    tryVariation();
+}
+
+function composeEmail(callback) {
+    console.log('compose email');
+
+    function waitForLoad() {
+        console.log('callback in 5s');
+        setTimeout(callback, 3000);
     }
 
     chrome.tabs.update(gmailTab, {url: "https://mail.google.com/mail/u/0/?#inbox?compose=new"}, waitForLoad)
 }
-function findCurrentPersonsEmail(callback) {
 
-    var possibleEmails = currentPerson.possibleEmails;
-    var prioritizedComboIndexes;
-    var email = null;
-
-    if (successfulEmailComboIndexes.length) {
-        prioritizedComboIndexes = successfulEmailComboIndexes.splice();
-
-        var index = prioritizedComboIndexes.splice(0, 1);
-        email = possibleEmails.splice(index, 1);
-
-        tryEmail(convertStringToAscii(email), processResponse)
-    }
-
-    else {
-        email = possibleEmails.splice(0, 1);
-    }
-
-    function tryEmail(email, callback) {
-        callTabAction(gmailTab, 'tryEmail', processResponse, {email: email})
-    }
-
-    function processResponse(response) {
-        if (response) {
-            currentPerson.email = email;
-        }
-    }
-}
 function convertStringToAscii(email) {
+
     //Convert Characters
     return email
         .replace(/ö/g, 'o')
@@ -90,9 +114,14 @@ function convertStringToAscii(email) {
         .replace(/ş/g, 's')
         .replace(/ı/g, 'i')
         .replace(/ğ/g, 'g')
-        .replace(/ü/g, 'u');
+        .replace(/ü/g, 'u')
+        .replace(/é/g, 'e');
 }
 
 module.exports = {
     start: init
 }
+
+Array.prototype.move = function (from, to) {
+    this.splice(to, 0, this.splice(from, 1)[0]);
+};
