@@ -5,6 +5,12 @@ Array.prototype.move = function (from, to) {
     this.splice(to, 0, this.splice(from, 1)[0]);
 };
 /**
+ * Created by matthew on 2/13/15.
+ */
+String.prototype.hasChar = function(char){
+  return this.indexOf(char) != 0;
+};
+/**
  * Created by matthew on 2/11/15.
  */
 var urlHelper = function () {
@@ -110,97 +116,98 @@ chrome.runtime.onMessage.addListener(messageReceived);
 /**
  * Created by matthew on 1/21/15.
  */
+var google = function () {
+    var getName = function () {
+        var $results = $('.g:lt(3)');
+        var name = {};
 
-var getName = function () {
-    var $results = $('.g:lt(3)');
-    var name = {};
+        $.each($results, function (index, item) {
+            var title = $(item).find('h3').text();
 
-    $.each($results, function (index, item) {
-        var title = $(item).find('h3').text();
+            // The google result we want will look like one of the following:
+            // "John Smith | LinkedIn"
+            // "John S. | LinkedIn"
+            // "John J. Smith | LinkedIn"
+            if (" ".hasChar(title, '|')) { // TO DO ***********************************************8
+                var fullName =
+                    title.split('|')[0].trim().split(' ');
 
-        // The google result we want will look like one of the following:
-        // "John Smith | LinkedIn"
-        // "John S. | LinkedIn"
-        // "John J. Smith | LinkedIn"
-        if (" ".hasChar(title, '|')) { // TO DO ***********************************************8
-            var fullName =
-                title.split('|')[0].trim().split(' ');
+                var fName = fullName[0];
+                var lName = fullName[1];
 
-            var fName = fullName[0];
-            var lName = fullName[1];
+                name = {first: fName, last: lName, full: fullName};
+                return false
+            }
+        });
 
-            name = {first: fName, last: lName, full: fullName};
-            return false
+        return name || false;
+    };
+
+    var isGmailReady = function () {
+
+    };
+
+    var tryEmail = function (message, callback) {
+        console.log(message, callback);
+        var email = message.email.replace(' ', '');
+        var name = message.name.full;
+
+        var $emailInput = $("textarea").first();
+
+        $emailInput.focus();
+        $emailInput.text(email);
+        $emailInput.blur();
+
+        setTimeout(function (callback) { // give rapportive 1500 milliseconds to initialize
+
+            var waitForRapportive = setInterval(function (callback) { // now we wait for rapportive to load the results
+
+                var $rapportive = $('#rapportive-sidebar');
+
+                function rapportiveSidebarExists() {
+                    return $rapportive.length != 0;
+                }
+
+                function isLoadingResults() {
+                    return $rapportive.has('.wip-spinner').length || $rapportive.find('.links li a:contains("Looking up...")').length;
+                }
+
+
+                if (rapportiveSidebarExists() && !isLoadingResults()) {
+
+                    clearInterval(waitForRapportive);
+
+                    var $name = $rapportive.find('h1.name').first().text().trim().toLowerCase();
+                    var $discardDraftBtn = $('[data-tooltip="Discard draft"]');
+
+                    $discardDraftBtn.click();
+
+                    var waitForDraftDiscard = setInterval(function (callback) {
+
+                        var $hasSendButton = $('div[role="button"]:contains("Send")').length;
+
+                        if (!$hasSendButton) {
+                            clearInterval(waitForDraftDiscard);
+                            if ($name == name) {
+                                callback({correct: true});
+                                console.log('found email')
+                            }
+                            else {
+                                console.log('wrong');
+                                callback({correct: false})
+                            }
+                        }
+                    }, 100, callback)
+                }
+            }, 100, callback);
+        }, 1500, callback);
+        return {
+            getName: getName,
+            isGmailReady: isGmailReady,
+            tryEmail: tryEmail
         }
-    });
-
-    return name || false;
-};
-
-var isGmailReady = function () {
-
-};
-
-var tryEmail = function (message, callback) {
-    console.log(message, callback);
-    var email = message.email.replace(' ', '');
-    var name = message.name.full;
-
-    var $emailInput = $("textarea").first();
-
-    $emailInput.focus();
-    $emailInput.text(email);
-    $emailInput.blur();
-
-    setTimeout(function (callback) { // give rapportive 1500 milliseconds to initialize
-
-        var waitForRapportive = setInterval(function (callback) { // now we wait for rapportive to load the results
-
-            var $rapportive = $('#rapportive-sidebar');
-
-            function rapportiveSidebarExists() {
-                return $rapportive.length != 0;
-            }
-
-            function isLoadingResults() {
-                return $rapportive.has('.wip-spinner').length || $rapportive.find('.links li a:contains("Looking up...")').length;
-            }
-
-
-            if (rapportiveSidebarExists() && !isLoadingResults()) {
-
-                clearInterval(waitForRapportive);
-
-                var $name = $rapportive.find('h1.name').first().text().trim().toLowerCase();
-                var $discardDraftBtn = $('[data-tooltip="Discard draft"]');
-
-                $discardDraftBtn.click();
-
-                var waitForDraftDiscard = setInterval(function (callback) {
-
-                    var $hasSendButton = $('div[role="button"]:contains("Send")').length;
-
-                    if (!$hasSendButton) {
-                        clearInterval(waitForDraftDiscard);
-                        if ($name == name) {
-                            callback({correct: true});
-                            console.log('found email')
-                        }
-                        else {
-                            console.log('wrong');
-                            callback({correct: false})
-                        }
-                    }
-                }, 100, callback)
-            }
-        }, 100, callback);
-    }, 1500, callback);
-    return {
-        getName: getName,
-        isGmailReady: isGmailReady,
-        tryEmail: tryEmail
-    }
-};
+    };
+}()
 
 /**
  * Created by matthew on 1/11/15.
@@ -226,7 +233,7 @@ var linkedin = function () {
             var name = {};
 
             // if the fullName has a period, we'll assume it's abbreviated
-            if (" ".hasChar(fullName, '.')) { // TO DO *********************
+            if (fullName.hasChar('.')) {
                 name.first = fullName.split(' ')[0];
             }
 
@@ -273,9 +280,9 @@ var linkedin = function () {
         }
 
         return {
-            results: results,
-            hasNextPage: pagination.hasNextPage(),
-            nextPage: pagination.nextPage(),
+            linkList: results,
+            hasNextPage: pagination().hasNextPage(),
+            nextPage: pagination().nextPage(),
             error: error
         }
     }
@@ -310,6 +317,11 @@ var linkedin = function () {
 
         function hasNextPage() {
             return $('#results-pagination .next a').length
+        }
+
+        return {
+            nextPage: nextPage,
+            hasNextPage: hasNextPage
         }
     }
 

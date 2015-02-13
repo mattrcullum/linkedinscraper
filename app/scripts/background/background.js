@@ -11,9 +11,7 @@ var app = {
         }
     },
     currentCompany: null,
-    results: {
-
-    }
+    results: []
 };
 
 window.queue = [];

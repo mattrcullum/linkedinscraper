@@ -5,6 +5,12 @@ Array.prototype.move = function (from, to) {
     this.splice(to, 0, this.splice(from, 1)[0]);
 };
 /**
+ * Created by matthew on 2/13/15.
+ */
+String.prototype.hasChar = function(char){
+  return this.indexOf(char) != 0;
+};
+/**
  * Created by matthew on 2/11/15.
  */
 var urlHelper = function () {

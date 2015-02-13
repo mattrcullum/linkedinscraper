@@ -14,8 +14,7 @@ var scraper = function () {
     var isFinished = false;
 
     var status = {};
-    var results;
-
+    var limit = app.settings.scraper.limit;
 
     function initialize(callbackArg) {
         //initialization
@@ -53,7 +52,7 @@ var scraper = function () {
         controller();
     }
 
-// creates a tab we'll use for screen scraping
+    // creates a tab we'll use for scraping
     function create_scrape_tab(callback) {
         if (scrape_tab) {
             callback();
@@ -70,8 +69,6 @@ var scraper = function () {
             '&openAdvancedForm=true' +
             '&titleScope=C&locationType=I' +
             '&orig=MDYS';
-        console.log(url);
-        console.log(app)
 
         // create the tab
         chrome.tabs.create({url: url}, function (tab) {
@@ -89,63 +86,55 @@ var scraper = function () {
     }
 
     function getProfileLinks(callback) {
+
         // ask content script for all the profile links on the page
-        app.callTabAction(scrape_tab, 'scrapeProfileList', processLinkBatch);
+        app.callTabAction(scrape_tab, 'scrapeProfileList', processResults);
 
-        function processLinkBatch(response) {
-            if (!response) {
-                console.error(chrome.runtime.lastError)
-            }
-            // if response is empty, we have an issue
-            if (response.error) {
+        function processResults(response) {
+
+            // basic error checking
+            if (!response || response.error) {
+                console.error(chrome.runtime.lastError);
                 console.error("Response for processLinkBatch is:" + response.error);
-                return;
             }
 
-            var hasNextPage = response.hasNextPage;
-            var limit = app.settings.scraper.limit;
+            // concatenate the response (if any) to our existing results array
+            if (response.linkList.length != 0) {
+                app.results = app.results.concat(response.linkList);
+            }
 
-            // if there are no more pages, we're done!
-            if (!hasNextPage) {
+            // allows limiting size of results array. Here only for debugging
+            if (app.results.length >= limit) {
+                status.done = true;
+                callback();
+                return false;
+            }
+
+            // set done status if no more pages
+            if (!response.hasNextPage) {
                 status.done = true;
                 callback();
             }
-
-            // at this point we're guaranteed to have a response and a next page. we'll check a few things and keep going
-            else if (response.results.length != 0) {
-
-                // concatenate the response to our existing array
-                results.people = results.people.concat(response.results);
-
-
-                if (results.people.length >= limit) {
-                    status.done = true;
-                    callback();
-                }
-                else {
-
-                    chrome.tabs.update({url: "http://" + response.nextPage}, function () {
-                        function pageChange(tabId, info, tab) {
-                            var url = tab.url;
-
-                            if (url != undefined && tabId == scrape_tab && info.status == "complete") {
-                                console.log('page done loading');
-
-                                chrome.tabs.onUpdated.removeListener(pageChange);
-
-                                setTimeout(function (callback) {
-                                    callback();
-                                }, 2000, callback);
-                            }
-                        }
-
-                        chrome.tabs.onUpdated.addListener(pageChange);
-                    });
-                }
-            }
+            // otherwise, go on to scrape next page
             else {
-                console.error('reached else statement in processLinkBatch')
+                chrome.tabs.update({url: "http://" + response.nextPage}, function () {
+                    function pageChange(tabId, info, tab) {
+                        var url = tab.url;
+
+                        if (url != undefined && tabId == scrape_tab && info.status == "complete") {
+
+                            chrome.tabs.onUpdated.removeListener(pageChange);
+
+                            setTimeout(function (callback) {
+                                callback();
+                            }, 2000, callback);
+                        }
+                    }
+
+                    chrome.tabs.onUpdated.addListener(pageChange);
+                });
             }
+
         }
     }
 

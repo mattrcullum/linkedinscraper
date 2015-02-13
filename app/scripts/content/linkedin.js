@@ -22,7 +22,7 @@ var linkedin = function () {
             var name = {};
 
             // if the fullName has a period, we'll assume it's abbreviated
-            if (" ".hasChar(fullName, '.')) { // TO DO *********************
+            if (fullName.hasChar('.')) {
                 name.first = fullName.split(' ')[0];
             }
 
@@ -69,9 +69,9 @@ var linkedin = function () {
         }
 
         return {
-            results: results,
-            hasNextPage: pagination.hasNextPage(),
-            nextPage: pagination.nextPage(),
+            linkList: results,
+            hasNextPage: pagination().hasNextPage(),
+            nextPage: pagination().nextPage(),
             error: error
         }
     }
@@ -106,6 +106,11 @@ var linkedin = function () {
 
         function hasNextPage() {
             return $('#results-pagination .next a').length
+        }
+
+        return {
+            nextPage: nextPage,
+            hasNextPage: hasNextPage
         }
     }
 

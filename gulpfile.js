@@ -4,29 +4,28 @@
 
 // modules
 var gulp = require('gulp');
-var browserify = require('browserify');
 var transform = require('vinyl-transform');
 var concat = require('gulp-concat');
 
 var scripts = ['app/scripts/content/*', 'app/scripts/background/*', 'app/scripts/app/*'];
 var mainFiles = ['app/scripts/content/content.js', 'app/scripts/background/background.js', 'app/scripts/app/app.js'];
 
-gulp.task('browserify', function () {
+gulp.task('concat', function () {
 
     var dest = 'app/scripts/static/';
 
     var browserified = transform(function (filename) {
 
         var file = filename;
-        var b = browserify(filename, {
+        var b = concat(filename, {
             debug: true
         });
         // you can now further configure/manipulate your bundle
         // you can perform transforms, for e.g.: 'coffeeify'
         // b.transform('coffeeify');
-        // or even use browserify plugins, for e.g. 'minifyiy'
+        // or even use concat plugins, for e.g. 'minifyiy'
         // b.plugins('minifyify');
-        // consult browserify documentation at: https://github.com/substack/node-browserify#methods for more available APIs
+        // consult concat documentation at: https://github.com/substack/node-concat#methods for more available APIs
         return b.bundle();
     });
 
@@ -43,7 +42,7 @@ gulp.task('browserify', function () {
 
 
 gulp.task('watch', function () {
-    gulp.watch(scripts, ['browserify'])
+    gulp.watch(scripts, ['concat'])
 });
 
-gulp.task('default', ['browserify', 'watch']);
+gulp.task('default', ['concat', 'watch']);
