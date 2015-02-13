@@ -3,28 +3,28 @@ function messageReceived(message, sender, sendResponse) {
     if (message.to != 'content') return;
 
     switch (message.action) {
+
         case 'scrapeProfileList':
-            sendResponse(
-                linkedin.scrapeProfileList()
-            );
+            var results = linkedin.scrapeProfileList();
+            sendResponse(results);
             break;
+
         case 'nextPage':
-            sendResponse(
-                linkedin.pagination.nextPage()
-            );
+            var results = linkedin.pagination.nextPage();
+            sendResponse(results);
             break;
+
         case 'getBasicInfo':
-            sendResponse(
-                linkedin.scrapeProfileView()
-            );
+            var results = linkedin.scrapeProfileView();
+            sendResponse(results);
             break;
+
         case 'getName':
             var time = {
                 total: 0,
                 interval: 50,
                 out: 5000 //time.out ;)
             };
-
             var waitForSearchResults = setInterval(function (callback, time) {
 
                 time.total += time.interval;
@@ -50,7 +50,6 @@ function messageReceived(message, sender, sendResponse) {
             break;
 
         case 'tryEmail':
-            console.log('try email')
             google.tryEmail(message.args, sendResponse);
             break;
     }

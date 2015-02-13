@@ -12,15 +12,14 @@ chrome.runtime.onMessage.addListener(function (message) {
 });
 
 // provides a proxy to call a content script function
-app.callTabAction = function (tabID, options, callback) {
+app.callTabAction = function (tabID, action, callback, args) {
 
-    var action = options.action || console.error('actions not set');
-    var args = options.args || console.error('args not set');
-
-    if (!(action || args)) {
+    if (!action) {
+        console.error('actions not set');
         return false
     }
 
     var message = {to: 'content', action: action, args: args};
+
     chrome.tabs.sendMessage(tabID, message, callback)
 };
