@@ -9,7 +9,6 @@ var scraper = function () {
 
     var scrape_tab = 0;
 
-    var settings;
     var masterCallback;
 
     var isFinished = false;
@@ -18,11 +17,9 @@ var scraper = function () {
     var results;
 
 
-    function initialize(settingsArg, resultsArg, callbackArg) {
+    function initialize(callbackArg) {
         //initialization
         running = true;
-        settings = settingsArg;
-        results = resultsArg;
         masterCallback = callbackArg;
         start();
     }
@@ -62,13 +59,19 @@ var scraper = function () {
             callback();
             return;
         }
-
+        var title = app.currentCompany.titleFilter;
         var url =
             'http://linkedin.com/' +
-            'vsearch/' +
-            'p?title=' + settings.general.positionFilter +
-            '&f_CC=' + settings.general.CompanyIDs +
-            '&openAdvancedForm=true&titleScope=C&locationType=I';
+            'vsearch/p' +
+            '?f_CC=' + app.currentCompany.companyID +
+            (
+                title ?
+                '&title=' + app.currentCompany.titleFilter : '') +
+            '&openAdvancedForm=true' +
+            '&titleScope=C&locationType=I' +
+            '&orig=MDYS';
+        console.log(url);
+        console.log(app)
 
         // create the tab
         chrome.tabs.create({url: url}, function (tab) {
@@ -87,7 +90,7 @@ var scraper = function () {
 
     function getProfileLinks(callback) {
         // ask content script for all the profile links on the page
-        callTabAction(scrape_tab, 'scrapeProfileList', processLinkBatch);
+        app.callTabAction(scrape_tab, 'scrapeProfileList', processLinkBatch);
 
         function processLinkBatch(response) {
             if (!response) {
@@ -100,7 +103,7 @@ var scraper = function () {
             }
 
             var hasNextPage = response.hasNextPage;
-            var limit = settings.scraper.limit;
+            var limit = app.settings.scraper.limit;
 
             // if there are no more pages, we're done!
             if (!hasNextPage) {
