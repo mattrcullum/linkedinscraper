@@ -13,7 +13,7 @@ var getName = function () {
         // "John Smith | LinkedIn"
         // "John S. | LinkedIn"
         // "John J. Smith | LinkedIn"
-        if (helpers.hasChar(title, '|')) {
+        if (" ".hasChar(title, '|')) { // TO DO ***********************************************8
             var fullName =
                 title.split('|')[0].trim().split(' ');
 
@@ -86,10 +86,9 @@ var tryEmail = function (message, callback) {
             }
         }, 100, callback);
     }, 1500, callback);
-};
-
-module.exports = {
-    getName: getName,
-    isGmailReady: isGmailReady,
-    tryEmail: tryEmail
+    return {
+        getName: getName,
+        isGmailReady: isGmailReady,
+        tryEmail: tryEmail
+    }
 };

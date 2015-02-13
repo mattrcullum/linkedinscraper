@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+	<head lang="en">
+		<meta charset="UTF-8">
+		<title>LinkedIn Company Scraper</title>
+		<link href="vendor/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+		<script src="vendor/jquery/dist/jquery.js"></script>
+		<script src="vendor/async/lib/async.js"></script>
+		<script src="vendor/bootstrap/dist/js/bootstrap.js"></script>
+		<script src="vendor/knockout/dist/knockout.js"></script>
+		<script src="scripts/static/app.js"></script>
+	</head>
+	<body>
+		<div class="col-lg-10 col-md-offset-1">
+			<h1 class="text-center">Scrape queue</h1>
+			<hr/>
+			<div class="col-md-8 col-md-offset-2" id="queue">
+				<div data-bind="foreach: queue" class="queue-item">
+					<div class="col-md-12 panel panel-primary text-center">
+						<h2 data-bind="text: companyName" style="display: inline-block;"></h2>
+                    <span style="cursor: pointer; color: #c0392b; font-size: 20px; float: right; padding-top: 10px"
+						  data-bind="click: $parent.removeFromQueue" class="glyphicon glyphicon-remove"></span>
+					</div>
+				</div>
+				<br/>
+
+				<form class="form-horizontal">
+					<div class="form-group">
+						<button class="btn btn-primary form-control" data-bind="click: start">Start</button>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="modal fade" id="addToQueue">
+			<div class="modal-dialogue">
+				<div class="modal-content col-md-6 col-md-offset-3">
+					<div class="header">
+						<div class="text-center">
+							<h2 id="company-name" class="text-muted" data-bind="text: companyName"></h2>
+						</div>
+					</div>
+					<div class="modal-body">
+						<hr>
+						<div id="content">
+							<div class="form-horizontal" id="options">
+								<div class="form-group">
+									<label>Title filter</label><br/>
+									<input class="form-control" id="position-filter" placeholder="cp c.o chief lead"
+										   type="text" data-bind="value: titleFilter">
+								</div>
+								<div class="form-group">
+									<label>Email domain</label>
+
+									<div class="input-group">
+										<span class="input-group-addon">@</span>
+										<input class="form-control" id="emailDomain" placeholder="domain" type="text"
+											   data-bind="value: emailDomain">
+										<span class="input-group-btn">
+											<select class="btn" id="tld">
+												<option>
+													.com
+												</option>
+												<option>
+													.net
+												</option>
+												<option>
+													.org
+												</option>
+											</select>
+										</span>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="checkbox">
+										<label>
+											<input type="checkbox" data-bind="checked: skipEmailRetrieval">
+											Skip email permutation </label>
+									</div>
+								</div>
+							</div>
+						</div>
+						<button class="btn btn-default form-control" id="submit" data-bind="click: addToQueue">Add to
+																											   queue
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

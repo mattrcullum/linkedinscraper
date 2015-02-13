@@ -1,11 +1,3 @@
-window.helpers = require('../helpers');
-
-var scraper = require('./scraper.js');
-var getBasicInfo = require('./getBasicInfo.js');
-var getMissingNames = require('./getMissingNames.js');
-var permuteEmails = require('./permuteEmails.js');
-var validateEmails = require('./validateEmails.js');
-
 window.results = {
     people: []
 };
@@ -25,8 +17,8 @@ window.callTabAction = function (tabId, action, callback, args) {
 
 // this gets called when the user is ready to start scraping
 window.go = function (settings) {
+
     console.table(queue);
-    return;
     // for debugging
     //settings.scraper.limit = 10000;
     //settings.scraper.limit = 9;
@@ -69,7 +61,3 @@ chrome.runtime.onMessage.addListener(function (message) {
         }
     }
 });
-
-//var permuter = require('./permuteEmails.js');
-//var find_last_names = require('./last_names.js');
-//var email_verifier = require('./email_check.js');

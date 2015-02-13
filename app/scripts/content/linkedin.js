@@ -22,7 +22,7 @@ var scrapeProfileList = function () {
         var name = {};
 
         // if the fullName has a period, we'll assume it's abbreviated
-        if (helpers.hasChar(fullName, '.')) {
+        if (" ".hasChar(fullName, '.')) { // TO DO *********************
             name.first = fullName.split(' ')[0];
         }
 
@@ -108,9 +108,10 @@ var pagination =
         return $('#results-pagination .next a').length
     }
 };
-
-module.exports = {
-    pagination: pagination,
-    scrapeProfileList: scrapeProfileList,
-    scrapeProfileView: scrapeProfileView
-};
+/*
+ return {
+ pagination: pagination,
+ scrapeProfileList: scrapeProfileList,
+ scrapeProfileView: scrapeProfileView
+ };
+ */

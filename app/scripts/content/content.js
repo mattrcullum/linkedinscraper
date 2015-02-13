@@ -1,9 +1,3 @@
-window.helpers = require('../helpers');
-
-var linkedin = require('./linkedin.js');
-var google = require('./google.js');
-require('./showScrapeBtn')();
-
 function messageReceived(message, sender, sendResponse) {
 
     if (message.to != 'content') return;
