@@ -6,12 +6,9 @@ var path_segments = urlHelper.segments;
 var first_path_segment = path_segments[0] || null;
 var host_title = urlHelper.hostName.toLowerCase();
 
-if (host_title == "linkedin")
-    switch (first_path_segment) {
-        case 'company':
-            add_scrape_button();
-            break;
-    }
+if (host_title == "linkedin" && first_path_segment == 'company') {
+    add_scrape_button();
+}
 
 function add_scrape_button() {
 

@@ -5,9 +5,8 @@
 // message sending/receiving
 chrome.runtime.onMessage.addListener(function (message) {
     if (message.action == "openApp") {
-        if (results) {
-            chrome.tabs.create({url: message.path})
-        }
+        chrome.tabs.create({url: message.path})
+
     }
 });
 

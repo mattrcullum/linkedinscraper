@@ -7,7 +7,7 @@ var scraper = function () {
 // scrape status
     var running = false;
 
-    var scrape_tab = 0;
+    var scrapeTab = 0;
 
     var masterCallback;
 
@@ -16,86 +16,96 @@ var scraper = function () {
     var status = {};
     var limit = app.settings.scraper.limit;
 
-    function initialize(callbackArg) {
-        //initialization
+    // starts scraping
+    function start(cb) {
         running = true;
-        masterCallback = callbackArg;
-        start();
-    }
+        masterCallback = cb;
 
-    function start() {
-        function getBatch(callback) {
-            async.series([
-                create_scrape_tab,
-                getProfileLinks,
-                callback
-            ])
-        }
+        var series = [
+            getProfileLinks,
+            nextIteration
+        ];
 
-        function finish() {
-            chrome.tabs.remove(scrape_tab);
-            scrape_tab = false;
-            isFinished = true;
-            masterCallback();
+        function executeSeries() {
+            async.series(series)
         }
 
         // program control
-        function controller() {
-            getBatch(function () {
-                if (status.done) {
-                    finish();
-                }
-                else getBatch(controller)
-            })
+        function nextIteration() {
+            if (status.done) {
+                exit();
+            }
+            else {
+                executeSeries();
+            }
         }
 
-        controller();
+        async.series([
+                create_scrapeTab,
+                executeSeries
+            ]
+        )
     }
 
-    // creates a tab we'll use for scraping
-    function create_scrape_tab(callback) {
-        if (scrape_tab) {
+    // releases program control back to calling function
+    function exit() {
+        chrome.tabs.remove(scrapeTab);
+        scrapeTab = false;
+        isFinished = true;
+        masterCallback();
+    }
+
+    // creates the tab we'll use for scraping
+    function create_scrapeTab(callback) {
+
+        // prevents creation of extra tab
+        if (scrapeTab) {
             callback();
             return;
         }
-        var title = app.currentCompany.titleFilter;
+
+        var titleFilter = app.currentCompany.titleFilter;
+
         var url =
             'http://linkedin.com/' +
             'vsearch/p' +
             '?f_CC=' + app.currentCompany.companyID +
             (
-                title ?
-                '&title=' + app.currentCompany.titleFilter : '') +
+                titleFilter ?
+                '&title=' + titleFilter : '') +
             '&openAdvancedForm=true' +
             '&titleScope=C&locationType=I' +
             '&orig=MDYS';
 
         // create the tab
         chrome.tabs.create({url: url}, function (tab) {
-            scrape_tab = tab.id;
-            chrome.tabs.onUpdated.addListener(waitForTab)
+            scrapeTab = tab.id;
+            chrome.tabs.onUpdated.addListener(onTabLoad)
         });
 
         // after tab creation return control to the calling function
-        function waitForTab(tabId, info) {
-            if (info.status == "complete" && tabId == scrape_tab) {
-                chrome.tabs.onUpdated.removeListener(waitForTab);
+        function onTabLoad(tabId, info) {
+            if (info.status == "complete" && tabId == scrapeTab) {
+                chrome.tabs.onUpdated.removeListener(onTabLoad);
                 callback();
             }
         }
     }
 
+    // retrieves profile links from scrape tab
     function getProfileLinks(callback) {
 
-        // ask content script for all the profile links on the page
-        app.callTabAction(scrape_tab, 'scrapeProfileList', processResults);
+        // tells the content script to grab and return the current page's profile links
+        app.callTabAction(scrapeTab, 'scrapeProfileList', processResults);
 
+        // checks the integrity of the response, then concatenates it to our app.results variable
         function processResults(response) {
 
             // basic error checking
             if (!response || response.error) {
                 console.error(chrome.runtime.lastError);
                 console.error("Response for processLinkBatch is:" + response.error);
+                return false;
             }
 
             // concatenate the response (if any) to our existing results array
@@ -103,25 +113,27 @@ var scraper = function () {
                 app.results = app.results.concat(response.linkList);
             }
 
-            // allows limiting size of results array. Here only for debugging
+            // when debugging, limits the number of profile links we collect
             if (app.results.length >= limit) {
                 status.done = true;
                 callback();
                 return false;
             }
 
-            // set done status if no more pages
+            // hasNextPage is a boolean representing whether the "next" pagination button exists.
             if (!response.hasNextPage) {
                 status.done = true;
                 callback();
+                return false;
             }
+
             // otherwise, go on to scrape next page
             else {
                 chrome.tabs.update({url: "http://" + response.nextPage}, function () {
                     function pageChange(tabId, info, tab) {
                         var url = tab.url;
 
-                        if (url != undefined && tabId == scrape_tab && info.status == "complete") {
+                        if (url != undefined && tabId == scrapeTab && info.status == "complete") {
 
                             chrome.tabs.onUpdated.removeListener(pageChange);
 
@@ -134,23 +146,12 @@ var scraper = function () {
                     chrome.tabs.onUpdated.addListener(pageChange);
                 });
             }
-
         }
     }
 
 // the api for this module
     return {
-        start: initialize,
-        profileLinks: function () {
-            return results.profileLinks
-        },
-        isFinished: function () {
-            return isFinished
-        }
+        start: start
     };
 
-
-    function log(message) {
-        console.log(message)
-    }
-}()
+}();

@@ -30,9 +30,8 @@ window.go = function () {
     async.series(routine);
 
     function nextQueueItem() {
-
-        if (queue.length) {
-            app.currentCompany = queue[++i];
+        app.currentCompany = queue[++i];
+        if (app.currentCompany) {
             async.series(routine)
         }
         else {
