@@ -86,10 +86,10 @@ var google = function () {
                 }
             }, 100, callback);
         }, 1500, callback);
-        return {
-            getName: getName,
-            isGmailReady: isGmailReady,
-            tryEmail: tryEmail
-        }
     };
-}()
+    return {
+        getName: getName,
+        isGmailReady: isGmailReady,
+        tryEmail: tryEmail
+    }
+}();

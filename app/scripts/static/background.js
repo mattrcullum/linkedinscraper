@@ -131,90 +131,118 @@ app.callTabAction = function (tabID, action, callback, args) {
  * Created by matthew on 1/21/15.
  */
 var getMissingNames = function () {
-    var settings, results, masterCallback;
-    var i = 0;
-    var currentPerson;
+    var masterCallback,
+        searchTab,
+        personIndex,
+        currentPerson;
 
-    function init(settingsArg, resultsArg, callbackArg) {
-        settings = settingsArg;
-        results = resultsArg;
-        masterCallback = callbackArg;
-        iterate()
-    }
+    function start(cb) {
 
-    function iterate() {
-        currentPerson = results.people[++i];
-        var currentName = currentPerson.name;
-        var currentPersonFullName = currentPerson.name.full;
+        masterCallback = cb;
+        personIndex = 0;
+        currentPerson = true;
 
-        if (i == results.people.length) {
-            masterCallback();
-            return;
-        }
+        var series = [
+            createSearchTab,
+            getName,
+            nextIteration
+        ];
 
-        if (currentName.isHidden || !currentName.last) {
-            getMissingName(function () {
-                iterate();
-            })
-        }
-        else {
-            /*var fullNameSplit = currentPersonFullName.split('|')[0].split(' ');
-             currentPerson.name.first = fullNameSplit[0];
-             currentPerson.name.last = fullNameSplit[1];*/
-            iterate()
-        }
-    }
+        // program control
+        function nextIteration() {
 
-    function getMissingName(callback) {
-        if (!(currentPerson &&
-            currentPerson.headline &&
-            currentPerson.pastPositions &&
-            currentPerson.education &&
-            currentPerson.company)) {
-            callback();
-            return;
-        }
-        //debugger;
-        var searchText =
-            "site:linkedin.com " +
-            (currentPerson.name.first ? currentPerson.name.first + ' ' : '') +
-            (currentPerson.name.last ? currentPerson.name.last + ' ' : '') +
-            currentPerson.headline + ' ' +
-            currentPerson.pastPositions.join(' ') + ' ' +
-            currentPerson.education.join(' ') + ' ';
-        var url =
-            "http://google.com" +
-            "#q=" +
-            searchText;
+            currentPerson = app.results[personIndex++];
 
-        var tabid;
-
-        chrome.tabs.onUpdated.addListener(tabUpdated);
-
-        function tabUpdated(tabId, info, tab) {
-
-            if (tabId == tabid && info.status == "complete") {
-                callTabAction(tabid, "getName", googleResultResponse);
-                chrome.tabs.onUpdated.removeListener(tabUpdated);
+            if (status.done || !currentPerson) {
+                exit();
+            }
+            else {
+                if (currentPerson.name.isHidden || !currentPerson.name.last) {
+                    nextIteration();
+                }
+                else {
+                    executeSeries();
+                }
             }
         }
 
-        function googleResultResponse(name) {
+        // execute series after a one-time function call
+        /*async.series([
+         init,
+         executeSeries
+         ]
+         );*/
+
+        nextIteration();
+
+        function executeSeries() {
+            async.series(series)
+        }
+    }
+
+    function createSearchTab(callback) {
+        if (
+            !(
+            currentPerson ||
+            currentPerson.headline ||
+            currentPerson.pastPositions ||
+            currentPerson.education ||
+            currentPerson.currentCompany
+            )
+        ) {
+            callback();
+            return false;
+        }
+        else {
+            //debugger;
+            var searchText =
+                "site:linkedin.com " +
+                (currentPerson.name.first ? currentPerson.name.first + ' ' : '') +
+                (currentPerson.name.last ? currentPerson.name.last + ' ' : '') +
+                currentPerson.headline + ' ';
+            // currentPerson.pastPositions.join(' ') + ' ' +
+            //currentPerson.education.join(' ') + ' ';
+            var url =
+                "http://google.com" +
+                "#q=" +
+                searchText;
+
+            chrome.tabs.onUpdated.addListener(tabUpdated);
+
+            function tabUpdated(tabID, info, tab) {
+
+                if (searchTab == tabID && info.status == "complete") {
+                    chrome.tabs.onUpdated.removeListener(tabUpdated);
+                    callback();
+                }
+            }
+
+            chrome.tabs.create({url: url}, function (tab) {
+                searchTab = tab.id;
+            });
+        }
+    }
+
+    function getName(callback) {
+        app.callTabAction(searchTab, "getName", handleResponse);
+
+        function handleResponse(name) {
             if (name && name.first && name.last) {
                 currentPerson.name = name;
             }
-            chrome.tabs.remove(tabid);
+            chrome.tabs.remove(searchTab);
             callback();
         }
-
-
-        chrome.tabs.create({url: url}, function (tab) {
-            tabid = tab.id;
-        });
     }
 
+    function exit() {
+        chrome.tabs.remove(searchTab);
+        masterCallback();
+    }
+
+
     return {
-        start: init
+        start: start
     }
 }();
 /**
@@ -313,9 +341,7 @@ var getProfileData = function () {
  */
 var permuteEmails = function () {
 
-    var settings, results, masterCallback;
-
-    function init(settingsArg, resultsArg, callbackArg) {
+    function start(settingsArg, resultsArg, callbackArg) {
         settings = settingsArg;
         results = resultsArg;
         masterCallback = callbackArg;

@@ -33,7 +33,7 @@ function messageReceived(message, sender, sendResponse) {
                 var hasResults = $results.find('li').length;
 
                 if (hasResults) {
-                    setTimeout(function (callback) {
+                    setTimeout(function (callback) {debugger;
                         callback(google.getName());
                     }, 350, callback);
 

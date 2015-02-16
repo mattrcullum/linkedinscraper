@@ -6,9 +6,7 @@
  */
 var permuteEmails = function () {
 
-    var settings, results, masterCallback;
-
-    function init(settingsArg, resultsArg, callbackArg) {
+    function start(settingsArg, resultsArg, callbackArg) {
         settings = settingsArg;
         results = resultsArg;
         masterCallback = callbackArg;

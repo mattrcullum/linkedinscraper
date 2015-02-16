@@ -94,7 +94,7 @@ function messageReceived(message, sender, sendResponse) {
                 var hasResults = $results.find('li').length;
 
                 if (hasResults) {
-                    setTimeout(function (callback) {
+                    setTimeout(function (callback) {debugger;
                         callback(google.getName());
                     }, 350, callback);
 
@@ -207,13 +207,13 @@ var google = function () {
                 }
             }, 100, callback);
         }, 1500, callback);
-        return {
-            getName: getName,
-            isGmailReady: isGmailReady,
-            tryEmail: tryEmail
-        }
     };
-}()
+    return {
+        getName: getName,
+        isGmailReady: isGmailReady,
+        tryEmail: tryEmail
+    }
+}();
 
 /**
  * Created by matthew on 1/11/15.
