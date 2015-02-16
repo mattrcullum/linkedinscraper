@@ -28,7 +28,7 @@ var getMissingNames = function () {
                 exit();
             }
             else {
-                if (currentPerson.name.isHidden || !currentPerson.name.last) {
+                if (currentPerson.name.isHidden || !currentPerson.name.last || (currentPerson.name.first && currentPerson.name.last)) {
                     nextIteration();
                 }
                 else {

@@ -2,59 +2,52 @@
  * Created by matthew on 1/22/15.
  */
 var validateEmails = function () {
-    var settings, results, masterCallback;
-    var gmailTab;
-    var currentPerson;
-    var successfulEmailFormats = [];
-    var emailFound = false;
+    var masterCallback, gmailTab, currentPerson, personIndex, successfulEmailFormats, gmailInitialLoad;
 
-    function init(settingsArg, resultsArg, callbackArg) {
-        settings = settingsArg;
-        results = resultsArg;
-        masterCallback = callbackArg;
-        validateEmails();
-    }
+    function start(cb) {
+        gmailInitialLoad = true;
+        masterCallback = cb;
+        personIndex = 0;
+        successfulEmailFormats = [];
 
-    function validateEmails() {
-        var i = -1;
+        var series = [
+            arrangeEmails,
+            findCurrentPersonsEmail,
+            nextIteration
+        ];
 
-        async.series([
-            createGmailTab,
-            nextPerson
-        ]);
+        function executeSeries() {
+            async.series(series)
+        }
 
-        function nextPerson() {
+        // program control
+        function nextIteration() {
+            console.log('ay there!');
+            currentPerson = app.results[personIndex++];
 
-            currentPerson = results.people[++i];
-            if (currentPerson) {
-
-
-                if (currentPerson.possibleEmails) {
-                    async.series([
-                        composeEmail,
-                        findCurrentPersonsEmail,
-                        nextPerson
-                    ])
-                }
-                else {
-                    nextPerson();
-                }
+            if (status.done || !currentPerson) {
+                exit();
             }
             else {
-                masterCallback();
+                executeSeries();
             }
         }
+
+        async.series([
+                createGmailTab,
+                nextIteration
+            ]
+        )
     }
 
     function createGmailTab(callback) {
         chrome.tabs.create({url: "https://google.com"}, function (tab) {
             gmailTab = tab.id;
-            setTimeout(callback, 2500);
+            setTimeout(callback, 1000);
         })
     }
 
-    function findCurrentPersonsEmail(callback) {
-
+    function arrangeEmails(callback) {
         // these are the email combinations we permuted in the previous step
         var possibleEmails = currentPerson.possibleEmails;
 
@@ -63,63 +56,61 @@ var validateEmails = function () {
                 possibleEmails.move(item, 0)
             })
         }
+        callback()
+    }
+
+    function findCurrentPersonsEmail(callback) {
 
         var i = 0;
+        var email;
 
-        function tryVariation() {
-            // decide on what email to try next
-            var email = possibleEmails[i++];
+        function composeNewEmail(composeNewEmailCb) {
+            var timeout = gmailInitialLoad ? 7000 : 500;
+            console.log('compose email');
 
-            if (email) {
+            function waitForLoad() {
+                console.log('callback in 5s');
+                setTimeout(composeNewEmailCb, timeout);
+            }
 
-                email = convertStringToAscii(email);
+            chrome.tabs.update(gmailTab, {url: "https://mail.google.com/mail/u/0/?#inbox?compose=new"}, waitForLoad);
+            gmailInitialLoad = false;
+        }
 
-                callTabAction(gmailTab, 'tryEmail', processResponse, {email: email, name: currentPerson.name});
+        function tryNextVariation(nextVariationCb) {
 
-                function processResponse(response) {
-                    if (response) {
-                        if (response.correct) {
-                            currentPerson.email = email;
-                        }
-                        else {
-                            composeEmail(tryVariation());
-                        }
-                    }
+            app.callTabAction(gmailTab, 'tryEmail', processResponse, {email: email, name: currentPerson.name});
+
+            function processResponse(response) {
+                if (response && response.correct) {
+                    currentPerson.email = email;
                 }
+                nextVariationCb();
+            }
+        }
+
+        var series = [composeNewEmail, tryNextVariation, nextIteration];
+
+        function nextIteration() {
+            email = currentPerson.possibleEmails[i++];
+            if (email) {
+                async.series(series);
             }
             else {
                 callback()
             }
         }
 
-        tryVariation();
+        nextIteration();
     }
 
-    function composeEmail(callback) {
-        console.log('compose email');
-
-        function waitForLoad() {
-            console.log('callback in 5s');
-            setTimeout(callback, 3000);
-        }
-
-        chrome.tabs.update(gmailTab, {url: "https://mail.google.com/mail/u/0/?#inbox?compose=new"}, waitForLoad)
-    }
-
-    function convertStringToAscii(email) {
-
-        //Convert Characters
-        return email
-            .replace(/ö/g, 'o')
-            .replace(/ç/g, 'c')
-            .replace(/ş/g, 's')
-            .replace(/ı/g, 'i')
-            .replace(/ğ/g, 'g')
-            .replace(/ü/g, 'u')
-            .replace(/é/g, 'e');
+    function exit() {
+        chrome.tabs.remove(gmailTab);
+        masterCallback();
     }
 
     return {
-        start: init
-    }
-}()
+        start: start
+    };
+
+}();

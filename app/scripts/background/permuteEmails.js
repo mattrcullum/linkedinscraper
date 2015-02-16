@@ -5,19 +5,25 @@
  * Created by matthew on 1/21/15.
  */
 var permuteEmails = function () {
+    var masterCallback;
 
-    function start(settingsArg, resultsArg, callbackArg) {
-        settings = settingsArg;
-        results = resultsArg;
-        masterCallback = callbackArg;
-        permuteEmails();
+    function start(callback) {
+
+        masterCallback = callback;
+        async.series(
+            [
+                permuteEmails,
+                done
+            ]
+        );
+
+        function done() {
+            masterCallback()
+        }
     }
 
-    function permuteEmails() {
-
-        $.each(results.people, function (index, person) {
-
-
+    function permuteEmails(cb) {
+        $.each(app.results, function (index, person) {
             var name = person.name;
             try {
                 var initial = {
@@ -26,10 +32,11 @@ var permuteEmails = function () {
 
                 };
             } catch (err) {
-                return true;
+                console.error(err);
+                return false;
             }
 
-            results.people[index].possibleEmails = [
+            app.results[index].possibleEmails = [
                 name.first + name.last,
                 name.first + '.' + name.last,
                 initial.first + name.last,
@@ -40,13 +47,27 @@ var permuteEmails = function () {
                 name.last,
                 initial.first + initial.last
             ].map(function (emailAddress) {
-                    return emailAddress + settings.general.emailDomain;
+                    return convertStringToAscii(emailAddress + '@' + app.currentCompany.emailDomain + '.com');
                 })
         });
-        masterCallback();
+        cb();
+
+        function convertStringToAscii(email) {
+
+            //Convert Characters
+            return email
+                .replace(/ö/g, 'o')
+                .replace(/ç/g, 'c')
+                .replace(/ş/g, 's')
+                .replace(/ı/g, 'i')
+                .replace(/ğ/g, 'g')
+                .replace(/ü/g, 'u')
+                .replace(/é/g, 'e');
+        }
+
     }
 
     return {
-        start: init
+        start: start
     }
 }();

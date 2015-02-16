@@ -72,7 +72,14 @@ var app = {
         }
     },
     currentCompany: null,
-    results: [{"name":{"first":"John","last":"Wallace"},"profileLink":"https://www.linkedin.com/profile/view?id=1457210","headline":"Senior SW Engineering Recruiter at Apple        iOS Apps & Frameworks","location":"San Francisco Bay Area","industry":"Internet","companyName":"Apple","currentPosition":"Apple Inc.","pastPositions":["Yahoo! Inc.","Sony Computer Entertainment","ONI Systems Inc. purchased by Ciena Corp. in 2003"],"education":["Menlo College"]},{"name":{"first":"Jacob","last":"Conway"},"profileLink":"https://www.linkedin.com/profile/view?id=1644330","headline":"Technical Sourcing Recruiter - Wireless Software at Apple","location":"Greater San Diego Area","industry":"Staffing and Recruiting","companyName":"Apple","currentPosition":"","pastPositions":["Novatel Wireless","TalentWar.net, Inc.","Networked Recruiter"],"education":["Augustana College (SD)"]},{"name":{"first":"Bill","last":"Dudney"},"profileLink":"https://www.linkedin.com/profile/view?id=480284","headline":"Writer of Code at Apple","location":"San Francisco Bay Area","industry":"Computer Software","companyName":"Apple","currentPosition":"AppleGala Factory Software LLCPragmatic Programmers","pastPositions":["Apple Inc.","Dudney.Net","Virtuas Solutions"],"education":["Texas A&M University"]},{"name":{"first":"Brian","last":"Temple"},"profileLink":"https://www.linkedin.com/profile/view?id=2674208","headline":"Building software people love","location":"Greater Denver Area","industry":"Computer Software","companyName":"Apple","currentPosition":"ApplePlaid Software, LLC","pastPositions":["Photobucket","Wayin","University of Colorado"],"education":["University of Colorado Boulder"]},{"name":{"first":"Corey","last":"Carson"},"profileLink":"https://www.linkedin.com/profile/view?id=9816373","headline":"Systems Engineering Manager at Apple","location":"Greater Denver Area","industry":"Information Technology and Services","companyName":"Apple","currentPosition":"Apple","pastPositions":["Holcomb's Education Resource","Maize USD 266"],"education":["Pittsburg State University"]},{"name":{"first":"Samantha","last":"Kish"},"profileLink":"https://www.linkedin.com/profile/view?id=10254966","headline":"Global Supply Manager - Channel Procurement at Apple","location":"San Francisco Bay Area","industry":"Consumer Electronics","companyName":"Apple","currentPosition":"","pastPositions":["Apple","Johns Manville","Honeywell"],"education":["University of Colorado at Denver"]},{"name":{"first":"Dimitri","last":"Geier"},"profileLink":"https://www.linkedin.com/profile/view?id=12063296","headline":"Dimitri Geier is a Senior Software Engineer at Apple","location":"San Francisco Bay Area","industry":"Telecommunications","companyName":"Apple","currentPosition":"Apple","pastPositions":["Motorola","Nextive Solutions","Warner Music Group"],"education":["Universität zu Köln"]},{"name":{"first":"Matthew","last":"Gaddis"},"profileLink":"https://www.linkedin.com/profile/view?id=12213953","headline":"UI Engineering Manager at Apple","location":"San Francisco Bay Area","industry":"Internet","companyName":"Apple","currentPosition":"Apple","pastPositions":["Scout Labs","PlayCoed","Self"],"education":["University of Colorado Boulder"]},{"name":{"first":"Tri","last":"Vuong"},"profileLink":"https://www.linkedin.com/profile/view?id=14068282","headline":"Software Engineer at Apple","location":"San Francisco Bay Area","industry":"Computer Software","companyName":"Apple","currentPosition":"","pastPositions":["Twitter","YP","Better The World"],"education":["University of Toronto"]},{"name":{"first":"Craig","last":"Bartels"},"profileLink":"https://www.linkedin.com/profile/view?id=15174289","headline":"Information Security at Apple","location":"London, United Kingdom","industry":"Information Technology and Services","companyName":"Apple","currentPosition":"","pastPositions":["Apple","Honeywell","IBM"],"education":["University of Oxford"]}]
+    results:
+        //[]
+
+        // getMissingNames
+        //[{"name":{"first":"John","last":"Wallace"},"profileLink":"https://www.linkedin.com/profile/view?id=1457210","headline":"Senior SW Engineering Recruiter at Apple        iOS Apps & Frameworks","location":"San Francisco Bay Area","industry":"Internet","companyName":"Apple","currentPosition":"Apple Inc.","pastPositions":["Yahoo! Inc.","Sony Computer Entertainment","ONI Systems Inc. purchased by Ciena Corp. in 2003"],"education":["Menlo College"]},{"name":{"first":"Jacob","last":"Conway"},"profileLink":"https://www.linkedin.com/profile/view?id=1644330","headline":"Technical Sourcing Recruiter - Wireless Software at Apple","location":"Greater San Diego Area","industry":"Staffing and Recruiting","companyName":"Apple","currentPosition":"","pastPositions":["Novatel Wireless","TalentWar.net, Inc.","Networked Recruiter"],"education":["Augustana College (SD)"]},{"name":{"first":"Bill","last":"Dudney"},"profileLink":"https://www.linkedin.com/profile/view?id=480284","headline":"Writer of Code at Apple","location":"San Francisco Bay Area","industry":"Computer Software","companyName":"Apple","currentPosition":"AppleGala Factory Software LLCPragmatic Programmers","pastPositions":["Apple Inc.","Dudney.Net","Virtuas Solutions"],"education":["Texas A&M University"]},{"name":{"first":"Brian","last":"Temple"},"profileLink":"https://www.linkedin.com/profile/view?id=2674208","headline":"Building software people love","location":"Greater Denver Area","industry":"Computer Software","companyName":"Apple","currentPosition":"ApplePlaid Software, LLC","pastPositions":["Photobucket","Wayin","University of Colorado"],"education":["University of Colorado Boulder"]},{"name":{"first":"Corey","last":"Carson"},"profileLink":"https://www.linkedin.com/profile/view?id=9816373","headline":"Systems Engineering Manager at Apple","location":"Greater Denver Area","industry":"Information Technology and Services","companyName":"Apple","currentPosition":"Apple","pastPositions":["Holcomb's Education Resource","Maize USD 266"],"education":["Pittsburg State University"]},{"name":{"first":"Samantha","last":"Kish"},"profileLink":"https://www.linkedin.com/profile/view?id=10254966","headline":"Global Supply Manager - Channel Procurement at Apple","location":"San Francisco Bay Area","industry":"Consumer Electronics","companyName":"Apple","currentPosition":"","pastPositions":["Apple","Johns Manville","Honeywell"],"education":["University of Colorado at Denver"]},{"name":{"first":"Dimitri","last":"Geier"},"profileLink":"https://www.linkedin.com/profile/view?id=12063296","headline":"Dimitri Geier is a Senior Software Engineer at Apple","location":"San Francisco Bay Area","industry":"Telecommunications","companyName":"Apple","currentPosition":"Apple","pastPositions":["Motorola","Nextive Solutions","Warner Music Group"],"education":["Universität zu Köln"]},{"name":{"first":"Matthew","last":"Gaddis"},"profileLink":"https://www.linkedin.com/profile/view?id=12213953","headline":"UI Engineering Manager at Apple","location":"San Francisco Bay Area","industry":"Internet","companyName":"Apple","currentPosition":"Apple","pastPositions":["Scout Labs","PlayCoed","Self"],"education":["University of Colorado Boulder"]},{"name":{"first":"Tri","last":"Vuong"},"profileLink":"https://www.linkedin.com/profile/view?id=14068282","headline":"Software Engineer at Apple","location":"San Francisco Bay Area","industry":"Computer Software","companyName":"Apple","currentPosition":"","pastPositions":["Twitter","YP","Better The World"],"education":["University of Toronto"]},{"name":{"first":"Craig","last":"Bartels"},"profileLink":"https://www.linkedin.com/profile/view?id=15174289","headline":"Information Security at Apple","location":"London, United Kingdom","industry":"Information Technology and Services","companyName":"Apple","currentPosition":"","pastPositions":["Apple","Honeywell","IBM"],"education":["University of Oxford"]}]
+
+        // permute emails
+        [{"name":{"first":"John","last":"Wallace"},"profileLink":"https://www.linkedin.com/profile/view?id=1457210","headline":"Senior SW Engineering Recruiter at Apple        iOS Apps & Frameworks","location":"San Francisco Bay Area","industry":"Internet","companyName":"Apple","currentPosition":"Apple Inc.","pastPositions":["Yahoo! Inc.","Sony Computer Entertainment","ONI Systems Inc. purchased by Ciena Corp. in 2003"],"education":["Menlo College"],"possibleEmails":["JohnWallace@apple.com","John.Wallace@apple.com","JWallace@apple.com","J.Wallace@apple.com","WallaceJohn@apple.com","Wallace.John@apple.com","John@apple.com","Wallace@apple.com","JW@apple.com"]},{"name":{"first":"Jacob","last":"Conway"},"profileLink":"https://www.linkedin.com/profile/view?id=1644330","headline":"Technical Sourcing Recruiter - Wireless Software at Apple","location":"Greater San Diego Area","industry":"Staffing and Recruiting","companyName":"Apple","currentPosition":"","pastPositions":["Novatel Wireless","TalentWar.net, Inc.","Networked Recruiter"],"education":["Augustana College (SD)"],"possibleEmails":["JacobConway@apple.com","Jacob.Conway@apple.com","JConway@apple.com","J.Conway@apple.com","ConwayJacob@apple.com","Conway.Jacob@apple.com","Jacob@apple.com","Conway@apple.com","JC@apple.com"]},{"name":{"first":"Bill","last":"Dudney"},"profileLink":"https://www.linkedin.com/profile/view?id=480284","headline":"Writer of Code at Apple","location":"San Francisco Bay Area","industry":"Computer Software","companyName":"Apple","currentPosition":"AppleGala Factory Software LLCPragmatic Programmers","pastPositions":["Apple Inc.","Dudney.Net","Virtuas Solutions"],"education":["Texas A&M University"],"possibleEmails":["BillDudney@apple.com","Bill.Dudney@apple.com","BDudney@apple.com","B.Dudney@apple.com","DudneyBill@apple.com","Dudney.Bill@apple.com","Bill@apple.com","Dudney@apple.com","BD@apple.com"]},{"name":{"first":"Brian","last":"Temple"},"profileLink":"https://www.linkedin.com/profile/view?id=2674208","headline":"Building software people love","location":"Greater Denver Area","industry":"Computer Software","companyName":"Apple","currentPosition":"ApplePlaid Software, LLC","pastPositions":["Photobucket","Wayin","University of Colorado"],"education":["University of Colorado Boulder"],"possibleEmails":["BrianTemple@apple.com","Brian.Temple@apple.com","BTemple@apple.com","B.Temple@apple.com","TempleBrian@apple.com","Temple.Brian@apple.com","Brian@apple.com","Temple@apple.com","BT@apple.com"]},{"name":{"first":"Corey","last":"Carson"},"profileLink":"https://www.linkedin.com/profile/view?id=9816373","headline":"Systems Engineering Manager at Apple","location":"Greater Denver Area","industry":"Information Technology and Services","companyName":"Apple","currentPosition":"Apple","pastPositions":["Holcomb's Education Resource","Maize USD 266"],"education":["Pittsburg State University"],"possibleEmails":["CoreyCarson@apple.com","Corey.Carson@apple.com","CCarson@apple.com","C.Carson@apple.com","CarsonCorey@apple.com","Carson.Corey@apple.com","Corey@apple.com","Carson@apple.com","CC@apple.com"]},{"name":{"first":"Samantha","last":"Kish"},"profileLink":"https://www.linkedin.com/profile/view?id=10254966","headline":"Global Supply Manager - Channel Procurement at Apple","location":"San Francisco Bay Area","industry":"Consumer Electronics","companyName":"Apple","currentPosition":"","pastPositions":["Apple","Johns Manville","Honeywell"],"education":["University of Colorado at Denver"],"possibleEmails":["SamanthaKish@apple.com","Samantha.Kish@apple.com","SKish@apple.com","S.Kish@apple.com","KishSamantha@apple.com","Kish.Samantha@apple.com","Samantha@apple.com","Kish@apple.com","SK@apple.com"]},{"name":{"first":"Dimitri","last":"Geier"},"profileLink":"https://www.linkedin.com/profile/view?id=12063296","headline":"Dimitri Geier is a Senior Software Engineer at Apple","location":"San Francisco Bay Area","industry":"Telecommunications","companyName":"Apple","currentPosition":"Apple","pastPositions":["Motorola","Nextive Solutions","Warner Music Group"],"education":["Universität zu Köln"],"possibleEmails":["DimitriGeier@apple.com","Dimitri.Geier@apple.com","DGeier@apple.com","D.Geier@apple.com","GeierDimitri@apple.com","Geier.Dimitri@apple.com","Dimitri@apple.com","Geier@apple.com","DG@apple.com"]},{"name":{"first":"Matthew","last":"Gaddis"},"profileLink":"https://www.linkedin.com/profile/view?id=12213953","headline":"UI Engineering Manager at Apple","location":"San Francisco Bay Area","industry":"Internet","companyName":"Apple","currentPosition":"Apple","pastPositions":["Scout Labs","PlayCoed","Self"],"education":["University of Colorado Boulder"],"possibleEmails":["MatthewGaddis@apple.com","Matthew.Gaddis@apple.com","MGaddis@apple.com","M.Gaddis@apple.com","GaddisMatthew@apple.com","Gaddis.Matthew@apple.com","Matthew@apple.com","Gaddis@apple.com","MG@apple.com"]},{"name":{"first":"Tri","last":"Vuong"},"profileLink":"https://www.linkedin.com/profile/view?id=14068282","headline":"Software Engineer at Apple","location":"San Francisco Bay Area","industry":"Computer Software","companyName":"Apple","currentPosition":"","pastPositions":["Twitter","YP","Better The World"],"education":["University of Toronto"],"possibleEmails":["TriVuong@apple.com","Tri.Vuong@apple.com","TVuong@apple.com","T.Vuong@apple.com","VuongTri@apple.com","Vuong.Tri@apple.com","Tri@apple.com","Vuong@apple.com","TV@apple.com"]},{"name":{"first":"Craig","last":"Bartels"},"profileLink":"https://www.linkedin.com/profile/view?id=15174289","headline":"Information Security at Apple","location":"London, United Kingdom","industry":"Information Technology and Services","companyName":"Apple","currentPosition":"","pastPositions":["Apple","Honeywell","IBM"],"education":["University of Oxford"],"possibleEmails":["CraigBartels@apple.com","Craig.Bartels@apple.com","CBartels@apple.com","C.Bartels@apple.com","BartelsCraig@apple.com","Bartels.Craig@apple.com","Craig@apple.com","Bartels@apple.com","CB@apple.com"]}]
 };
 
 window.queue = [];
@@ -81,19 +88,19 @@ window.go = function () {
     console.table(queue);
 
     var i = 0;
-    app.currentCompany = queue[i];
 
     var routine = [
-        //scraper.start,
-        //getProfileData.start,
+       /* scraper.start,
+        getProfileData.start,
         getMissingNames.start,
+        permuteEmails.start,*/
+        validateEmails.start,
         nextQueueItem
     ];
 
-    async.series(routine);
-
     function nextQueueItem() {
-        app.currentCompany = queue[++i];
+        log('callback')
+        app.currentCompany = queue[i++];
         if (app.currentCompany) {
             async.series(routine)
         }
@@ -101,6 +108,8 @@ window.go = function () {
             console.log(app.results);
         }
     }
+
+    nextQueueItem();
 };
 
 /**
@@ -157,7 +166,7 @@ var getMissingNames = function () {
                 exit();
             }
             else {
-                if (currentPerson.name.isHidden || !currentPerson.name.last) {
+                if (currentPerson.name.isHidden || !currentPerson.name.last || (currentPerson.name.first && currentPerson.name.last)) {
                     nextIteration();
                 }
                 else {
@@ -340,19 +349,25 @@ var getProfileData = function () {
  * Created by matthew on 1/21/15.
  */
 var permuteEmails = function () {
+    var masterCallback;
 
-    function start(settingsArg, resultsArg, callbackArg) {
-        settings = settingsArg;
-        results = resultsArg;
-        masterCallback = callbackArg;
-        permuteEmails();
+    function start(callback) {
+
+        masterCallback = callback;
+        async.series(
+            [
+                permuteEmails,
+                done
+            ]
+        );
+
+        function done() {
+            masterCallback()
+        }
     }
 
-    function permuteEmails() {
-
-        $.each(results.people, function (index, person) {
-
-
+    function permuteEmails(cb) {
+        $.each(app.results, function (index, person) {
             var name = person.name;
             try {
                 var initial = {
@@ -361,10 +376,11 @@ var permuteEmails = function () {
 
                 };
             } catch (err) {
-                return true;
+                console.error(err);
+                return false;
             }
 
-            results.people[index].possibleEmails = [
+            app.results[index].possibleEmails = [
                 name.first + name.last,
                 name.first + '.' + name.last,
                 initial.first + name.last,
@@ -375,14 +391,28 @@ var permuteEmails = function () {
                 name.last,
                 initial.first + initial.last
             ].map(function (emailAddress) {
-                    return emailAddress + settings.general.emailDomain;
+                    return convertStringToAscii(emailAddress + '@' + app.currentCompany.emailDomain + '.com');
                 })
         });
-        masterCallback();
+        cb();
+
+        function convertStringToAscii(email) {
+
+            //Convert Characters
+            return email
+                .replace(/ö/g, 'o')
+                .replace(/ç/g, 'c')
+                .replace(/ş/g, 's')
+                .replace(/ı/g, 'i')
+                .replace(/ğ/g, 'g')
+                .replace(/ü/g, 'u')
+                .replace(/é/g, 'e');
+        }
+
     }
 
     return {
-        start: init
+        start: start
     }
 }();
 
@@ -551,59 +581,52 @@ var scraper = function () {
  * Created by matthew on 1/22/15.
  */
 var validateEmails = function () {
-    var settings, results, masterCallback;
-    var gmailTab;
-    var currentPerson;
-    var successfulEmailFormats = [];
-    var emailFound = false;
+    var masterCallback, gmailTab, currentPerson, personIndex, successfulEmailFormats, gmailInitialLoad;
 
-    function init(settingsArg, resultsArg, callbackArg) {
-        settings = settingsArg;
-        results = resultsArg;
-        masterCallback = callbackArg;
-        validateEmails();
-    }
+    function start(cb) {
+        gmailInitialLoad = true;
+        masterCallback = cb;
+        personIndex = 0;
+        successfulEmailFormats = [];
 
-    function validateEmails() {
-        var i = -1;
+        var series = [
+            arrangeEmails,
+            findCurrentPersonsEmail,
+            nextIteration
+        ];
 
-        async.series([
-            createGmailTab,
-            nextPerson
-        ]);
+        function executeSeries() {
+            async.series(series)
+        }
 
-        function nextPerson() {
+        // program control
+        function nextIteration() {
+            console.log('ay there!');
+            currentPerson = app.results[personIndex++];
 
-            currentPerson = results.people[++i];
-            if (currentPerson) {
-
-
-                if (currentPerson.possibleEmails) {
-                    async.series([
-                        composeEmail,
-                        findCurrentPersonsEmail,
-                        nextPerson
-                    ])
-                }
-                else {
-                    nextPerson();
-                }
+            if (status.done || !currentPerson) {
+                exit();
             }
             else {
-                masterCallback();
+                executeSeries();
             }
         }
+
+        async.series([
+                createGmailTab,
+                nextIteration
+            ]
+        )
     }
 
     function createGmailTab(callback) {
         chrome.tabs.create({url: "https://google.com"}, function (tab) {
             gmailTab = tab.id;
-            setTimeout(callback, 2500);
+            setTimeout(callback, 1000);
         })
     }
 
-    function findCurrentPersonsEmail(callback) {
-
+    function arrangeEmails(callback) {
         // these are the email combinations we permuted in the previous step
         var possibleEmails = currentPerson.possibleEmails;
 
@@ -612,63 +635,61 @@ var validateEmails = function () {
                 possibleEmails.move(item, 0)
             })
         }
+        callback()
+    }
+
+    function findCurrentPersonsEmail(callback) {
 
         var i = 0;
+        var email;
 
-        function tryVariation() {
-            // decide on what email to try next
-            var email = possibleEmails[i++];
+        function composeNewEmail(composeNewEmailCb) {
+            var timeout = gmailInitialLoad ? 7000 : 500;
+            console.log('compose email');
 
-            if (email) {
+            function waitForLoad() {
+                console.log('callback in 5s');
+                setTimeout(composeNewEmailCb, timeout);
+            }
 
-                email = convertStringToAscii(email);
+            chrome.tabs.update(gmailTab, {url: "https://mail.google.com/mail/u/0/?#inbox?compose=new"}, waitForLoad);
+            gmailInitialLoad = false;
+        }
 
-                callTabAction(gmailTab, 'tryEmail', processResponse, {email: email, name: currentPerson.name});
+        function tryNextVariation(nextVariationCb) {
 
-                function processResponse(response) {
-                    if (response) {
-                        if (response.correct) {
-                            currentPerson.email = email;
-                        }
-                        else {
-                            composeEmail(tryVariation());
-                        }
-                    }
+            app.callTabAction(gmailTab, 'tryEmail', processResponse, {email: email, name: currentPerson.name});
+
+            function processResponse(response) {
+                if (response && response.correct) {
+                    currentPerson.email = email;
                 }
+                nextVariationCb();
+            }
+        }
+
+        var series = [composeNewEmail, tryNextVariation, nextIteration];
+
+        function nextIteration() {
+            email = currentPerson.possibleEmails[i++];
+            if (email) {
+                async.series(series);
             }
             else {
                 callback()
             }
         }
 
-        tryVariation();
+        nextIteration();
     }
 
-    function composeEmail(callback) {
-        console.log('compose email');
-
-        function waitForLoad() {
-            console.log('callback in 5s');
-            setTimeout(callback, 3000);
-        }
-
-        chrome.tabs.update(gmailTab, {url: "https://mail.google.com/mail/u/0/?#inbox?compose=new"}, waitForLoad)
-    }
-
-    function convertStringToAscii(email) {
-
-        //Convert Characters
-        return email
-            .replace(/ö/g, 'o')
-            .replace(/ç/g, 'c')
-            .replace(/ş/g, 's')
-            .replace(/ı/g, 'i')
-            .replace(/ğ/g, 'g')
-            .replace(/ü/g, 'u')
-            .replace(/é/g, 'e');
+    function exit() {
+        chrome.tabs.remove(gmailTab);
+        masterCallback();
     }
 
     return {
-        start: init
-    }
-}()
+        start: start
+    };
+
+}();
