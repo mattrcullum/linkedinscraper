@@ -28,11 +28,11 @@ var getMissingNames = function () {
                 exit();
             }
             else {
-                if (currentPerson.name.isHidden || !currentPerson.name.last || (currentPerson.name.first && currentPerson.name.last)) {
-                    nextIteration();
+                if (currentPerson.name.isHidden || !currentPerson.name.last) {
+                    executeSeries();
                 }
                 else {
-                    executeSeries();
+                    nextIteration();
                 }
             }
         }
@@ -101,14 +101,17 @@ var getMissingNames = function () {
             if (name && name.first && name.last) {
                 currentPerson.name = name;
             }
+            else{
+                currentPerson.name = false;
+            }
             chrome.tabs.remove(searchTab);
             callback();
         }
     }
 
     function exit() {
-        if(searchTab){
-        chrome.tabs.remove(searchTab);
+        if (searchTab) {
+            chrome.tabs.remove(searchTab);
         }
         masterCallback();
     }

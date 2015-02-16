@@ -50,11 +50,13 @@ var validateEmails = function () {
     function arrangeEmails(callback) {
         // these are the email combinations we permuted in the previous step
         var possibleEmails = currentPerson.possibleEmails;
+        if (possibleEmails) {
 
-        if (successfulEmailFormats.length) {
-            $.each(successfulEmailFormats.reverse(), function (index, item) {
-                possibleEmails.move(item, 0)
-            })
+            if (successfulEmailFormats.length) {
+                $.each(successfulEmailFormats.reverse(), function (index, item) {
+                    possibleEmails.move(item, 0)
+                })
+            }
         }
         callback()
     }
@@ -95,9 +97,15 @@ var validateEmails = function () {
         var series = [composeNewEmail, tryNextVariation, nextIteration];
 
         function nextIteration() {
-            email = currentPerson.possibleEmails[i++];
-            if (email && !currentPerson.email) {
-                async.series(series);
+            var possibleEmails = currentPerson.possibleEmails;
+            if (possibleEmails) {
+                email = currentPerson.possibleEmails[i++];
+                if (email && !currentPerson.email) {
+                    async.series(series);
+                }
+                else {
+                    callback()
+                }
             }
             else {
                 callback()
@@ -108,8 +116,8 @@ var validateEmails = function () {
     }
 
     function exit() {
-        if(gmailTab){
-        chrome.tabs.remove(gmailTab);
+        if (gmailTab) {
+            chrome.tabs.remove(gmailTab);
         }
         masterCallback();
     }

@@ -25,31 +25,33 @@ var permuteEmails = function () {
     function permuteEmails(cb) {
         $.each(app.results, function (index, person) {
             var name = person.name;
-            try {
-                var initial = {
-                    first: name.first[0],
-                    last: name.last[0]
+            if (name) {
+                try {
+                    var initial = {
+                        first: name.first[0],
+                        last: name.last[0]
 
-                };
-            } catch (err) {
-                console.error(err);
-                return false;
+                    };
+                } catch (err) {
+                    console.error(err);
+                }
+
+                app.results[index].possibleEmails = [
+                    name.first + name.last,
+                    name.first + '.' + name.last,
+                    initial.first + name.last,
+                    initial.first + '.' + name.last,
+                    name.last + name.first,
+                    name.last + '.' + name.first,
+                    name.first,
+                    name.last,
+                    initial.first + initial.last
+                ].map(function (emailAddress) {
+                        return convertStringToAscii(emailAddress + '@' + app.currentCompany.emailDomain + '.com');
+                    })
             }
-
-            app.results[index].possibleEmails = [
-                name.first + name.last,
-                name.first + '.' + name.last,
-                initial.first + name.last,
-                initial.first + '.' + name.last,
-                name.last + name.first,
-                name.last + '.' + name.first,
-                name.first,
-                name.last,
-                initial.first + initial.last
-            ].map(function (emailAddress) {
-                    return convertStringToAscii(emailAddress + '@' + app.currentCompany.emailDomain + '.com');
-                })
         });
+
         cb();
 
         function convertStringToAscii(email) {

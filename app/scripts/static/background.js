@@ -68,12 +68,14 @@ var app = {
     settings: {
         scraper: {
             //settings.scraper.limit = 10000;
-            limit: 4
+            limit: 99999999
         }
     },
     currentCompany: null,
     results: []
 
+    // get profile data
+    //   [{"name":{"isHidden":true},"profileLink":"https://www.linkedin.com/profile/view?id=41873538","headline":"SEO Executive at Logicsofts Pvt Ltd","location":"New Delhi Area, India","industry":"Computer Networking","companyName":"Digg","currentPosition":"","pastPositions":[],"education":[]},{"name":{"first":"Michael","last":"Young"},"profileLink":"https://www.linkedin.com/profile/view?id=10518155","headline":"CTO at Digg.com","location":"Greater New York City Area","industry":"Computer Software","companyName":"Digg","currentPosition":"Digg","pastPositions":["News.me","New York Times, Research and Development","OpenTV"],"education":["Lewis and Clark College"]},{"name":{"first":"Sissi","last":"Nie"},"profileLink":"https://www.linkedin.com/profile/view?id=74572526","headline":"Business at Digg","location":"Greater New York City Area","industry":"Online Media","companyName":"Digg","currentPosition":"Digg","pastPositions":["Ogilvy & Mather","Harvey Nash","Yale University"],"education":["Yale University"]},{"name":{"first":"Jon","last":"Ferrer"},"profileLink":"https://www.linkedin.com/profile/view?id=12051551","headline":"Webmaster","location":"Greater New York City Area","industry":"Internet","companyName":"Digg","currentPosition":"DiggNews.me","pastPositions":["MLB Advanced Media, LP","Self-Employed","Taproot Foundation"],"education":["Penn State University"]},{"name":{"isHidden":true},"profileLink":"https://www.linkedin.com/profile/view?id=21973901","headline":"Vice President Diggs Construction, LLC; Coalition for Achievement Now (ConnCAN)","location":"Hartford, Connecticut Area","industry":"Construction","companyName":"Digg","currentPosition":"","pastPositions":[],"education":[]},{"name":{"first":"Justin","last":"Slembrouck"},"profileLink":"https://www.linkedin.com/profile/view?id=22072970","headline":"Design Director at Digg","location":"Greater New York City Area","industry":"Computer Software","companyName":"Digg","currentPosition":"DiggNews.me","pastPositions":["Adobe Systems","R/GA"],"education":["College for Creative Studies"]},{"name":{"isHidden":true},"profileLink":"https://www.linkedin.com/profile/view?id=10444444","headline":"Solution Architect at IAG","location":"Auckland, New Zealand","industry":"Information Technology and Services","companyName":"Digg","currentPosition":"","pastPositions":[],"education":[]},{"name":{"first":"Cynthia","last":"Davis"},"profileLink":"https://www.linkedin.com/profile/view?id=33828677","headline":"Executive Assistant","location":"San Francisco Bay Area","industry":"Internet","companyName":"Digg","currentPosition":"Digg","pastPositions":["Walmart.com","KidzMouse","Google, Microsoft, Netscape"],"education":["Mission College"]},{"name":{"isHidden":true},"profileLink":"https://www.linkedin.com/profile/view?id=20653728","headline":"Founder/President at CasePark Holdings","location":"Jacksonville, Florida Area","industry":"Venture Capital & Private Equity","companyName":"Digg","currentPosition":"","pastPositions":[],"education":[]},{"name":{"isHidden":true},"profileLink":"https://www.linkedin.com/profile/view?id=51789870","headline":"Social Media Editor at Digg","location":"Greater New York City Area","industry":"Internet","companyName":"Digg","currentPosition":"","pastPositions":[],"education":[]}]
     // getMissingNames
     //[{"name":{"first":"John","last":"Wallace"},"profileLink":"https://www.linkedin.com/profile/view?id=1457210","headline":"Senior SW Engineering Recruiter at Apple        iOS Apps & Frameworks","location":"San Francisco Bay Area","industry":"Internet","companyName":"Apple","currentPosition":"Apple Inc.","pastPositions":["Yahoo! Inc.","Sony Computer Entertainment","ONI Systems Inc. purchased by Ciena Corp. in 2003"],"education":["Menlo College"]},{"name":{"first":"Jacob","last":"Conway"},"profileLink":"https://www.linkedin.com/profile/view?id=1644330","headline":"Technical Sourcing Recruiter - Wireless Software at Apple","location":"Greater San Diego Area","industry":"Staffing and Recruiting","companyName":"Apple","currentPosition":"","pastPositions":["Novatel Wireless","TalentWar.net, Inc.","Networked Recruiter"],"education":["Augustana College (SD)"]},{"name":{"first":"Bill","last":"Dudney"},"profileLink":"https://www.linkedin.com/profile/view?id=480284","headline":"Writer of Code at Apple","location":"San Francisco Bay Area","industry":"Computer Software","companyName":"Apple","currentPosition":"AppleGala Factory Software LLCPragmatic Programmers","pastPositions":["Apple Inc.","Dudney.Net","Virtuas Solutions"],"education":["Texas A&M University"]},{"name":{"first":"Brian","last":"Temple"},"profileLink":"https://www.linkedin.com/profile/view?id=2674208","headline":"Building software people love","location":"Greater Denver Area","industry":"Computer Software","companyName":"Apple","currentPosition":"ApplePlaid Software, LLC","pastPositions":["Photobucket","Wayin","University of Colorado"],"education":["University of Colorado Boulder"]},{"name":{"first":"Corey","last":"Carson"},"profileLink":"https://www.linkedin.com/profile/view?id=9816373","headline":"Systems Engineering Manager at Apple","location":"Greater Denver Area","industry":"Information Technology and Services","companyName":"Apple","currentPosition":"Apple","pastPositions":["Holcomb's Education Resource","Maize USD 266"],"education":["Pittsburg State University"]},{"name":{"first":"Samantha","last":"Kish"},"profileLink":"https://www.linkedin.com/profile/view?id=10254966","headline":"Global Supply Manager - Channel Procurement at Apple","location":"San Francisco Bay Area","industry":"Consumer Electronics","companyName":"Apple","currentPosition":"","pastPositions":["Apple","Johns Manville","Honeywell"],"education":["University of Colorado at Denver"]},{"name":{"first":"Dimitri","last":"Geier"},"profileLink":"https://www.linkedin.com/profile/view?id=12063296","headline":"Dimitri Geier is a Senior Software Engineer at Apple","location":"San Francisco Bay Area","industry":"Telecommunications","companyName":"Apple","currentPosition":"Apple","pastPositions":["Motorola","Nextive Solutions","Warner Music Group"],"education":["Universität zu Köln"]},{"name":{"first":"Matthew","last":"Gaddis"},"profileLink":"https://www.linkedin.com/profile/view?id=12213953","headline":"UI Engineering Manager at Apple","location":"San Francisco Bay Area","industry":"Internet","companyName":"Apple","currentPosition":"Apple","pastPositions":["Scout Labs","PlayCoed","Self"],"education":["University of Colorado Boulder"]},{"name":{"first":"Tri","last":"Vuong"},"profileLink":"https://www.linkedin.com/profile/view?id=14068282","headline":"Software Engineer at Apple","location":"San Francisco Bay Area","industry":"Computer Software","companyName":"Apple","currentPosition":"","pastPositions":["Twitter","YP","Better The World"],"education":["University of Toronto"]},{"name":{"first":"Craig","last":"Bartels"},"profileLink":"https://www.linkedin.com/profile/view?id=15174289","headline":"Information Security at Apple","location":"London, United Kingdom","industry":"Information Technology and Services","companyName":"Apple","currentPosition":"","pastPositions":["Apple","Honeywell","IBM"],"education":["University of Oxford"]}]
 
@@ -165,11 +167,11 @@ var getMissingNames = function () {
                 exit();
             }
             else {
-                if (currentPerson.name.isHidden || !currentPerson.name.last || (currentPerson.name.first && currentPerson.name.last)) {
-                    nextIteration();
+                if (currentPerson.name.isHidden || !currentPerson.name.last) {
+                    executeSeries();
                 }
                 else {
-                    executeSeries();
+                    nextIteration();
                 }
             }
         }
@@ -238,14 +240,17 @@ var getMissingNames = function () {
             if (name && name.first && name.last) {
                 currentPerson.name = name;
             }
+            else{
+                currentPerson.name = false;
+            }
             chrome.tabs.remove(searchTab);
             callback();
         }
     }
 
     function exit() {
-        if(searchTab){
-        chrome.tabs.remove(searchTab);
+        if (searchTab) {
+            chrome.tabs.remove(searchTab);
         }
         masterCallback();
     }
@@ -311,7 +316,7 @@ var getProfileData = function () {
             function tabUpdated(tabID, changeInfo, tab) {
                 if (tabID == profileScrapeTab && changeInfo.status == "complete") {
                     chrome.tabs.onUpdated.removeListener(tabUpdated);
-                    callback();
+                    setTimeout(callback, 250);
                 }
             }
         });
@@ -370,31 +375,33 @@ var permuteEmails = function () {
     function permuteEmails(cb) {
         $.each(app.results, function (index, person) {
             var name = person.name;
-            try {
-                var initial = {
-                    first: name.first[0],
-                    last: name.last[0]
+            if (name) {
+                try {
+                    var initial = {
+                        first: name.first[0],
+                        last: name.last[0]
 
-                };
-            } catch (err) {
-                console.error(err);
-                return false;
+                    };
+                } catch (err) {
+                    console.error(err);
+                }
+
+                app.results[index].possibleEmails = [
+                    name.first + name.last,
+                    name.first + '.' + name.last,
+                    initial.first + name.last,
+                    initial.first + '.' + name.last,
+                    name.last + name.first,
+                    name.last + '.' + name.first,
+                    name.first,
+                    name.last,
+                    initial.first + initial.last
+                ].map(function (emailAddress) {
+                        return convertStringToAscii(emailAddress + '@' + app.currentCompany.emailDomain + '.com');
+                    })
             }
-
-            app.results[index].possibleEmails = [
-                name.first + name.last,
-                name.first + '.' + name.last,
-                initial.first + name.last,
-                initial.first + '.' + name.last,
-                name.last + name.first,
-                name.last + '.' + name.first,
-                name.first,
-                name.last,
-                initial.first + initial.last
-            ].map(function (emailAddress) {
-                    return convertStringToAscii(emailAddress + '@' + app.currentCompany.emailDomain + '.com');
-                })
         });
+
         cb();
 
         function convertStringToAscii(email) {
@@ -632,11 +639,13 @@ var validateEmails = function () {
     function arrangeEmails(callback) {
         // these are the email combinations we permuted in the previous step
         var possibleEmails = currentPerson.possibleEmails;
+        if (possibleEmails) {
 
-        if (successfulEmailFormats.length) {
-            $.each(successfulEmailFormats.reverse(), function (index, item) {
-                possibleEmails.move(item, 0)
-            })
+            if (successfulEmailFormats.length) {
+                $.each(successfulEmailFormats.reverse(), function (index, item) {
+                    possibleEmails.move(item, 0)
+                })
+            }
         }
         callback()
     }
@@ -677,9 +686,15 @@ var validateEmails = function () {
         var series = [composeNewEmail, tryNextVariation, nextIteration];
 
         function nextIteration() {
-            email = currentPerson.possibleEmails[i++];
-            if (email && !currentPerson.email) {
-                async.series(series);
+            var possibleEmails = currentPerson.possibleEmails;
+            if (possibleEmails) {
+                email = currentPerson.possibleEmails[i++];
+                if (email && !currentPerson.email) {
+                    async.series(series);
+                }
+                else {
+                    callback()
+                }
             }
             else {
                 callback()
@@ -690,8 +705,8 @@ var validateEmails = function () {
     }
 
     function exit() {
-        if(gmailTab){
-        chrome.tabs.remove(gmailTab);
+        if (gmailTab) {
+            chrome.tabs.remove(gmailTab);
         }
         masterCallback();
     }

@@ -54,7 +54,7 @@ var getProfileData = function () {
             function tabUpdated(tabID, changeInfo, tab) {
                 if (tabID == profileScrapeTab && changeInfo.status == "complete") {
                     chrome.tabs.onUpdated.removeListener(tabUpdated);
-                    callback();
+                    setTimeout(callback, 250);
                 }
             }
         });
