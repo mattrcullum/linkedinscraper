@@ -14,7 +14,7 @@ function log(message) {
  * Created by matthew on 2/13/15.
  */
 String.prototype.hasChar = function(char){
-  return this.indexOf(char) != 0;
+  return this.indexOf(char) != -1;
 };
 /**
  * Created by matthew on 2/11/15.
@@ -34,19 +34,19 @@ var urlHelper = function () {
         // name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
         var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
             results = regex.exec(href.search);
-        return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+        return results === null ? "" : decodeURI(results[1]);
     }
 
     function getSearchParameters() {
-        var prmstr = window.location.search.substr(1);
-        return prmstr != null && prmstr != "" ? transformToAssocArray(prmstr) : {};
+        var parameterString = window.location.search.substr(1);
+        return parameterString != null && parameterString != "" ? transformToArray(parameterString) : {};
     }
 
-    function transformToAssocArray(prmstr) {
+    function transformToArray(parameterString) {
         var params = {};
-        var prmarr = prmstr.split("&");
-        for (var i = 0; i < prmarr.length; i++) {
-            var tmparr = prmarr[i].split("=");
+        var parameterArray = parameterString.split("&");
+        for (var i = 0; i < parameterArray.length; i++) {
+            var tmparr = decodeURI(parameterArray[i]).split("=");
             params[tmparr[0]] = tmparr[1];
         }
         return params;
@@ -238,14 +238,14 @@ var linkedin = function () {
             var fullName = $nameLink.text().trim();
             var name = {};
 
-            // if the fullName has a period, we'll assume it's abbreviated
-            if (fullName.hasChar('.')) {
-                name.first = fullName.split(' ')[0];
+
+            if (fullName == "LinkedIn Member") {
+                name.isHidden = true;
             }
 
-            // if the fullName is hidden
-            else if (fullName == "LinkedIn Member") {
-                name.isHidden = true;
+            // if the fullName has a period, we'll assume it's abbreviated
+            else if (fullName.hasChar('.')) {
+                name.first = fullName.split(' ')[0];
             }
 
             // if it's it's not abbreviated, we'll assume it looks like "John Smith", "John J. Smith" or "John J. Smith II"

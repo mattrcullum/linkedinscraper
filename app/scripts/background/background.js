@@ -7,11 +7,11 @@ var app = {
     settings: {
         scraper: {
             //settings.scraper.limit = 10000;
-            limit: 9
+            limit: 4
         }
     },
     currentCompany: null,
-    results: []
+    results: [{"name":{"first":"John","last":"Wallace"},"profileLink":"https://www.linkedin.com/profile/view?id=1457210","headline":"Senior SW Engineering Recruiter at Apple        iOS Apps & Frameworks","location":"San Francisco Bay Area","industry":"Internet","companyName":"Apple","currentPosition":"Apple Inc.","pastPositions":["Yahoo! Inc.","Sony Computer Entertainment","ONI Systems Inc. purchased by Ciena Corp. in 2003"],"education":["Menlo College"]},{"name":{"first":"Jacob","last":"Conway"},"profileLink":"https://www.linkedin.com/profile/view?id=1644330","headline":"Technical Sourcing Recruiter - Wireless Software at Apple","location":"Greater San Diego Area","industry":"Staffing and Recruiting","companyName":"Apple","currentPosition":"","pastPositions":["Novatel Wireless","TalentWar.net, Inc.","Networked Recruiter"],"education":["Augustana College (SD)"]},{"name":{"first":"Bill","last":"Dudney"},"profileLink":"https://www.linkedin.com/profile/view?id=480284","headline":"Writer of Code at Apple","location":"San Francisco Bay Area","industry":"Computer Software","companyName":"Apple","currentPosition":"AppleGala Factory Software LLCPragmatic Programmers","pastPositions":["Apple Inc.","Dudney.Net","Virtuas Solutions"],"education":["Texas A&M University"]},{"name":{"first":"Brian","last":"Temple"},"profileLink":"https://www.linkedin.com/profile/view?id=2674208","headline":"Building software people love","location":"Greater Denver Area","industry":"Computer Software","companyName":"Apple","currentPosition":"ApplePlaid Software, LLC","pastPositions":["Photobucket","Wayin","University of Colorado"],"education":["University of Colorado Boulder"]},{"name":{"first":"Corey","last":"Carson"},"profileLink":"https://www.linkedin.com/profile/view?id=9816373","headline":"Systems Engineering Manager at Apple","location":"Greater Denver Area","industry":"Information Technology and Services","companyName":"Apple","currentPosition":"Apple","pastPositions":["Holcomb's Education Resource","Maize USD 266"],"education":["Pittsburg State University"]},{"name":{"first":"Samantha","last":"Kish"},"profileLink":"https://www.linkedin.com/profile/view?id=10254966","headline":"Global Supply Manager - Channel Procurement at Apple","location":"San Francisco Bay Area","industry":"Consumer Electronics","companyName":"Apple","currentPosition":"","pastPositions":["Apple","Johns Manville","Honeywell"],"education":["University of Colorado at Denver"]},{"name":{"first":"Dimitri","last":"Geier"},"profileLink":"https://www.linkedin.com/profile/view?id=12063296","headline":"Dimitri Geier is a Senior Software Engineer at Apple","location":"San Francisco Bay Area","industry":"Telecommunications","companyName":"Apple","currentPosition":"Apple","pastPositions":["Motorola","Nextive Solutions","Warner Music Group"],"education":["Universität zu Köln"]},{"name":{"first":"Matthew","last":"Gaddis"},"profileLink":"https://www.linkedin.com/profile/view?id=12213953","headline":"UI Engineering Manager at Apple","location":"San Francisco Bay Area","industry":"Internet","companyName":"Apple","currentPosition":"Apple","pastPositions":["Scout Labs","PlayCoed","Self"],"education":["University of Colorado Boulder"]},{"name":{"first":"Tri","last":"Vuong"},"profileLink":"https://www.linkedin.com/profile/view?id=14068282","headline":"Software Engineer at Apple","location":"San Francisco Bay Area","industry":"Computer Software","companyName":"Apple","currentPosition":"","pastPositions":["Twitter","YP","Better The World"],"education":["University of Toronto"]},{"name":{"first":"Craig","last":"Bartels"},"profileLink":"https://www.linkedin.com/profile/view?id=15174289","headline":"Information Security at Apple","location":"London, United Kingdom","industry":"Information Technology and Services","companyName":"Apple","currentPosition":"","pastPositions":["Apple","Honeywell","IBM"],"education":["University of Oxford"]}]
 };
 
 window.queue = [];
@@ -23,7 +23,9 @@ window.go = function () {
     app.currentCompany = queue[i];
 
     var routine = [
-        scraper.start,
+        //scraper.start,
+        //getProfileData.start,
+        getMissingNames.start,
         nextQueueItem
     ];
 
@@ -35,7 +37,7 @@ window.go = function () {
             async.series(routine)
         }
         else {
-            console.log('done');
+            console.log(app.results);
         }
     }
 };

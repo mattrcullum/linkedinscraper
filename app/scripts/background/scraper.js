@@ -110,6 +110,9 @@ var scraper = function () {
 
             // concatenate the response (if any) to our existing results array
             if (response.linkList.length != 0) {
+                $(response.linkList).each(function (index, item) {
+                    item.companyName = app.currentCompany.companyName
+                });
                 app.results = app.results.concat(response.linkList);
             }
 

@@ -21,14 +21,14 @@ var linkedin = function () {
             var fullName = $nameLink.text().trim();
             var name = {};
 
-            // if the fullName has a period, we'll assume it's abbreviated
-            if (fullName.hasChar('.')) {
-                name.first = fullName.split(' ')[0];
+
+            if (fullName == "LinkedIn Member") {
+                name.isHidden = true;
             }
 
-            // if the fullName is hidden
-            else if (fullName == "LinkedIn Member") {
-                name.isHidden = true;
+            // if the fullName has a period, we'll assume it's abbreviated
+            else if (fullName.hasChar('.')) {
+                name.first = fullName.split(' ')[0];
             }
 
             // if it's it's not abbreviated, we'll assume it looks like "John Smith", "John J. Smith" or "John J. Smith II"

@@ -14,7 +14,7 @@ function log(message) {
  * Created by matthew on 2/13/15.
  */
 String.prototype.hasChar = function(char){
-  return this.indexOf(char) != 0;
+  return this.indexOf(char) != -1;
 };
 /**
  * Created by matthew on 2/11/15.
@@ -34,19 +34,19 @@ var urlHelper = function () {
         // name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
         var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
             results = regex.exec(href.search);
-        return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+        return results === null ? "" : decodeURI(results[1]);
     }
 
     function getSearchParameters() {
-        var prmstr = window.location.search.substr(1);
-        return prmstr != null && prmstr != "" ? transformToAssocArray(prmstr) : {};
+        var parameterString = window.location.search.substr(1);
+        return parameterString != null && parameterString != "" ? transformToArray(parameterString) : {};
     }
 
-    function transformToAssocArray(prmstr) {
+    function transformToArray(parameterString) {
         var params = {};
-        var prmarr = prmstr.split("&");
-        for (var i = 0; i < prmarr.length; i++) {
-            var tmparr = prmarr[i].split("=");
+        var parameterArray = parameterString.split("&");
+        for (var i = 0; i < parameterArray.length; i++) {
+            var tmparr = decodeURI(parameterArray[i]).split("=");
             params[tmparr[0]] = tmparr[1];
         }
         return params;
@@ -68,11 +68,11 @@ var app = {
     settings: {
         scraper: {
             //settings.scraper.limit = 10000;
-            limit: 9
+            limit: 4
         }
     },
     currentCompany: null,
-    results: []
+    results: [{"name":{"first":"John","last":"Wallace"},"profileLink":"https://www.linkedin.com/profile/view?id=1457210","headline":"Senior SW Engineering Recruiter at Apple        iOS Apps & Frameworks","location":"San Francisco Bay Area","industry":"Internet","companyName":"Apple","currentPosition":"Apple Inc.","pastPositions":["Yahoo! Inc.","Sony Computer Entertainment","ONI Systems Inc. purchased by Ciena Corp. in 2003"],"education":["Menlo College"]},{"name":{"first":"Jacob","last":"Conway"},"profileLink":"https://www.linkedin.com/profile/view?id=1644330","headline":"Technical Sourcing Recruiter - Wireless Software at Apple","location":"Greater San Diego Area","industry":"Staffing and Recruiting","companyName":"Apple","currentPosition":"","pastPositions":["Novatel Wireless","TalentWar.net, Inc.","Networked Recruiter"],"education":["Augustana College (SD)"]},{"name":{"first":"Bill","last":"Dudney"},"profileLink":"https://www.linkedin.com/profile/view?id=480284","headline":"Writer of Code at Apple","location":"San Francisco Bay Area","industry":"Computer Software","companyName":"Apple","currentPosition":"AppleGala Factory Software LLCPragmatic Programmers","pastPositions":["Apple Inc.","Dudney.Net","Virtuas Solutions"],"education":["Texas A&M University"]},{"name":{"first":"Brian","last":"Temple"},"profileLink":"https://www.linkedin.com/profile/view?id=2674208","headline":"Building software people love","location":"Greater Denver Area","industry":"Computer Software","companyName":"Apple","currentPosition":"ApplePlaid Software, LLC","pastPositions":["Photobucket","Wayin","University of Colorado"],"education":["University of Colorado Boulder"]},{"name":{"first":"Corey","last":"Carson"},"profileLink":"https://www.linkedin.com/profile/view?id=9816373","headline":"Systems Engineering Manager at Apple","location":"Greater Denver Area","industry":"Information Technology and Services","companyName":"Apple","currentPosition":"Apple","pastPositions":["Holcomb's Education Resource","Maize USD 266"],"education":["Pittsburg State University"]},{"name":{"first":"Samantha","last":"Kish"},"profileLink":"https://www.linkedin.com/profile/view?id=10254966","headline":"Global Supply Manager - Channel Procurement at Apple","location":"San Francisco Bay Area","industry":"Consumer Electronics","companyName":"Apple","currentPosition":"","pastPositions":["Apple","Johns Manville","Honeywell"],"education":["University of Colorado at Denver"]},{"name":{"first":"Dimitri","last":"Geier"},"profileLink":"https://www.linkedin.com/profile/view?id=12063296","headline":"Dimitri Geier is a Senior Software Engineer at Apple","location":"San Francisco Bay Area","industry":"Telecommunications","companyName":"Apple","currentPosition":"Apple","pastPositions":["Motorola","Nextive Solutions","Warner Music Group"],"education":["Universität zu Köln"]},{"name":{"first":"Matthew","last":"Gaddis"},"profileLink":"https://www.linkedin.com/profile/view?id=12213953","headline":"UI Engineering Manager at Apple","location":"San Francisco Bay Area","industry":"Internet","companyName":"Apple","currentPosition":"Apple","pastPositions":["Scout Labs","PlayCoed","Self"],"education":["University of Colorado Boulder"]},{"name":{"first":"Tri","last":"Vuong"},"profileLink":"https://www.linkedin.com/profile/view?id=14068282","headline":"Software Engineer at Apple","location":"San Francisco Bay Area","industry":"Computer Software","companyName":"Apple","currentPosition":"","pastPositions":["Twitter","YP","Better The World"],"education":["University of Toronto"]},{"name":{"first":"Craig","last":"Bartels"},"profileLink":"https://www.linkedin.com/profile/view?id=15174289","headline":"Information Security at Apple","location":"London, United Kingdom","industry":"Information Technology and Services","companyName":"Apple","currentPosition":"","pastPositions":["Apple","Honeywell","IBM"],"education":["University of Oxford"]}]
 };
 
 window.queue = [];
@@ -84,7 +84,9 @@ window.go = function () {
     app.currentCompany = queue[i];
 
     var routine = [
-        scraper.start,
+        //scraper.start,
+        //getProfileData.start,
+        getMissingNames.start,
         nextQueueItem
     ];
 
@@ -96,7 +98,7 @@ window.go = function () {
             async.series(routine)
         }
         else {
-            console.log('done');
+            console.log(app.results);
         }
     }
 };
@@ -126,95 +128,11 @@ app.callTabAction = function (tabID, action, callback, args) {
     chrome.tabs.sendMessage(tabID, message, callback)
 };
 /**
- * Created by matthew on 1/17/15.
- */
-var getBasicInfo = function () {
-    var currentWorkingTab;
-    var isFinished;
-    var results;
-    var masterCallback;
-    var settings;
-    var i = 0;
-    var currentPerson;
-
-    function init(settingsArg, resultsArg, callbackArg) {
-
-        results = resultsArg;
-        masterCallback = callbackArg;
-        settings = settingsArg;
-
-        iterate()
-    }
-
-    function getBasicInfo(person) {
-        currentPerson = person;
-        if (!currentPerson) {
-            debugger;
-        }
-        currentPerson.company = settings.general.companyName;
-
-        // create the tab with link argument
-        chrome.tabs.create({url: person.profileLink}, function (tab) {
-            currentWorkingTab = tab;
-            chrome.tabs.onUpdated.addListener(tabUpdated)
-        });
-    }
-
-    function tabUpdated(tabId, info, tab) {
-        if (tabId == currentWorkingTab.id && info.status == "complete") {
-
-            // get the required data from the tab
-            callTabAction(currentWorkingTab.id, "getBasicInfo", handleResponse);
-
-            // just to be safe, remove the listener
-            chrome.tabs.onUpdated.removeListener(tabUpdated)
-        }
-    }
-
-    function handleResponse(response) {
-
-        $.extend(currentPerson, response);
-
-
-        /*
-         var name.full = response.name.full.trim().toLowerCase();
-         var headline = response.headline;
-
-         switch (name.full){
-         case 'linkedin member':
-         }
-         */
-        // we're done with the tab. remove it
-        chrome.tabs.remove(currentWorkingTab.id);
-
-        // decide whether to run again or not
-        if (i + 1 != results.people.length) {
-            iterate()
-        }
-        else {
-            masterCallback();
-        }
-    }
-
-
-    function iterate() {
-        getBasicInfo(results.people[++i]);
-    }
-
-    return {
-        isFinished: function () {
-            return isFinished;
-        },
-        start: init
-    }
-}();
-
-/**
  * Created by matthew on 1/21/15.
  */
 var getMissingNames = function () {
     var settings, results, masterCallback;
-    var i = -1;
+    var i = 0;
     var currentPerson;
 
     function init(settingsArg, resultsArg, callbackArg) {
@@ -299,6 +217,94 @@ var getMissingNames = function () {
         start: init
     }
 }();
+/**
+ * Created by matthew on 1/17/15.
+ */
+var getProfileData = function () {
+
+    var masterCallback,
+        currentPerson,
+        personIndex,
+        profileScrapeTab;
+
+    function start(cb) {
+        masterCallback = cb;
+        personIndex = 0;
+        currentPerson = true;
+
+        var series = [
+            createProfileScrapeTab,
+            retrieveProfileData,
+            nextIteration
+        ];
+
+        // program control
+        function nextIteration() {
+            currentPerson = app.results[personIndex++]
+
+            if (status.done || !currentPerson) {
+                exit();
+            }
+            else {
+                executeSeries();
+            }
+        }
+
+        // execute series after a one-time function call
+        /*async.series([
+         init,
+         executeSeries
+         ]
+         );*/
+
+        nextIteration();
+
+        function executeSeries() {
+            async.series(series)
+        }
+    }
+
+    function createProfileScrapeTab(callback) {
+        // create the tab with link argument
+        chrome.tabs.create({url: currentPerson.profileLink}, function (tab) {
+            profileScrapeTab = tab.id;
+            chrome.tabs.onUpdated.addListener(tabUpdated);
+
+            function tabUpdated(tabID, changeInfo, tab) {
+                if (tabID == profileScrapeTab && changeInfo.status == "complete") {
+                    chrome.tabs.onUpdated.removeListener(tabUpdated);
+                    callback();
+                }
+            }
+        });
+    }
+
+    function retrieveProfileData(callback) {
+
+        // get the required data from the tab
+        app.callTabAction(profileScrapeTab, "getBasicInfo", handleResponse);
+
+        function handleResponse(response) {
+
+            $.extend(currentPerson, response);
+
+            // we're done with the tab. remove it
+            chrome.tabs.remove(profileScrapeTab);
+
+            callback()
+        }
+    }
+
+    // releases program control back to calling function
+    function exit() {
+        masterCallback();
+    }
+
+    return {
+        start: start
+    }
+}();
+
 /**
  * Created by matthew on 12/15/14.
  */
@@ -466,6 +472,9 @@ var scraper = function () {
 
             // concatenate the response (if any) to our existing results array
             if (response.linkList.length != 0) {
+                $(response.linkList).each(function (index, item) {
+                    item.companyName = app.currentCompany.companyName
+                });
                 app.results = app.results.concat(response.linkList);
             }
 

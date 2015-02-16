@@ -16,19 +16,19 @@ var urlHelper = function () {
         // name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
         var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
             results = regex.exec(href.search);
-        return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+        return results === null ? "" : decodeURI(results[1]);
     }
 
     function getSearchParameters() {
-        var prmstr = window.location.search.substr(1);
-        return prmstr != null && prmstr != "" ? transformToAssocArray(prmstr) : {};
+        var parameterString = window.location.search.substr(1);
+        return parameterString != null && parameterString != "" ? transformToArray(parameterString) : {};
     }
 
-    function transformToAssocArray(prmstr) {
+    function transformToArray(parameterString) {
         var params = {};
-        var prmarr = prmstr.split("&");
-        for (var i = 0; i < prmarr.length; i++) {
-            var tmparr = prmarr[i].split("=");
+        var parameterArray = parameterString.split("&");
+        for (var i = 0; i < parameterArray.length; i++) {
+            var tmparr = decodeURI(parameterArray[i]).split("=");
             params[tmparr[0]] = tmparr[1];
         }
         return params;

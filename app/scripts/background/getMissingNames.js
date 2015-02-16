@@ -3,7 +3,7 @@
  */
 var getMissingNames = function () {
     var settings, results, masterCallback;
-    var i = -1;
+    var i = 0;
     var currentPerson;
 
     function init(settingsArg, resultsArg, callbackArg) {
@@ -12,6 +12,7 @@ var getMissingNames = function () {
         masterCallback = callbackArg;
         iterate()
     }
+
 
     function iterate() {
         currentPerson = results.people[++i];
