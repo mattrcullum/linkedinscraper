@@ -105,6 +105,15 @@ app.models = function () {
         self.start = function () {
             app.bp.go()
         };
+        self.invokeCSVDownload = function () {
+            app.results.invokeCSVDownload()
+        };
+        self.reset = function () {
+            var go = confirm("This will clear all results and reset the extension. Proceed?");
+            if (go) {
+                chrome.runtime.reload();
+            }
+        };
         var companyParam = app.params['company'];
         var companyIDsParam = app.params['companyID'];
 
@@ -120,6 +129,7 @@ app.models = function () {
             self.queue.push(item);
         }
     }
+
     return {
         view: view
     }
@@ -167,19 +177,20 @@ app.queue = function () {
 /**
  * Created by matthew on 1/27/15.
  */
-app.results = function (app) {
+app.results = function () {
     function invokeCSVDownload() {
-        var people = backgroundPage.results.people;
-        var csv = "FirstName,LastName,Title,Company,Profile_URL\n";
+        var people = app.bp.app.results;
+        var csv = "FirstName,LastName,Title,Company,Email,Email Confirmed,Profile URL\n";
+
         $.each(people, function (index, person) {
-            if (typeof person.name.last == "object") {
-                debugger;
-            }
+
             var dataString = [
                 person.name.first || '',
                 person.name.last || '',
                 person.headline.replace(/ at(.*)/, "").trim(),
-                company,
+                person.companyName,
+                person.email || '',
+                '',
                 person.profileLink
             ].map(function (item) {
                     return '"' + item + '"'
@@ -190,11 +201,11 @@ app.results = function (app) {
         });
         var pom = document.createElement('a');
         pom.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv));
-        pom.setAttribute('download', company.trim() + 'Employees.csv');
+        pom.setAttribute('download', app.bp.app.results[0].companyName.trim() + 'Employees.csv');
         pom.click();
-
-        return {
-            invokeCSVDownload: invokeCSVDownload
-        }
     }
-};
+
+    return {
+        invokeCSVDownload: invokeCSVDownload
+    }
+}();

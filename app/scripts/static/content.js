@@ -156,7 +156,6 @@ var google = function () {
     var tryEmail = function (message, callback) {
         console.log(message, callback);
         var email = message.email.replace(' ', '');
-        var name = message.name.full;
 
         var $emailInput = $("textarea").first();
 
@@ -194,7 +193,7 @@ var google = function () {
 
                         if (!$hasSendButton) {
                             clearInterval(waitForDraftDiscard);
-                            if ($name == name) {
+                            if ($name) {
                                 callback({correct: true});
                                 console.log('found email')
                             }

@@ -12,6 +12,15 @@ app.models = function () {
         self.start = function () {
             app.bp.go()
         };
+        self.invokeCSVDownload = function () {
+            app.results.invokeCSVDownload()
+        };
+        self.reset = function () {
+            var go = confirm("This will clear all results and reset the extension. Proceed?");
+            if (go) {
+                chrome.runtime.reload();
+            }
+        };
         var companyParam = app.params['company'];
         var companyIDsParam = app.params['companyID'];
 
@@ -27,6 +36,7 @@ app.models = function () {
             self.queue.push(item);
         }
     }
+
     return {
         view: view
     }

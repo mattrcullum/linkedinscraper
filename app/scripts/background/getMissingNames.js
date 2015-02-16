@@ -107,7 +107,9 @@ var getMissingNames = function () {
     }
 
     function exit() {
+        if(searchTab){
         chrome.tabs.remove(searchTab);
+        }
         masterCallback();
     }
 

@@ -49,7 +49,9 @@ var scraper = function () {
 
     // releases program control back to calling function
     function exit() {
-        chrome.tabs.remove(scrapeTab);
+        if (scrapeTab) {
+            chrome.tabs.remove(scrapeTab);
+        }
         scrapeTab = false;
         isFinished = true;
         masterCallback();

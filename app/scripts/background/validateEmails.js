@@ -65,7 +65,7 @@ var validateEmails = function () {
         var email;
 
         function composeNewEmail(composeNewEmailCb) {
-            var timeout = gmailInitialLoad ? 7000 : 500;
+            var timeout = gmailInitialLoad ? 7000 : 800;
             console.log('compose email');
 
             function waitForLoad() {
@@ -84,6 +84,9 @@ var validateEmails = function () {
             function processResponse(response) {
                 if (response && response.correct) {
                     currentPerson.email = email;
+                    if (successfulEmailFormats.indexOf(i) == -1) {
+                        successfulEmailFormats.push(i - 1);
+                    }
                 }
                 nextVariationCb();
             }
@@ -93,7 +96,7 @@ var validateEmails = function () {
 
         function nextIteration() {
             email = currentPerson.possibleEmails[i++];
-            if (email) {
+            if (email && !currentPerson.email) {
                 async.series(series);
             }
             else {
@@ -105,7 +108,9 @@ var validateEmails = function () {
     }
 
     function exit() {
+        if(gmailTab){
         chrome.tabs.remove(gmailTab);
+        }
         masterCallback();
     }
 
