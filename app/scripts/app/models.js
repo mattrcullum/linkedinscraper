@@ -6,6 +6,7 @@ app.models = function () {
         var self = this;
         self.queue = app.ko.observableArray(app.bp.queue);
 
+
         self.removeFromQueue = function (company) {
             self.queue.remove(company)
         };
@@ -24,13 +25,15 @@ app.models = function () {
         var companyParam = app.params['company'];
         var companyIDsParam = app.params['companyID'];
 
-        self.emailDomain = app.ko.observable(companyParam.toLowerCase());
+        self.emailDomain = app.ko.observable(companyParam.toLowerCase() + '.com');
         self.companyName = app.ko.observable(companyParam);
         self.companyIDs = app.ko.observable(companyIDsParam);
         self.titleFilter = app.ko.observable(null);
         self.skipEmailRetrieval = app.ko.observable(false);
 
         self.addToQueue = app.queue.add;
+
+        self.delay = app.ko.observable(app.bp.app.settings.delay);
 
         self.appendQueue = function (item) {
             self.queue.push(item);

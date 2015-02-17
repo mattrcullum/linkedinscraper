@@ -47,7 +47,7 @@ var permuteEmails = function () {
                     name.last,
                     initial.first + initial.last
                 ].map(function (emailAddress) {
-                        return convertStringToAscii(emailAddress + '@' + app.currentCompany.emailDomain + '.com');
+                        return convertStringToAscii(emailAddress + '@' + app.currentCompany.emailDomain);
                     })
             }
         });

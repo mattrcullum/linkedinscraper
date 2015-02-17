@@ -22,6 +22,11 @@ $(document).ready(function () {
     if (params['a'] == "addToQueue") {
         app.modals.addToQueue.modal('show');
     }
+
+    app.viewModel.delay.subscribe(function (delay) {
+        app.bp.app.settings.delay = delay
+    });
+
 });
 
 

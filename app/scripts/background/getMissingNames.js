@@ -101,7 +101,7 @@ var getMissingNames = function () {
             if (name && name.first && name.last) {
                 currentPerson.name = name;
             }
-            else{
+            else {
                 currentPerson.name = false;
             }
             chrome.tabs.remove(searchTab);
