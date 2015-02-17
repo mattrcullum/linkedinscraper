@@ -14,7 +14,7 @@ app.results = function () {
                 person.headline.replace(/ at(.*)/, "").trim(),
                 person.companyName,
                 person.email || '',
-                '',
+                person.emailConfirmed,
                 person.profileLink
             ].map(function (item) {
                     return '"' + item + '"'

@@ -104,6 +104,13 @@ var validateEmails = function () {
                     async.series(series);
                 }
                 else {
+                    if (!currentPerson.email) {
+                        currentPerson.email = possibleEmails[successfulEmailFormats[0] || 0];
+                        currentPerson.emailConfirmed = '';
+                    }
+                    else {
+                        currentPerson.emailConfirmed = 'yes';
+                    }
                     callback()
                 }
             }
@@ -117,7 +124,10 @@ var validateEmails = function () {
 
     function exit() {
         if (gmailTab) {
-            chrome.tabs.remove(gmailTab);
+            setTimeout(closeGmailTab, 1000);
+            function closeGmailTab() {
+                chrome.tabs.remove(gmailTab);
+            }
         }
         masterCallback();
     }

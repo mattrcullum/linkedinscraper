@@ -24,6 +24,7 @@ var permuteEmails = function () {
 
     function permuteEmails(cb) {
         $.each(app.results, function (index, person) {
+            person.emailConfirmed = '';
             var name = person.name;
             if (name) {
                 try {
@@ -35,7 +36,6 @@ var permuteEmails = function () {
                 } catch (err) {
                     console.error(err);
                 }
-
                 app.results[index].possibleEmails = [
                     name.first + name.last,
                     name.first + '.' + name.last,
