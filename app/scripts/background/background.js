@@ -32,9 +32,9 @@ window.go = function () {
     var i = 0;
 
     var routine = [
-        //scraper.start,
-        //getProfileData.start,
-        //getMissingNames.start,
+        scraper.start,
+        getProfileData.start,
+        getMissingNames.start,
         permuteEmails.start,
         validateEmails.start,
         nextQueueItem
