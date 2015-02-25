@@ -295,7 +295,7 @@ var linkedin = function () {
     function scrapeProfileView() {
 
 
-        var currentPosition = $('#overview-summary-current td ol li a').text();
+        var currentPosition = $('.current-position a[name=title]').first().text();
 
         var pastPositions = $('#overview-summary-past td ol li a').map(function () {
             return $.trim($(this).text());

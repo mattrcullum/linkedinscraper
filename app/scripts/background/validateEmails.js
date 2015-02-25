@@ -7,7 +7,7 @@ var validateEmails = function () {
     function start(cb) {
         gmailInitialLoad = true;
         masterCallback = cb;
-        personIndex = 9;
+        personIndex = 0;
         successfulEmailFormats = [];
 
         var series = [
@@ -22,8 +22,8 @@ var validateEmails = function () {
 
         // program control
         function nextIteration() {
-            console.log('ay there!');
             currentPerson = app.results[app.currentCompanyName][personIndex++];
+            log(currentPerson);
 
             if (status.done || !currentPerson) {
                 exit();

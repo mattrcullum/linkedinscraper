@@ -67,7 +67,7 @@ var urlHelper = function () {
 var app = {
     settings: {
         scraper: {
-            // limit: 1000000
+            //limit: 1000000
             limit: 8
         },
         delay: 500
@@ -120,10 +120,10 @@ window.go = function () {
     function nextQueueItem() {
         app.currentCompany = queue[i++];
         if (app.currentCompany && app.currentCompany.companyName) {
-            log('starting scrape of'+app.currentCompany.companyName);
+            log('starting scrape of' + app.currentCompany.companyName);
             app.currentCompanyName = (app.currentCompany.companyName).replace(/\s+/g, '').replace(/\./g, '').toLowerCase();
-            if(!app.results[app.currentCompanyName]){
-            app.results[app.currentCompanyName] = [];
+            if (!app.results[app.currentCompanyName]) {
+                app.results[app.currentCompanyName] = [];
             }
 
             async.series(routine)
@@ -623,7 +623,7 @@ var validateEmails = function () {
     function start(cb) {
         gmailInitialLoad = true;
         masterCallback = cb;
-        personIndex = 9;
+        personIndex = 0;
         successfulEmailFormats = [];
 
         var series = [
@@ -638,8 +638,8 @@ var validateEmails = function () {
 
         // program control
         function nextIteration() {
-            console.log('ay there!');
             currentPerson = app.results[app.currentCompanyName][personIndex++];
+            log(currentPerson);
 
             if (status.done || !currentPerson) {
                 exit();
