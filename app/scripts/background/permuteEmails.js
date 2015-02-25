@@ -27,7 +27,7 @@ var permuteEmails = function () {
             $.each(resultset, function (index, person) {
                 person.emailConfirmed = '';
                 var name = person.name;
-                if (name) {
+                if (name && !name.skipPermutation) {
                     try {
                         var initial = {
                             first: name.first[0],

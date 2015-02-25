@@ -104,9 +104,9 @@ window.queue = [
 window.settings = {};
 
 window.go = function () {
-    if (!app.settings.scraper.limit) {
-        app.settings.scraper.limit = 8;
-    }
+    //if (!app.settings.scraper.limit) {
+    //    app.settings.scraper.limit = 8;
+    //}
 
     console.table(queue);
 
@@ -269,7 +269,7 @@ var getMissingNames = function () {
                 currentPerson.name = name;
             }
             else {
-                currentPerson.name = false;
+                currentPerson.name.skipPermutation = true;
             }
             chrome.tabs.remove(searchTab);
             callback();
@@ -406,7 +406,7 @@ var permuteEmails = function () {
             $.each(resultset, function (index, person) {
                 person.emailConfirmed = '';
                 var name = person.name;
-                if (name) {
+                if (name && !name.skipPermutation) {
                     try {
                         var initial = {
                             first: name.first[0],
@@ -643,13 +643,18 @@ var validateEmails = function () {
         // program control
         function nextIteration() {
             currentPerson = app.results[app.currentCompanyName][personIndex++];
-            log(currentPerson);
-
-            if (status.done || !currentPerson) {
-                exit();
+            if (!currentPerson.name || currentPerson.name.skipPermutation) {
+                nextIteration()
             }
             else {
-                executeSeries();
+                log(currentPerson);
+
+                if (status.done || !currentPerson) {
+                    exit();
+                }
+                else {
+                    executeSeries();
+                }
             }
         }
 

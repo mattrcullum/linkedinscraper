@@ -102,7 +102,7 @@ var getMissingNames = function () {
                 currentPerson.name = name;
             }
             else {
-                currentPerson.name = false;
+                currentPerson.name.skipPermutation = true;
             }
             chrome.tabs.remove(searchTab);
             callback();

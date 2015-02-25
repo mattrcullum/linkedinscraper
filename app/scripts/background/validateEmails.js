@@ -23,13 +23,18 @@ var validateEmails = function () {
         // program control
         function nextIteration() {
             currentPerson = app.results[app.currentCompanyName][personIndex++];
-            log(currentPerson);
-
-            if (status.done || !currentPerson) {
-                exit();
+            if (!currentPerson.name || currentPerson.name.skipPermutation) {
+                nextIteration()
             }
             else {
-                executeSeries();
+                log(currentPerson);
+
+                if (status.done || !currentPerson) {
+                    exit();
+                }
+                else {
+                    executeSeries();
+                }
             }
         }
 
