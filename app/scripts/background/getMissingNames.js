@@ -22,7 +22,7 @@ var getMissingNames = function () {
         // program control
         function nextIteration() {
 
-            currentPerson = app.results[personIndex++];
+            currentPerson = app.results[app.currentCompanyName][personIndex++];
 
             if (status.done || !currentPerson) {
                 exit();

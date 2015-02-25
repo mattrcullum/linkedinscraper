@@ -23,33 +23,35 @@ var permuteEmails = function () {
     }
 
     function permuteEmails(cb) {
-        $.each(app.results, function (index, person) {
-            person.emailConfirmed = '';
-            var name = person.name;
-            if (name) {
-                try {
-                    var initial = {
-                        first: name.first[0],
-                        last: name.last[0]
+        $.each(app.results, function (index, resultset) {
+            $.each(resultset, function (index, person) {
+                person.emailConfirmed = '';
+                var name = person.name;
+                if (name) {
+                    try {
+                        var initial = {
+                            first: name.first[0],
+                            last: name.last[0]
 
-                    };
-                } catch (err) {
-                    console.error(err);
+                        };
+                    } catch (err) {
+                        console.error(err);
+                    }
+                    app.results[app.currentCompanyName][index].possibleEmails = [
+                        name.first + name.last,
+                        name.first + '.' + name.last,
+                        initial.first + name.last,
+                        initial.first + '.' + name.last,
+                        name.last + name.first,
+                        name.last + '.' + name.first,
+                        name.first,
+                        name.last,
+                        initial.first + initial.last
+                    ].map(function (emailAddress) {
+                            return convertStringToAscii(emailAddress + '@' + app.currentCompany.emailDomain);
+                        })
                 }
-                app.results[index].possibleEmails = [
-                    name.first + name.last,
-                    name.first + '.' + name.last,
-                    initial.first + name.last,
-                    initial.first + '.' + name.last,
-                    name.last + name.first,
-                    name.last + '.' + name.first,
-                    name.first,
-                    name.last,
-                    initial.first + initial.last
-                ].map(function (emailAddress) {
-                        return convertStringToAscii(emailAddress + '@' + app.currentCompany.emailDomain);
-                    })
-            }
+            })
         });
 
         cb();

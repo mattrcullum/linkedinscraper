@@ -21,7 +21,7 @@ var getProfileData = function () {
 
         // program control
         function nextIteration() {
-            currentPerson = app.results[personIndex++]
+            currentPerson = app.results[app.currentCompanyName][personIndex++];
 
             if (status.done || !currentPerson) {
                 exit();
@@ -38,11 +38,11 @@ var getProfileData = function () {
          ]
          );*/
 
-        nextIteration();
-
         function executeSeries() {
             async.series(series)
         }
+
+        nextIteration();
     }
 
     function createProfileScrapeTab(callback) {

@@ -7,7 +7,7 @@ var validateEmails = function () {
     function start(cb) {
         gmailInitialLoad = true;
         masterCallback = cb;
-        personIndex = 0;
+        personIndex = 9;
         successfulEmailFormats = [];
 
         var series = [
@@ -23,7 +23,7 @@ var validateEmails = function () {
         // program control
         function nextIteration() {
             console.log('ay there!');
-            currentPerson = app.results[personIndex++];
+            currentPerson = app.results[app.currentCompanyName][personIndex++];
 
             if (status.done || !currentPerson) {
                 exit();
@@ -41,6 +41,10 @@ var validateEmails = function () {
     }
 
     function createGmailTab(callback) {
+        if (gmailTab) {
+            callback();
+            return false;
+        }
         chrome.tabs.create({url: "https://google.com"}, function (tab) {
             gmailTab = tab.id;
             setTimeout(callback, 1000);
@@ -123,12 +127,6 @@ var validateEmails = function () {
     }
 
     function exit() {
-        if (gmailTab) {
-            setTimeout(closeGmailTab, 1000);
-            function closeGmailTab() {
-                chrome.tabs.remove(gmailTab);
-            }
-        }
         masterCallback();
     }
 

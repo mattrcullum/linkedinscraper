@@ -115,11 +115,11 @@ var scraper = function () {
                 $(response.linkList).each(function (index, item) {
                     item.companyName = app.currentCompany.companyName
                 });
-                app.results = app.results.concat(response.linkList);
+                app.results[app.currentCompanyName] = app.results[app.currentCompanyName].concat(response.linkList);
             }
 
             // when debugging, limits the number of profile links we collect
-            if (app.results.length >= limit) {
+            if (app.results[app.currentCompanyName].length >= limit) {
                 status.done = true;
                 callback();
                 return false;
