@@ -37,7 +37,7 @@ var permuteEmails = function () {
                     } catch (err) {
                         console.error(err);
                     }
-                    app.results[app.currentCompanyName][index].possibleEmails = [
+                    person.possibleEmails = [
                         name.first + name.last,
                         name.first + '.' + name.last,
                         initial.first + name.last,
