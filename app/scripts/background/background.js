@@ -6,8 +6,8 @@
 var app = {
     settings: {
         scraper: {
-            //limit: 1000000
-            limit: 8
+            limit: 1000000
+            //limit: 8
         },
         delay: 500
     },
@@ -43,9 +43,9 @@ window.queue = [
 window.settings = {};
 
 window.go = function () {
-    if (!app.settings.scraper.limit) {
-        app.settings.scraper.limit = 8;
-    }
+    //if (!app.settings.scraper.limit) {
+    //    app.settings.scraper.limit = 8;
+    //}
 
     console.table(queue);
 
