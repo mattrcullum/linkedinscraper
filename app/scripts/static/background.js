@@ -67,8 +67,8 @@ var urlHelper = function () {
 var app = {
     settings: {
         scraper: {
-            //limit: 1000000
-            limit: 8
+            limit: 1000000
+            //limit: 8
         },
         delay: 500
     },
