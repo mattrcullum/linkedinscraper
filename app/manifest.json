@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "LinkedIn Company Scraper",
-  "version": "0.0.1",
+  "version": "0.6.1",
   "background": {
     "scripts": [
       "vendor/jquery/dist/jquery.js",
