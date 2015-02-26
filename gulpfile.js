@@ -6,6 +6,7 @@
 var gulp = require('gulp');
 var transform = require('vinyl-transform');
 var concat = require('gulp-concat');
+var coffee = require('gulp-coffee');
 
 var scripts = ['app/scripts/content/*', 'app/scripts/background/*', 'app/scripts/app/*'];
 var mainFiles = ['app/scripts/content/content.js', 'app/scripts/background/background.js', 'app/scripts/app/app.js'];
@@ -36,8 +37,21 @@ gulp.task('concat', function () {
     folders.forEach(function (input, index) {
         return gulp.src(['app/scripts/helpers/*', input])
             .pipe(concat(outputs[index]))
+            .pipe(coffee())
             .pipe(gulp.dest(dest));
     });
+});
+
+
+gulp.task('js2coffee', function () {
+    var folders = ['app/scripts/app/*', 'app/scripts/background/*', 'app/scripts/content/*', 'app/scripts/helpers/*'];
+    var outputs = ['app/scripts/app/', 'app/scripts/background/', 'app/scripts/content', 'app/scripts/helpers/'];
+
+    folders.forEach(function (input, index) {
+        return gulp.src(input)
+            .pipe(js2coffee())
+            .pipe(gulp.dest(outputs[index]))
+    })
 });
 
 
