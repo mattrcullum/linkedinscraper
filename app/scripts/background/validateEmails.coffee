@@ -1,7 +1,7 @@
 ###*
 Created by matthew on 1/22/15.
 ###
-validateEmails = ->
+window.validateEmails = ->
   start = (cb) ->
     executeSeries = ->
       async.series series
@@ -106,7 +106,7 @@ validateEmails = ->
       nextIteration
     ]
     nextIteration()
-    return
+    this
   exit = ->
     masterCallback()
     return
@@ -116,4 +116,4 @@ validateEmails = ->
   personIndex = undefined
   successfulEmailFormats = undefined
   gmailInitialLoad = undefined
-  start: start
+  {start: start}

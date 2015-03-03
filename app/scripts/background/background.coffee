@@ -57,11 +57,11 @@ window.go = ->
   console.table queue
   i = 0
   routine = [
-    scraper.start
-    getProfileData.start
-    getMissingNames.start
-    permuteEmails.start
-    validateEmails.start
+    scraper().start
+    getProfileData().start
+    getMissingNames().start
+    permuteEmails().start
+    validateEmails().start
     nextQueueItem
   ]
   nextQueueItem()

@@ -4,7 +4,7 @@ Created by matthew on 2/12/15.
  */
 
 (function() {
-  var app, log, models, urlHelper;
+  var app, log, models, queue;
 
   Array.prototype.move = function(from, to) {
     this.splice(to, 0, this.splice(from, 1)[0]);
@@ -33,7 +33,7 @@ Created by matthew on 2/12/15.
   Created by matthew on 2/11/15.
    */
 
-  urlHelper = function() {
+  window.urlHelper = function() {
     var getSearchParameters, hostName, param, segments, transformToArray;
     segments = function() {
       return location.pathname.substr(1).split("/");
@@ -87,13 +87,13 @@ Created by matthew on 2/12/15.
     var params, url;
     url = urlHelper();
     app.params = url.params;
+    app.queue = queue;
     params = app.params;
+    debugger;
     app.bp = chrome.extension.getBackgroundPage();
     app.ko = ko;
-    app.models = new models();
-    app.viewModel = app.models.view;
+    app.viewModel = models.view();
     app.ko.applyBindings(app.viewModel);
-    log(app.viewModel.delay);
     app.modals = {
       addToQueue: $("#addToQueue")
     };
@@ -105,47 +105,41 @@ Created by matthew on 2/12/15.
     });
   });
 
-  models = function() {
-    var view;
-    view = function() {
-      return function() {
-        var companyIDsParam, companyParam, self;
-        companyParam = app.params["company"];
-        companyIDsParam = app.params["companyID"];
-        self = this;
-        self.removeFromQueue = function(company) {
-          return self.queue.remove(company);
-        };
-        self.start = function() {
-          return app.bp.go();
-        };
-        self.invokeCSVDownload = function() {
-          return app.results.invokeCSVDownload();
-        };
-        self.reset = function() {
-          var go;
-          go = confirm("This will clear all results and reset the extension. Proceed?");
-          if (go) {
-            return chrome.runtime.reload();
-          }
-        };
-        self.appendQueue = function(item) {
-          return self.queue.push(item);
-        };
-        self.queue = app.ko.observableArray();
-        self.emailDomain = app.ko.observable(companyParam.toLowerCase() + ".com");
-        self.companyName = app.ko.observable(companyParam);
-        self.companyIDs = app.ko.observable(companyIDsParam);
-        self.titleFilter = app.ko.observable(null);
-        self.skipEmailRetrieval = app.ko.observable(false);
-        self.addToQueue = app.queue.add;
-        self.delay = app.ko.observable(app.bp.app.settings.delay);
-        return true;
+  models = {
+    view: function() {
+      var companyIDsParam, companyParam, self;
+      self = this;
+      companyParam = app.params["company"];
+      companyIDsParam = app.params["companyID"];
+      this.delay = app.ko.observable(app.bp.app.settings.delay);
+      this.queue = app.ko.observableArray(app.bp.queue);
+      this.emailDomain = app.ko.observable(companyParam.toLowerCase() + ".com");
+      this.companyName = app.ko.observable(companyParam);
+      this.companyIDs = app.ko.observable(companyIDsParam);
+      this.titleFilter = app.ko.observable(null);
+      this.skipEmailRetrieval = app.ko.observable(false);
+      this.addToQueue = app.queue.add;
+      this.start = function() {
+        return app.bp.go();
       };
-    };
-    return {
-      view: view()
-    };
+      this.invokeCSVDownload = function() {
+        return app.results.invokeCSVDownload();
+      };
+      this.reset = function() {
+        var go;
+        go = confirm("This will clear all results and reset the extension. Proceed?");
+        if (go) {
+          return chrome.runtime.reload();
+        }
+      };
+      this.appendQueue = function(item) {
+        return self.queue.push(item);
+      };
+      this.removeFromQueue = function(company) {
+        return self.queue.remove(company);
+      };
+      return this;
+    }
   };
 
 
@@ -153,9 +147,8 @@ Created by matthew on 2/12/15.
   Created by matthew on 2/11/15.
    */
 
-  app.queue = function() {
-    var add, remove;
-    add = function() {
+  queue = {
+    add: function() {
       var company, duplicate;
       company = {
         emailDomain: app.viewModel.emailDomain(),
@@ -169,21 +162,15 @@ Created by matthew on 2/12/15.
       $(app.bp.queue).each(function(index, item) {
         if (item.id === company.id) {
           alert("Company already in queue");
-          duplicate = true;
-          return false;
+          return duplicate = true;
         }
       });
       if (duplicate) {
         return false;
       }
       app.viewModel.appendQueue(company);
-      app.modals.addToQueue.modal("hide");
-    };
-    remove = function(company) {};
-    return {
-      add: add,
-      remove: remove
-    };
+      return app.modals.addToQueue.modal("hide");
+    }
   };
 
 

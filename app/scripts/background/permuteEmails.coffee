@@ -5,7 +5,7 @@ Created by matthew on 12/15/14.
 ###*
 Created by matthew on 1/21/15.
 ###
-permuteEmails = ->
+window.permuteEmails = ->
   start = (callback) ->
     done = ->
       masterCallback()
@@ -50,6 +50,6 @@ permuteEmails = ->
       return
 
     cb()
-    return
+    this
   masterCallback = undefined
-  start: start
+  {start: start}

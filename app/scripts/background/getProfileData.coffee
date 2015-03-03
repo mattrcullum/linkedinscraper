@@ -1,7 +1,7 @@
 ###*
 Created by matthew on 1/17/15.
 ###
-getProfileData = ->
+window.getProfileData = ->
   start = (cb) ->
     
     # program control
@@ -60,7 +60,7 @@ getProfileData = ->
       callback()
       return
     app.callTabAction profileScrapeTab, "getBasicInfo", handleResponse
-    return
+    this
   
   # releases program control back to calling function
   exit = ->
@@ -70,4 +70,4 @@ getProfileData = ->
   currentPerson = undefined
   personIndex = undefined
   profileScrapeTab = undefined
-  start: start
+  {start: start}

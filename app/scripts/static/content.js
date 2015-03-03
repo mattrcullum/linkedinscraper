@@ -4,7 +4,7 @@ Created by matthew on 2/12/15.
  */
 
 (function() {
-  var add_scrape_button, first_path_segment, google, host_title, linkedin, log, messageReceived, path_segments, urlHelper;
+  var add_scrape_button, first_path_segment, google, host_title, linkedin, log, messageReceived, path_segments;
 
   Array.prototype.move = function(from, to) {
     this.splice(to, 0, this.splice(from, 1)[0]);
@@ -33,7 +33,7 @@ Created by matthew on 2/12/15.
   Created by matthew on 2/11/15.
    */
 
-  urlHelper = function() {
+  window.urlHelper = function() {
     var getSearchParameters, hostName, param, segments, transformToArray;
     segments = function() {
       return location.pathname.substr(1).split("/");
@@ -349,11 +349,11 @@ Created by matthew on 2/12/15.
     $scrape_btn_container.insertAfter($follow_button);
   };
 
-  path_segments = urlHelper.segments;
+  path_segments = urlHelper().segments;
 
   first_path_segment = path_segments[0] || null;
 
-  host_title = urlHelper.hostName.toLowerCase();
+  host_title = urlHelper().hostName.toLowerCase();
 
   if (host_title === "linkedin" && first_path_segment === "company") {
     add_scrape_button();

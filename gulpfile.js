@@ -7,8 +7,9 @@ var gulp = require('gulp');
 var transform = require('vinyl-transform');
 var concat = require('gulp-concat');
 var coffee = require('gulp-coffee');
+var haml = require('gulp-haml');
 
-var scripts = ['app/scripts/content/*', 'app/scripts/background/*', 'app/scripts/app/*'];
+var scripts = ['app/scripts/content/*', 'app/scripts/background/*', 'app/scripts/app/*', 'app/views/*', 'app/scripts/helpers/*'];
 var mainFiles = ['app/scripts/content/content.js', 'app/scripts/background/background.js', 'app/scripts/app/app.js'];
 
 gulp.task('concat', function () {
@@ -42,6 +43,11 @@ gulp.task('concat', function () {
     });
 });
 
+gulp.task('haml', function () {
+    gulp.src('./app/views/index.haml')
+        .pipe(haml())
+        .pipe(gulp.dest('./app/'));
+});
 
 gulp.task('js2coffee', function () {
     var folders = ['app/scripts/app/*', 'app/scripts/background/*', 'app/scripts/content/*', 'app/scripts/helpers/*'];
@@ -56,7 +62,7 @@ gulp.task('js2coffee', function () {
 
 
 gulp.task('watch', function () {
-    gulp.watch(scripts, ['concat'])
+    gulp.watch(scripts, ['concat', 'haml'])
 });
 
-gulp.task('default', ['concat', 'watch']);
+gulp.task('default', ['concat', 'haml', 'watch']);

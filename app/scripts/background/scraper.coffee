@@ -3,7 +3,7 @@ Created by matthew on 12/13/14.
 ###
 
 # results
-scraper = ->
+window.scraper = ->
   
   # scrape status
   
@@ -120,7 +120,7 @@ scraper = ->
 
       return
     app.callTabAction scrapeTab, "scrapeProfileList", processResults
-    return
+    this
   running = false
   scrapeTab = 0
   masterCallback = undefined
@@ -129,4 +129,4 @@ scraper = ->
   limit = app.settings.scraper.limit
   
   # the api for this module
-  start: start
+  {start: start}

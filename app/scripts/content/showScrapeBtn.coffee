@@ -39,7 +39,7 @@ add_scrape_button = ->
   $scrape_btn_container.html $scrape_btn
   $scrape_btn_container.insertAfter $follow_button
   return
-path_segments = urlHelper.segments
+path_segments = urlHelper().segments
 first_path_segment = path_segments[0] or null
-host_title = urlHelper.hostName.toLowerCase()
+host_title = urlHelper().hostName.toLowerCase()
 add_scrape_button()  if host_title is "linkedin" and first_path_segment is "company"

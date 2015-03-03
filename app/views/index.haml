@@ -1,0 +1,62 @@
+!!!
+%html
+  %head(lang="en")
+    %meta(charset="UTF-8")
+    %title LinkedIn Company Scraper
+    %link(href="vendor/bootstrap/dist/css/bootstrap.css" rel="stylesheet")
+    %script(src="vendor/jquery/dist/jquery.js")
+    %script(src="vendor/async/lib/async.js")
+    %script(src="vendor/bootstrap/dist/js/bootstrap.js")
+    %script(src="vendor/knockout/dist/knockout.js")
+    %script(src="vendor/knockout/dist/knockout.js")
+    %script(src="scripts/static/app.js")
+  %body
+    .col-lg-10.col-md-offset-1
+      %h1.text-center Scrape queue
+      %hr/
+      #queue.col-md-8.col-md-offset-2
+        .queue-item(data-bind="foreach: queue")
+          .col-md-12.panel.panel-primary.text-center
+            %h2(data-bind="text: companyName" style="display: inline-block;")
+            %span.glyphicon.glyphicon-remove(data-bind="click: $parent.removeFromQueue" style="cursor: pointer; color: #c0392b; font-size: 20px; float: right; padding-top: 10px")
+
+        %br/
+        %form.form-horizontal
+          .form-group
+            %p Delay in milliseconds between profile views
+            %input(data-bind="value: delay" type="number")/
+            %span
+          .form-group
+            %button.btn.btn-primary.form-control(data-bind="click: start") Start
+          .form-group
+            %button#download.btn.btn-info.form-control(data-bind="click: invokeCSVDownload")
+              Download results
+          .form-group
+            %button#reset.btn.btn-danger.form-control(data-bind="click: reset")
+              Reset
+    #addToQueue.modal.fade
+      .modal-dialogue
+        .modal-content.col-md-6.col-md-offset-3
+          .header
+            .text-center
+              %h2#company-name.text-muted(data-bind="text: companyName")
+          .modal-body
+            %hr
+            %div#content
+              .form-horizontal#options
+                .form-group
+                  %label Title filter
+                  %br/
+                  %input#position-filter.form-control(data-bind="value: titleFilter" placeholder="cp c.o chief lead" type="text")
+                .form-group
+                  %label Email domain
+                  .input-group
+                    %span.input-group-addon @
+                    %input#emailDomain.form-control(data-bind="value: emailDomain" placeholder="domain" type="text")
+                .form-group
+                  .checkbox
+                    %label
+                      %input(data-bind="checked: skipEmailRetrieval" type="checkbox")
+                      Skip email permutation
+            %button#submit.btn.btn-default.form-control(data-bind="click: addToQueue")
+              Add to queue

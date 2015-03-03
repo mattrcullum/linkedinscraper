@@ -1,36 +1,34 @@
-models = ->
-  view = ->
-    return ->
-      companyParam = app.params["company"]
-      companyIDsParam = app.params["companyID"]
+models =
+  view: ->
+    self = this
+    companyParam = app.params["company"]
+    companyIDsParam = app.params["companyID"]
 
-      self = this
+    #variables
+    @delay = app.ko.observable(app.bp.app.settings.delay)
+    @queue = app.ko.observableArray(app.bp.queue)
+    @emailDomain = app.ko.observable(companyParam.toLowerCase() + ".com")
+    @companyName = app.ko.observable(companyParam)
+    @companyIDs = app.ko.observable(companyIDsParam)
+    @titleFilter = app.ko.observable(null)
+    @skipEmailRetrieval = app.ko.observable(false)
+    #functions
+    @addToQueue = app.queue.add
 
-      #functions
-      self.removeFromQueue = (company) ->
-        self.queue.remove company
+    @start = ->
+      app.bp.go()
 
-      self.start = ->
-        app.bp.go()
+    @invokeCSVDownload = ->
+      app.results.invokeCSVDownload()
 
-      self.invokeCSVDownload = ->
-        app.results.invokeCSVDownload()
+    @reset = ->
+      go = confirm("This will clear all results and reset the extension. Proceed?")
+      chrome.runtime.reload()  if go
 
-      self.reset = ->
-        go = confirm("This will clear all results and reset the extension. Proceed?")
-        chrome.runtime.reload()  if go
+    @appendQueue = (item) ->
+      self.queue.push item
 
-      self.appendQueue = (item) ->
-        self.queue.push item
+    @removeFromQueue = (company) ->
+      self.queue.remove(company)
 
-      #variables
-      self.queue = app.ko.observableArray()
-      self.emailDomain = app.ko.observable(companyParam.toLowerCase() + ".com")
-      self.companyName = app.ko.observable(companyParam)
-      self.companyIDs = app.ko.observable(companyIDsParam)
-      self.titleFilter = app.ko.observable(null)
-      self.skipEmailRetrieval = app.ko.observable(false)
-      self.addToQueue = app.queue.add
-      self.delay = app.ko.observable(app.bp.app.settings.delay)
-      true
-  view: view()
+    return this

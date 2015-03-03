@@ -1,14 +1,14 @@
 ###*
 Created by matthew on 2/11/15.
 ###
-urlHelper = ->
+window.urlHelper = ->
   segments = ->
     location.pathname.substr(1).split "/"
   hostName = ->
     location.host.split(".")[1]
   param = (name, link) ->
     href = link or location
-    
+
     # name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
     regex = new RegExp("[\\?&]" + name + "=([^&#]*)")
     results = regex.exec(href.search)
@@ -26,8 +26,9 @@ urlHelper = ->
       params[tmparr[0]] = tmparr[1]
       i++
     params
+  return {
   params: getSearchParameters()
   getParam: param
   segments: segments()
   hostName: hostName()
-
+  }

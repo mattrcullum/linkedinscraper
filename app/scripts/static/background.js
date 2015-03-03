@@ -4,7 +4,7 @@ Created by matthew on 2/12/15.
  */
 
 (function() {
-  var getMissingNames, getProfileData, log, permuteEmails, scraper, urlHelper, validateEmails;
+  var log;
 
   Array.prototype.move = function(from, to) {
     this.splice(to, 0, this.splice(from, 1)[0]);
@@ -33,7 +33,7 @@ Created by matthew on 2/12/15.
   Created by matthew on 2/11/15.
    */
 
-  urlHelper = function() {
+  window.urlHelper = function() {
     var getSearchParameters, hostName, param, segments, transformToArray;
     segments = function() {
       return location.pathname.substr(1).split("/");
@@ -115,7 +115,7 @@ Created by matthew on 2/12/15.
     };
     console.table(queue);
     i = 0;
-    routine = [scraper.start, getProfileData.start, getMissingNames.start, permuteEmails.start, validateEmails.start, nextQueueItem];
+    routine = [scraper().start, getProfileData().start, getMissingNames().start, permuteEmails().start, validateEmails().start, nextQueueItem];
     return nextQueueItem();
   };
 
@@ -151,7 +151,7 @@ Created by matthew on 2/12/15.
   Created by matthew on 1/21/15.
    */
 
-  getMissingNames = function() {
+  window.getMissingNames = function() {
     var createSearchTab, currentPerson, exit, getName, masterCallback, personIndex, searchTab, start;
     start = function(cb) {
       var currentPerson, executeSeries, masterCallback, nextIteration, personIndex, series;
@@ -196,9 +196,10 @@ Created by matthew on 2/12/15.
           url: url
         }, function(tab) {
           var searchTab;
-          searchTab = tab.id;
+          return searchTab = tab.id;
         });
       }
+      return this;
     };
     getName = function(callback) {
       var handleResponse;
@@ -212,6 +213,7 @@ Created by matthew on 2/12/15.
         callback();
       };
       app.callTabAction(searchTab, "getName", handleResponse);
+      return this;
     };
     exit = function() {
       if (searchTab) {
@@ -233,7 +235,7 @@ Created by matthew on 2/12/15.
   Created by matthew on 1/17/15.
    */
 
-  getProfileData = function() {
+  window.getProfileData = function() {
     var createProfileScrapeTab, currentPerson, exit, masterCallback, personIndex, profileScrapeTab, retrieveProfileData, start;
     start = function(cb) {
       var currentPerson, executeSeries, masterCallback, nextIteration, personIndex, series;
@@ -279,6 +281,7 @@ Created by matthew on 2/12/15.
         callback();
       };
       app.callTabAction(profileScrapeTab, "getBasicInfo", handleResponse);
+      return this;
     };
     exit = function() {
       masterCallback();
@@ -302,8 +305,8 @@ Created by matthew on 2/12/15.
   Created by matthew on 1/21/15.
    */
 
-  permuteEmails = function() {
-    var masterCallback, start;
+  window.permuteEmails = function() {
+    var masterCallback, permuteEmails, start;
     start = function(callback) {
       var done, masterCallback;
       done = function() {
@@ -339,6 +342,7 @@ Created by matthew on 2/12/15.
         });
       });
       cb();
+      return this;
     };
     masterCallback = void 0;
     return {
@@ -351,7 +355,7 @@ Created by matthew on 2/12/15.
   Created by matthew on 12/13/14.
    */
 
-  scraper = function() {
+  window.scraper = function() {
     var create_scrapeTab, exit, getProfileLinks, isFinished, limit, masterCallback, running, scrapeTab, start, status;
     start = function(cb) {
       var executeSeries, masterCallback, nextIteration, running, series;
@@ -444,6 +448,7 @@ Created by matthew on 2/12/15.
         }
       };
       app.callTabAction(scrapeTab, "scrapeProfileList", processResults);
+      return this;
     };
     running = false;
     scrapeTab = 0;
@@ -461,7 +466,7 @@ Created by matthew on 2/12/15.
   Created by matthew on 1/22/15.
    */
 
-  validateEmails = function() {
+  window.validateEmails = function() {
     var arrangeEmails, createGmailTab, currentPerson, exit, findCurrentPersonsEmail, gmailInitialLoad, gmailTab, masterCallback, personIndex, start, successfulEmailFormats;
     start = function(cb) {
       var executeSeries, gmailInitialLoad, masterCallback, nextIteration, personIndex, series, successfulEmailFormats;
@@ -569,6 +574,7 @@ Created by matthew on 2/12/15.
       email = void 0;
       series = [composeNewEmail, tryNextVariation, nextIteration];
       nextIteration();
+      return this;
     };
     exit = function() {
       masterCallback();

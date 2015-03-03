@@ -1,7 +1,7 @@
 ###*
 Created by matthew on 1/21/15.
 ###
-getMissingNames = ->
+window.getMissingNames = ->
   start = (cb) ->
     
     # program control
@@ -57,9 +57,7 @@ getMissingNames = ->
         url: url
       , (tab) ->
         searchTab = tab.id
-        return
-
-    return
+    this
   getName = (callback) ->
     handleResponse = (name) ->
       if name and name.first and name.last
@@ -70,7 +68,7 @@ getMissingNames = ->
       callback()
       return
     app.callTabAction searchTab, "getName", handleResponse
-    return
+    this
   exit = ->
     chrome.tabs.remove searchTab  if searchTab
     masterCallback()
@@ -79,4 +77,4 @@ getMissingNames = ->
   searchTab = undefined
   personIndex = undefined
   currentPerson = undefined
-  start: start
+  {start: start}
