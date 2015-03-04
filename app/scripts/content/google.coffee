@@ -1,7 +1,7 @@
 ###*
 Created by matthew on 1/21/15.
 ###
-google = ->
+window.google = ->
   getName = ->
     $results = $(".g:lt(3)")
     name = {}
@@ -20,13 +20,9 @@ google = ->
           first: fName
           last: lName
           full: fullName
-
         false
-
     name or false
-
   isGmailReady = ->
-
   tryEmail = (message, callback) ->
     console.log message, callback
     email = message.email.replace(" ", "")
@@ -63,7 +59,8 @@ google = ->
       return
     ), 1500, callback
     return
-
+  {
   getName: getName
   isGmailReady: isGmailReady
   tryEmail: tryEmail
+  }

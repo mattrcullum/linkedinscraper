@@ -1,11 +1,15 @@
 messageReceived = (message, sender, sendResponse) ->
-  return  unless message.to is "content"
+  return unless message.to is "content"
+
+  linkedin = window.linkedin()
+  google = window.google()
+
   switch message.action
     when "scrapeProfileList"
       results = linkedin.scrapeProfileList()
       sendResponse results
     when "nextPage"
-      results = linkedin.pagination.nextPage()
+      results = linkedin.pagination().nextPage()
       sendResponse results
     when "getBasicInfo"
       results = linkedin.scrapeProfileView()
@@ -36,4 +40,5 @@ messageReceived = (message, sender, sendResponse) ->
     when "tryEmail"
       google.tryEmail message.args, sendResponse
   true
+
 chrome.runtime.onMessage.addListener messageReceived

@@ -6,21 +6,32 @@ Created by matthew on 12/15/14.
 Created by matthew on 1/21/15.
 ###
 window.permuteEmails = ->
+  masterCallback = undefined
+
   start = (callback) ->
+    log('permuting emails') if app.debug?
+
     done = ->
+      log('done permuting emails') if app.debug?
       masterCallback()
-      return
     masterCallback = callback
+
     async.series [
       permuteEmails
       done
     ]
-    return
+
+  convertStringToAscii = (email) ->
+    email
+    .replace /ö/g, "o"
+    .replace /ç/g, "c"
+    .replace /ş/g, "s"
+    .replace /ı/g, "i"
+    .replace /ğ/g, "g"
+    .replace /ü/g, "u"
+    .replace /é/g, "e"
+
   permuteEmails = (cb) ->
-    convertStringToAscii = (email) ->
-      
-      #Convert Characters
-      email.replace(/ö/g, "o").replace(/ç/g, "c").replace(/ş/g, "s").replace(/ı/g, "i").replace(/ğ/g, "g").replace(/ü/g, "u").replace /é/g, "e"
     $.each app.results, (index, resultset) ->
       $.each resultset, (index, person) ->
         person.emailConfirmed = ""
@@ -45,11 +56,5 @@ window.permuteEmails = ->
           ].map((emailAddress) ->
             convertStringToAscii emailAddress + "@" + app.currentCompany.emailDomain
           )
-        return
-
-      return
-
     cb()
-    this
-  masterCallback = undefined
   {start: start}

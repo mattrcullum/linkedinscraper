@@ -42,4 +42,5 @@ add_scrape_button = ->
 path_segments = urlHelper().segments
 first_path_segment = path_segments[0] or null
 host_title = urlHelper().hostName.toLowerCase()
+
 add_scrape_button()  if host_title is "linkedin" and first_path_segment is "company"

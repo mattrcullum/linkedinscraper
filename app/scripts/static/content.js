@@ -4,7 +4,7 @@ Created by matthew on 2/12/15.
  */
 
 (function() {
-  var add_scrape_button, first_path_segment, google, host_title, linkedin, log, messageReceived, path_segments;
+  var add_scrape_button, first_path_segment, host_title, log, messageReceived, path_segments;
 
   Array.prototype.move = function(from, to) {
     this.splice(to, 0, this.splice(from, 1)[0]);
@@ -82,17 +82,19 @@ Created by matthew on 2/12/15.
   };
 
   messageReceived = function(message, sender, sendResponse) {
-    var results, time, waitForSearchResults;
+    var google, linkedin, results, time, waitForSearchResults;
     if (message.to !== "content") {
       return;
     }
+    linkedin = window.linkedin();
+    google = window.google();
     switch (message.action) {
       case "scrapeProfileList":
         results = linkedin.scrapeProfileList();
         sendResponse(results);
         break;
       case "nextPage":
-        results = linkedin.pagination.nextPage();
+        results = linkedin.pagination().nextPage();
         sendResponse(results);
         break;
       case "getBasicInfo":
@@ -136,7 +138,7 @@ Created by matthew on 2/12/15.
   Created by matthew on 1/21/15.
    */
 
-  google = function() {
+  window.google = function() {
     var getName, isGmailReady, tryEmail;
     getName = function() {
       var $results, name;
@@ -218,7 +220,7 @@ Created by matthew on 2/12/15.
   Created by matthew on 1/11/15.
    */
 
-  linkedin = function() {
+  window.linkedin = function() {
     var pagination, scrapeProfileList, scrapeProfileView;
     scrapeProfileList = function() {
       var $peopleDiv, error, results;
@@ -256,11 +258,6 @@ Created by matthew on 2/12/15.
           location: location,
           industry: industry
         };
-        if (fullName === "LinkedIn Member") {
-          person.name = {
-            isHidden: true
-          };
-        }
         results.push(person);
       });
       if (results.length === 0) {

@@ -2,86 +2,92 @@
 Created by matthew on 1/22/15.
 ###
 window.validateEmails = ->
+  masterCallback = undefined
+  gmailTab = undefined
+  currentPerson = undefined
+  personIndex = undefined
+  successfulEmailFormats = undefined
+  gmailInitialLoad = true
+
   start = (cb) ->
-    executeSeries = ->
-      async.series series
-      return
-    
-    # program control
-    nextIteration = ->
-      currentPerson = app.results[app.currentCompanyName][personIndex++]
-      if not currentPerson.name or currentPerson.name.skipPermutation
-        nextIteration()
-      else
-        log currentPerson
-        if status.done or not currentPerson
-          exit()
-        else
-          executeSeries()
-      return
+    log('validating emails') if app.debug?
     gmailInitialLoad = true
     masterCallback = cb
     personIndex = 0
     successfulEmailFormats = []
+
+    nextIteration = ->
+      currentPerson = app.results[app.currentCompanyName][personIndex++]
+      if not currentPerson.name or currentPerson.name.skipPermutation
+        log('skipping person') if app.debug?
+        nextIteration()
+      else
+        if status.done or not currentPerson
+          debugMessage = if status.done then 'exiting because status.done' else 'exiting because currentPerson is ' + currentPerson
+          log(debugMessage) if app.debug?
+          exit()
+        else
+          log('continuing to next person') if app.debug?
+          executeSeries()
+
     series = [
       arrangeEmails
       findCurrentPersonsEmail
       nextIteration
     ]
+
+    executeSeries = ->
+      async.series series
+
     async.series [
       createGmailTab
       nextIteration
     ]
-    return
+
   createGmailTab = (callback) ->
     if gmailTab
       callback()
-      return false
-    chrome.tabs.create
+    chrome.tabs.create(
       url: "https://google.com"
-    , (tab) ->
-      gmailTab = tab.id
-      setTimeout callback, 1000
-      return
+      (tab) ->
+        gmailTab = tab.id
+        setTimeout callback, 1000
+    )
 
-    return
   arrangeEmails = (callback) ->
-    
     # these are the email combinations we permuted in the previous step
     possibleEmails = currentPerson.possibleEmails
-    if possibleEmails
-      if successfulEmailFormats.length
-        $.each successfulEmailFormats.reverse(), (index, item) ->
-          possibleEmails.move item, 0
-          return
-
+    if possibleEmails and successfulEmailFormats.length
+      $.each successfulEmailFormats.reverse(), (index, item) ->
+        possibleEmails.move item, 0
     callback()
-    return
+
   findCurrentPersonsEmail = (callback) ->
+    timeout = (if gmailInitialLoad then 7000 else 800)
+    email = undefined
+    i = 0
+
     composeNewEmail = (composeNewEmailCb) ->
+      log('composing new email') if app.debug?
       waitForLoad = ->
-        console.log "callback in 5s"
         setTimeout composeNewEmailCb, timeout
-        return
-      timeout = (if gmailInitialLoad then 7000 else 800)
-      console.log "compose email"
-      chrome.tabs.update gmailTab,
+      chrome.tabs.update(
+        gmailTab
         url: "https://mail.google.com/mail/u/0/?#inbox?compose=new"
-      , waitForLoad
+        waitForLoad
+      )
       gmailInitialLoad = false
-      return
+
     tryNextVariation = (nextVariationCb) ->
       processResponse = (response) ->
         if response and response.correct
           currentPerson.email = email
           successfulEmailFormats.push i - 1  if successfulEmailFormats.indexOf(i) is -1
         nextVariationCb()
-        return
       app.callTabAction gmailTab, "tryEmail", processResponse,
         email: email
         name: currentPerson.name
 
-      return
     nextIteration = ->
       possibleEmails = currentPerson.possibleEmails
       if possibleEmails
@@ -97,23 +103,15 @@ window.validateEmails = ->
           callback()
       else
         callback()
-      return
-    i = 0
-    email = undefined
+
     series = [
       composeNewEmail
       tryNextVariation
       nextIteration
     ]
+
     nextIteration()
-    this
+
   exit = ->
     masterCallback()
-    return
-  masterCallback = undefined
-  gmailTab = undefined
-  currentPerson = undefined
-  personIndex = undefined
-  successfulEmailFormats = undefined
-  gmailInitialLoad = undefined
   {start: start}

@@ -7,7 +7,6 @@ $(document).ready ->
   app.queue = queue
 
   params = app.params
-  debugger
 
   # background page
   app.bp = chrome.extension.getBackgroundPage() # bp = background page

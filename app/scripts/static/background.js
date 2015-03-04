@@ -90,19 +90,191 @@ Created by matthew on 2/12/15.
     },
     currentCompany: "",
     currentCompanyName: "",
-    results: {}
+    results: {
+      "apple": [
+        {
+          "name": {
+            "first": "John",
+            "last": "Wallace"
+          },
+          "profileLink": "https://www.linkedin.com/profile/view?id=1457210",
+          "headline": "Senior SW Engineering Recruiter at Apple        iOS Apps & Frameworks",
+          "location": "San Francisco Bay Area",
+          "industry": "Internet",
+          "companyName": "Apple",
+          "currentPosition": "Senior Engineering Recruiter - App & Framework Developers for iOS, WebKit, Safari, iPhone & iPad",
+          "pastPositions": ["Yahoo! Inc.", "Sony Computer Entertainment", "ONI Systems Inc. purchased by Ciena Corp. in 2003"],
+          "education": ["Menlo College"],
+          "emailConfirmed": "",
+          "possibleEmails": ["JohnWallace@apple.com", "John.Wallace@apple.com", "JWallace@apple.com", "J.Wallace@apple.com", "WallaceJohn@apple.com", "Wallace.John@apple.com", "John@apple.com", "Wallace@apple.com", "JW@apple.com"]
+        }, {
+          "name": {
+            "first": "Jacob",
+            "last": "Conway"
+          },
+          "profileLink": "https://www.linkedin.com/profile/view?id=1644330",
+          "headline": "Technical Sourcing Recruiter - Wireless Software at Apple",
+          "location": "Greater San Diego Area",
+          "industry": "Staffing and Recruiting",
+          "companyName": "Apple",
+          "currentPosition": "Technical Sourcing Recruiter - Wireless Software",
+          "pastPositions": ["Novatel Wireless", "TalentWar.net, Inc.", "Networked Recruiter"],
+          "education": ["Augustana College (SD)"],
+          "emailConfirmed": "",
+          "possibleEmails": ["JacobConway@apple.com", "Jacob.Conway@apple.com", "JConway@apple.com", "J.Conway@apple.com", "ConwayJacob@apple.com", "Conway.Jacob@apple.com", "Jacob@apple.com", "Conway@apple.com", "JC@apple.com"]
+        }, {
+          "name": {
+            "first": "Bill",
+            "last": "Dudney"
+          },
+          "profileLink": "https://www.linkedin.com/profile/view?id=480284",
+          "headline": "Writer of Code at Apple",
+          "location": "San Francisco Bay Area",
+          "industry": "Computer Software",
+          "companyName": "Apple",
+          "currentPosition": "UIKit Engineer",
+          "pastPositions": ["Apple Inc.", "Dudney.Net", "Virtuas Solutions"],
+          "education": ["Texas A&M University"],
+          "emailConfirmed": "",
+          "possibleEmails": ["BillDudney@apple.com", "Bill.Dudney@apple.com", "BDudney@apple.com", "B.Dudney@apple.com", "DudneyBill@apple.com", "Dudney.Bill@apple.com", "Bill@apple.com", "Dudney@apple.com", "BD@apple.com"]
+        }, {
+          "name": {
+            "first": "Brian",
+            "last": "Temple"
+          },
+          "profileLink": "https://www.linkedin.com/profile/view?id=2674208",
+          "headline": "Building software people love",
+          "location": "Greater Denver Area",
+          "industry": "Computer Software",
+          "companyName": "Apple",
+          "currentPosition": "iOS Engineer",
+          "pastPositions": ["Photobucket", "Wayin", "University of Colorado"],
+          "education": ["University of Colorado Boulder"],
+          "emailConfirmed": "",
+          "possibleEmails": ["BrianTemple@apple.com", "Brian.Temple@apple.com", "BTemple@apple.com", "B.Temple@apple.com", "TempleBrian@apple.com", "Temple.Brian@apple.com", "Brian@apple.com", "Temple@apple.com", "BT@apple.com"]
+        }, {
+          "name": {
+            "first": "Corey",
+            "last": "Carson"
+          },
+          "profileLink": "https://www.linkedin.com/profile/view?id=9816373",
+          "headline": "Systems Engineering Manager at Apple",
+          "location": "Greater Denver Area",
+          "industry": "Information Technology and Services",
+          "companyName": "Apple",
+          "currentPosition": "Systems Engineering Manager",
+          "pastPositions": ["Holcomb's Education Resource", "Maize USD 266"],
+          "education": ["Pittsburg State University"],
+          "emailConfirmed": "",
+          "possibleEmails": ["CoreyCarson@apple.com", "Corey.Carson@apple.com", "CCarson@apple.com", "C.Carson@apple.com", "CarsonCorey@apple.com", "Carson.Corey@apple.com", "Corey@apple.com", "Carson@apple.com", "CC@apple.com"]
+        }, {
+          "name": {
+            "first": "Samantha",
+            "last": "Kish"
+          },
+          "profileLink": "https://www.linkedin.com/profile/view?id=10254966",
+          "headline": "Global Supply Manager - Channel Procurement at Apple",
+          "location": "San Francisco Bay Area",
+          "industry": "Consumer Electronics",
+          "companyName": "Apple",
+          "currentPosition": "Global Supply Manager - Channel Procurement",
+          "pastPositions": ["Apple", "Johns Manville", "Honeywell"],
+          "education": ["University of Colorado at Denver"],
+          "emailConfirmed": "",
+          "possibleEmails": ["SamanthaKish@apple.com", "Samantha.Kish@apple.com", "SKish@apple.com", "S.Kish@apple.com", "KishSamantha@apple.com", "Kish.Samantha@apple.com", "Samantha@apple.com", "Kish@apple.com", "SK@apple.com"]
+        }, {
+          "name": {
+            "first": "Dimitri",
+            "last": "Geier"
+          },
+          "profileLink": "https://www.linkedin.com/profile/view?id=12063296",
+          "headline": "Dimitri Geier is a Senior Software Engineer at Apple",
+          "location": "San Francisco Bay Area",
+          "industry": "Telecommunications",
+          "companyName": "Apple",
+          "currentPosition": "Senior Software Engineer",
+          "pastPositions": ["Motorola", "Nextive Solutions", "Warner Music Group"],
+          "education": ["Universität zu Köln"],
+          "emailConfirmed": "",
+          "possibleEmails": ["DimitriGeier@apple.com", "Dimitri.Geier@apple.com", "DGeier@apple.com", "D.Geier@apple.com", "GeierDimitri@apple.com", "Geier.Dimitri@apple.com", "Dimitri@apple.com", "Geier@apple.com", "DG@apple.com"]
+        }, {
+          "name": {
+            "first": "Matthew",
+            "last": "Gaddis"
+          },
+          "profileLink": "https://www.linkedin.com/profile/view?id=12213953",
+          "headline": "UI Engineering Manager at Apple",
+          "location": "San Francisco Bay Area",
+          "industry": "Internet",
+          "companyName": "Apple",
+          "currentPosition": "UI Engineering Manager",
+          "pastPositions": ["Scout Labs", "PlayCoed", "Self"],
+          "education": ["University of Colorado Boulder"],
+          "emailConfirmed": "",
+          "possibleEmails": ["MatthewGaddis@apple.com", "Matthew.Gaddis@apple.com", "MGaddis@apple.com", "M.Gaddis@apple.com", "GaddisMatthew@apple.com", "Gaddis.Matthew@apple.com", "Matthew@apple.com", "Gaddis@apple.com", "MG@apple.com"]
+        }, {
+          "name": {
+            "first": "Tri",
+            "last": "Vuong"
+          },
+          "profileLink": "https://www.linkedin.com/profile/view?id=14068282",
+          "headline": "Software Engineer at Apple",
+          "location": "San Francisco Bay Area",
+          "industry": "Computer Software",
+          "companyName": "Apple",
+          "currentPosition": "Software Engineer",
+          "pastPositions": ["Twitter", "YP", "Better The World"],
+          "education": ["University of Toronto"],
+          "emailConfirmed": "",
+          "possibleEmails": ["TriVuong@apple.com", "Tri.Vuong@apple.com", "TVuong@apple.com", "T.Vuong@apple.com", "VuongTri@apple.com", "Vuong.Tri@apple.com", "Tri@apple.com", "Vuong@apple.com", "TV@apple.com"]
+        }, {
+          "name": {
+            "first": "Craig",
+            "last": "Bartels"
+          },
+          "profileLink": "https://www.linkedin.com/profile/view?id=15174289",
+          "headline": "Information Security at Apple",
+          "location": "London, United Kingdom",
+          "industry": "Information Technology and Services",
+          "companyName": "Apple",
+          "currentPosition": "Information Security",
+          "pastPositions": ["Apple", "Honeywell", "IBM"],
+          "education": ["University of Oxford"],
+          "emailConfirmed": "",
+          "possibleEmails": ["CraigBartels@apple.com", "Craig.Bartels@apple.com", "CBartels@apple.com", "C.Bartels@apple.com", "BartelsCraig@apple.com", "Bartels.Craig@apple.com", "Craig@apple.com", "Bartels@apple.com", "CB@apple.com"]
+        }
+      ]
+    },
+    debug: true
   };
 
-  window.queue = [];
+  if (app.debug) {
+    app.settings.scraper.limit = 8;
+  }
+
+  window.queue = [
+    {
+      "emailDomain": "apple.com",
+      "companyName": "Apple",
+      "companyID": "162479",
+      "titleFilter": null,
+      "skipEmails": false,
+      "id": "Apple162479"
+    }
+  ];
 
   window.settings = {};
 
   window.go = function() {
     var i, nextQueueItem, routine;
+    i = 0;
+    routine = [validateEmails().start, nextQueueItem];
     nextQueueItem = function() {
       app.currentCompany = queue[i++];
       if (app.currentCompany && app.currentCompany.companyName) {
-        log("starting scrape of" + app.currentCompany.companyName);
+        if (app.debug) {
+          log("Queued " + app.currentCompany.companyName);
+        }
         app.currentCompanyName = app.currentCompany.companyName.replace(/\s+/g, "").replace(/\./g, "").toLowerCase();
         if (!app.results[app.currentCompanyName]) {
           app.results[app.currentCompanyName] = [];
@@ -111,12 +283,12 @@ Created by matthew on 2/12/15.
       } else {
         console.log(app.results);
         alert("Scraping is done! You may now close gmail.");
+        if (app.debug) {
+          return log('Scrape finished');
+        }
       }
     };
-    console.table(queue);
-    i = 0;
-    routine = [scraper().start, getProfileData().start, getMissingNames().start, permuteEmails().start, validateEmails().start, nextQueueItem];
-    return nextQueueItem();
+    nextQueueItem();
   };
 
 
@@ -126,7 +298,7 @@ Created by matthew on 2/12/15.
 
   chrome.runtime.onMessage.addListener(function(message) {
     if (message.action === "openApp") {
-      chrome.tabs.create({
+      return chrome.tabs.create({
         url: message.path
       });
     }
@@ -143,7 +315,7 @@ Created by matthew on 2/12/15.
       action: action,
       args: args
     };
-    chrome.tabs.sendMessage(tabID, message, callback);
+    return chrome.tabs.sendMessage(tabID, message, callback);
   };
 
 
@@ -152,79 +324,97 @@ Created by matthew on 2/12/15.
    */
 
   window.getMissingNames = function() {
-    var createSearchTab, currentPerson, exit, getName, masterCallback, personIndex, searchTab, start;
+    var createSearchTab, currentPerson, exit, getName, masterCallback, personIndex, searchTab, start, status;
+    masterCallback = void 0;
+    searchTab = 0;
+    personIndex = void 0;
+    currentPerson = void 0;
+    status = {
+      done: false
+    };
     start = function(cb) {
-      var currentPerson, executeSeries, masterCallback, nextIteration, personIndex, series;
-      nextIteration = function() {
-        var currentPerson;
-        currentPerson = app.results[app.currentCompanyName][personIndex++];
-        if (status.done || !currentPerson) {
-          exit();
-        } else {
-          if (currentPerson.name.isHidden || !currentPerson.name.last) {
-            executeSeries();
-          } else {
-            nextIteration();
-          }
-        }
-      };
-      executeSeries = function() {
-        async.series(series);
-      };
+      var executeSeries, nextIteration, series;
+      if (app.debug != null) {
+        log('get missing names');
+      }
       masterCallback = cb;
       personIndex = 0;
       currentPerson = true;
+      nextIteration = function() {
+        var debugMessage;
+        currentPerson = app.results[app.currentCompanyName][personIndex++];
+        if (status.done || !currentPerson) {
+          debugMessage = status.done ? 'exiting because status is set to done' : 'exiting because current person is ' + currentPerson;
+          if (app.debug != null) {
+            log(debugMessage);
+          }
+          return exit();
+        } else {
+          if (currentPerson.name.isHidden || !currentPerson.name.last) {
+            return executeSeries();
+          } else {
+            return nextIteration();
+          }
+        }
+      };
       series = [createSearchTab, getName, nextIteration];
-      nextIteration();
+      executeSeries = function() {
+        if (app.debug != null) {
+          log('running program loop for ' + currentPerson.name.first);
+        }
+        return async.series(series);
+      };
+      return nextIteration();
     };
     createSearchTab = function(callback) {
       var searchText, tabUpdated, url;
       if (!(currentPerson || currentPerson.headline || currentPerson.pastPositions || currentPerson.education || currentPerson.currentCompany)) {
-        callback();
-        false;
+        return callback();
       } else {
         tabUpdated = function(tabID, info, tab) {
           if (searchTab === tabID && info.status === "complete") {
             chrome.tabs.onUpdated.removeListener(tabUpdated);
-            callback();
+            return callback();
           }
         };
         searchText = "site:linkedin.com " + (currentPerson.name.first ? currentPerson.name.first + " " : "") + (currentPerson.name.last ? currentPerson.name.last + " " : "") + currentPerson.headline + " ";
         url = "http://google.com" + "#q=" + searchText;
         chrome.tabs.onUpdated.addListener(tabUpdated);
-        chrome.tabs.create({
+        return chrome.tabs.create({
           url: url
         }, function(tab) {
-          var searchTab;
           return searchTab = tab.id;
         });
       }
-      return this;
     };
     getName = function(callback) {
       var handleResponse;
       handleResponse = function(name) {
+        if (app.debug != null) {
+          log('handling response from content script');
+        }
         if (name && name.first && name.last) {
           currentPerson.name = name;
         } else {
           currentPerson.name.skipPermutation = true;
         }
         chrome.tabs.remove(searchTab);
-        callback();
+        return callback();
       };
-      app.callTabAction(searchTab, "getName", handleResponse);
-      return this;
+      if (app.debug != null) {
+        log('asking content script for missing name');
+      }
+      return app.callTabAction(searchTab, "getName", handleResponse);
     };
     exit = function() {
+      if (app.debug != null) {
+        log('get missing names done. now exiting');
+      }
       if (searchTab) {
         chrome.tabs.remove(searchTab);
       }
-      masterCallback();
+      return masterCallback();
     };
-    masterCallback = void 0;
-    searchTab = void 0;
-    personIndex = void 0;
-    currentPerson = void 0;
     return {
       start: start
     };
@@ -236,60 +426,78 @@ Created by matthew on 2/12/15.
    */
 
   window.getProfileData = function() {
-    var createProfileScrapeTab, currentPerson, exit, masterCallback, personIndex, profileScrapeTab, retrieveProfileData, start;
+    var createProfileScrapeTab, currentPerson, exit, masterCallback, personIndex, profileScrapeTab, retrieveProfileData, start, status;
+    masterCallback = false;
+    currentPerson = false;
+    personIndex = false;
+    profileScrapeTab = false;
+    status = {};
     start = function(cb) {
-      var currentPerson, executeSeries, masterCallback, nextIteration, personIndex, series;
-      nextIteration = function() {
-        var currentPerson;
-        currentPerson = app.results[app.currentCompanyName][personIndex++];
-        if (status.done || !currentPerson) {
-          exit();
-        } else {
-          executeSeries();
-        }
-      };
-      executeSeries = function() {
-        async.series(series);
-      };
+      var nextIteration, series;
+      if (app.debug != null) {
+        log('getting profile data');
+      }
       masterCallback = cb;
       personIndex = 0;
       currentPerson = true;
+      nextIteration = function() {
+        if (app.debug != null) {
+          log('going to next person');
+        }
+        currentPerson = app.results[app.currentCompanyName][personIndex++];
+        if (status.done || !currentPerson) {
+          if (app.debug != null) {
+            log('exiting because current person was nil');
+          }
+          return exit();
+        } else {
+          return async.series(series);
+        }
+      };
       series = [createProfileScrapeTab, retrieveProfileData, nextIteration];
-      nextIteration();
+      return nextIteration();
     };
     createProfileScrapeTab = function(callback) {
-      chrome.tabs.create({
+      if (app.debug != null) {
+        log('creating profile view tab');
+      }
+      return chrome.tabs.create({
         url: currentPerson.profileLink
       }, function(tab) {
-        var profileScrapeTab, tabUpdated;
+        var tabUpdated;
         tabUpdated = function(tabID, changeInfo, tab) {
           if (tabID === profileScrapeTab && changeInfo.status === "complete") {
+            if (app.debug != null) {
+              log('tab done loading. Callback after delay');
+            }
             chrome.tabs.onUpdated.removeListener(tabUpdated);
-            setTimeout(callback, app.settings.delay);
-            log(app.settings.delay);
+            return setTimeout(callback, app.settings.delay);
           }
         };
         profileScrapeTab = tab.id;
-        chrome.tabs.onUpdated.addListener(tabUpdated);
+        return chrome.tabs.onUpdated.addListener(tabUpdated);
       });
     };
     retrieveProfileData = function(callback) {
       var handleResponse;
+      if (app.debug != null) {
+        log('Asking content script for profile data');
+      }
       handleResponse = function(response) {
+        if (app.debug != null) {
+          log('Response received from content script');
+        }
         $.extend(currentPerson, response);
-        chrome.tabs.remove(profileScrapeTab);
-        callback();
+        return chrome.tabs.remove(profileScrapeTab, function() {
+          log('Done with profile retrieval');
+          return callback();
+        });
       };
-      app.callTabAction(profileScrapeTab, "getBasicInfo", handleResponse);
-      return this;
+      return app.callTabAction(profileScrapeTab, "getBasicInfo", handleResponse);
     };
     exit = function() {
-      masterCallback();
+      return masterCallback();
     };
-    masterCallback = void 0;
-    currentPerson = void 0;
-    personIndex = void 0;
-    profileScrapeTab = void 0;
     return {
       start: start
     };
@@ -306,22 +514,28 @@ Created by matthew on 2/12/15.
    */
 
   window.permuteEmails = function() {
-    var masterCallback, permuteEmails, start;
+    var convertStringToAscii, masterCallback, permuteEmails, start;
+    masterCallback = void 0;
     start = function(callback) {
-      var done, masterCallback;
+      var done;
+      if (app.debug != null) {
+        log('permuting emails');
+      }
       done = function() {
-        masterCallback();
+        if (app.debug != null) {
+          log('done permuting emails');
+        }
+        return masterCallback();
       };
       masterCallback = callback;
-      async.series([permuteEmails, done]);
+      return async.series([permuteEmails, done]);
+    };
+    convertStringToAscii = function(email) {
+      return email.replace(/ö/g, "o").replace(/ç/g, "c").replace(/ş/g, "s").replace(/ı/g, "i").replace(/ğ/g, "g").replace(/ü/g, "u").replace(/é/g, "e");
     };
     permuteEmails = function(cb) {
-      var convertStringToAscii;
-      convertStringToAscii = function(email) {
-        return email.replace(/ö/g, "o").replace(/ç/g, "c").replace(/ş/g, "s").replace(/ı/g, "i").replace(/ğ/g, "g").replace(/ü/g, "u").replace(/é/g, "e");
-      };
       $.each(app.results, function(index, resultset) {
-        $.each(resultset, function(index, person) {
+        return $.each(resultset, function(index, person) {
           var err, initial, name;
           person.emailConfirmed = "";
           name = person.name;
@@ -335,16 +549,14 @@ Created by matthew on 2/12/15.
               err = _error;
               console.error(err);
             }
-            person.possibleEmails = [name.first + name.last, name.first + "." + name.last, initial.first + name.last, initial.first + "." + name.last, name.last + name.first, name.last + "." + name.first, name.first, name.last, initial.first + initial.last].map(function(emailAddress) {
+            return person.possibleEmails = [name.first + name.last, name.first + "." + name.last, initial.first + name.last, initial.first + "." + name.last, name.last + name.first, name.last + "." + name.first, name.first, name.last, initial.first + initial.last].map(function(emailAddress) {
               return convertStringToAscii(emailAddress + "@" + app.currentCompany.emailDomain);
             });
           }
         });
       });
-      cb();
-      return this;
+      return cb();
     };
-    masterCallback = void 0;
     return {
       start: start
     };
@@ -357,57 +569,71 @@ Created by matthew on 2/12/15.
 
   window.scraper = function() {
     var create_scrapeTab, exit, getProfileLinks, isFinished, limit, masterCallback, running, scrapeTab, start, status;
+    running = false;
+    scrapeTab = 0;
+    masterCallback = void 0;
+    isFinished = false;
+    status = {};
+    limit = app.settings.scraper.limit;
     start = function(cb) {
-      var executeSeries, masterCallback, nextIteration, running, series;
-      executeSeries = function() {
-        async.series(series);
-      };
-      nextIteration = function() {
-        if (status.done) {
-          exit();
-        } else {
-          executeSeries();
-        }
-      };
+      var nextIteration, series;
       running = true;
       masterCallback = cb;
-      series = [getProfileLinks, nextIteration];
-      async.series([create_scrapeTab, executeSeries]);
+      nextIteration = function() {
+        if (status.done) {
+          return exit();
+        } else {
+          return series.execute();
+        }
+      };
+      series = {
+        funcs: [getProfileLinks, nextIteration],
+        execute: function() {
+          return async.series(series['funcs']);
+        }
+      };
+      return async.series([create_scrapeTab, series.execute]);
     };
     exit = function() {
-      var isFinished, scrapeTab;
-      if (scrapeTab) {
-        chrome.tabs.remove(scrapeTab);
+      if (app.debug) {
+        log('leaving scrape function');
       }
-      scrapeTab = false;
-      isFinished = true;
-      masterCallback();
+      if (scrapeTab) {
+        return chrome.tabs.remove(scrapeTab, function() {
+          scrapeTab = false;
+          isFinished = true;
+          return masterCallback();
+        });
+      }
     };
     create_scrapeTab = function(callback) {
       var onTabLoad, titleFilter, url;
-      onTabLoad = function(tabId, info) {
-        if (info.status === "complete" && tabId === scrapeTab) {
-          chrome.tabs.onUpdated.removeListener(onTabLoad);
-          callback();
-        }
-      };
-      if (scrapeTab) {
-        callback();
-        return;
+      if (app.debug) {
+        log('create scrape tab');
       }
-      titleFilter = app.currentCompany.titleFilter;
-      url = "http://linkedin.com/" + "vsearch/p" + "?f_CC=" + app.currentCompany.companyID + (titleFilter ? "&title=" + titleFilter : "") + "&openAdvancedForm=true" + "&titleScope=C&locationType=I" + "&orig=MDYS";
-      chrome.tabs.create({
-        url: url
-      }, function(tab) {
-        var scrapeTab;
-        scrapeTab = tab.id;
-        chrome.tabs.onUpdated.addListener(onTabLoad);
-      });
+      if (scrapeTab) {
+        return callback();
+      } else {
+        titleFilter = app.currentCompany.titleFilter;
+        url = "http://linkedin.com/" + "vsearch/p" + "?f_CC=" + app.currentCompany.companyID + (titleFilter ? "&title=" + titleFilter : "") + "&openAdvancedForm=true" + "&titleScope=C&locationType=I" + "&orig=MDYS";
+        onTabLoad = function(tabId, info) {
+          if (info.status === "complete" && tabId === scrapeTab) {
+            chrome.tabs.onUpdated.removeListener(onTabLoad);
+            return callback();
+          }
+        };
+        return chrome.tabs.create({
+          url: url
+        }, function(tab) {
+          scrapeTab = tab.id;
+          return chrome.tabs.onUpdated.addListener(onTabLoad);
+        });
+      }
     };
     getProfileLinks = function(callback) {
       var processResults;
       processResults = function(response) {
+        var pageChange;
         if (!response || response.error) {
           console.error(chrome.runtime.lastError);
           console.error("Response for processLinkBatch is:" + response.error);
@@ -421,41 +647,30 @@ Created by matthew on 2/12/15.
         }
         if (app.results[app.currentCompanyName].length >= limit) {
           status.done = true;
-          callback();
-          return false;
-        }
-        if (!response.hasNextPage) {
-          status.done = true;
-          callback();
-          false;
+          return callback();
         } else {
-          chrome.tabs.update({
-            url: "http://" + response.nextPage
-          }, function() {
-            var pageChange;
+          if (!response.hasNextPage) {
+            status.done = true;
+            return callback();
+          } else {
             pageChange = function(tabId, info, tab) {
               var url;
               url = tab.url;
               if ((url != null) && tabId === scrapeTab && info.status === "complete") {
                 chrome.tabs.onUpdated.removeListener(pageChange);
-                setTimeout((function(callback) {
-                  callback();
-                }), 2000, callback);
+                return setTimeout(callback, 2000);
               }
             };
-            chrome.tabs.onUpdated.addListener(pageChange);
-          });
+            return chrome.tabs.update({
+              url: "http://" + response.nextPage
+            }, function(response) {
+              return chrome.tabs.onUpdated.addListener(pageChange);
+            });
+          }
         }
       };
-      app.callTabAction(scrapeTab, "scrapeProfileList", processResults);
-      return this;
+      return app.callTabAction(scrapeTab, "scrapeProfileList", processResults);
     };
-    running = false;
-    scrapeTab = 0;
-    masterCallback = void 0;
-    isFinished = false;
-    status = {};
-    limit = app.settings.scraper.limit;
     return {
       start: start
     };
@@ -468,71 +683,88 @@ Created by matthew on 2/12/15.
 
   window.validateEmails = function() {
     var arrangeEmails, createGmailTab, currentPerson, exit, findCurrentPersonsEmail, gmailInitialLoad, gmailTab, masterCallback, personIndex, start, successfulEmailFormats;
+    masterCallback = void 0;
+    gmailTab = void 0;
+    currentPerson = void 0;
+    personIndex = void 0;
+    successfulEmailFormats = void 0;
+    gmailInitialLoad = true;
     start = function(cb) {
-      var executeSeries, gmailInitialLoad, masterCallback, nextIteration, personIndex, series, successfulEmailFormats;
-      executeSeries = function() {
-        async.series(series);
-      };
-      nextIteration = function() {
-        var currentPerson;
-        currentPerson = app.results[app.currentCompanyName][personIndex++];
-        if (!currentPerson.name || currentPerson.name.skipPermutation) {
-          nextIteration();
-        } else {
-          log(currentPerson);
-          if (status.done || !currentPerson) {
-            exit();
-          } else {
-            executeSeries();
-          }
-        }
-      };
+      var executeSeries, nextIteration, series;
+      if (app.debug != null) {
+        log('validating emails');
+      }
       gmailInitialLoad = true;
       masterCallback = cb;
       personIndex = 0;
       successfulEmailFormats = [];
+      nextIteration = function() {
+        var debugMessage;
+        currentPerson = app.results[app.currentCompanyName][personIndex++];
+        if (!currentPerson.name || currentPerson.name.skipPermutation) {
+          if (app.debug != null) {
+            log('skipping person');
+          }
+          return nextIteration();
+        } else {
+          if (status.done || !currentPerson) {
+            debugMessage = status.done ? 'exiting because status.done' : 'exiting because currentPerson is ' + currentPerson;
+            if (app.debug != null) {
+              log(debugMessage);
+            }
+            return exit();
+          } else {
+            if (app.debug != null) {
+              log('continuing to next person');
+            }
+            return executeSeries();
+          }
+        }
+      };
       series = [arrangeEmails, findCurrentPersonsEmail, nextIteration];
-      async.series([createGmailTab, nextIteration]);
+      executeSeries = function() {
+        return async.series(series);
+      };
+      return async.series([createGmailTab, nextIteration]);
     };
     createGmailTab = function(callback) {
       if (gmailTab) {
         callback();
-        return false;
       }
-      chrome.tabs.create({
+      return chrome.tabs.create({
         url: "https://google.com"
       }, function(tab) {
-        var gmailTab;
         gmailTab = tab.id;
-        setTimeout(callback, 1000);
+        return setTimeout(callback, 1000);
       });
     };
     arrangeEmails = function(callback) {
       var possibleEmails;
       possibleEmails = currentPerson.possibleEmails;
-      if (possibleEmails) {
-        if (successfulEmailFormats.length) {
-          $.each(successfulEmailFormats.reverse(), function(index, item) {
-            possibleEmails.move(item, 0);
-          });
-        }
+      if (possibleEmails && successfulEmailFormats.length) {
+        $.each(successfulEmailFormats.reverse(), function(index, item) {
+          return possibleEmails.move(item, 0);
+        });
       }
-      callback();
+      return callback();
     };
     findCurrentPersonsEmail = function(callback) {
-      var composeNewEmail, email, i, nextIteration, series, tryNextVariation;
+      var composeNewEmail, email, i, nextIteration, series, timeout, tryNextVariation;
+      timeout = (gmailInitialLoad ? 7000 : 800);
+      email = void 0;
+      i = 0;
       composeNewEmail = function(composeNewEmailCb) {
-        var gmailInitialLoad, timeout, waitForLoad;
+        var waitForLoad;
+        if (app.debug != null) {
+          log('composing new email');
+        }
         waitForLoad = function() {
-          console.log("callback in 5s");
-          setTimeout(composeNewEmailCb, timeout);
+          return setTimeout(composeNewEmailCb, timeout);
         };
-        timeout = (gmailInitialLoad ? 7000 : 800);
-        console.log("compose email");
         chrome.tabs.update(gmailTab, {
           url: "https://mail.google.com/mail/u/0/?#inbox?compose=new"
         }, waitForLoad);
-        gmailInitialLoad = false;
+        return gmailInitialLoad = false;
       };
       tryNextVariation = function(nextVariationCb) {
         var processResponse;
@@ -543,20 +775,20 @@ Created by matthew on 2/12/15.
               successfulEmailFormats.push(i - 1);
             }
           }
-          nextVariationCb();
+          return nextVariationCb();
         };
-        app.callTabAction(gmailTab, "tryEmail", processResponse, {
+        return app.callTabAction(gmailTab, "tryEmail", processResponse, {
           email: email,
           name: currentPerson.name
         });
       };
       nextIteration = function() {
-        var email, possibleEmails;
+        var possibleEmails;
         possibleEmails = currentPerson.possibleEmails;
         if (possibleEmails) {
           email = currentPerson.possibleEmails[i++];
           if (email && !currentPerson.email) {
-            async.series(series);
+            return async.series(series);
           } else {
             if (!currentPerson.email) {
               currentPerson.email = possibleEmails[successfulEmailFormats[0] || 0];
@@ -564,27 +796,18 @@ Created by matthew on 2/12/15.
             } else {
               currentPerson.emailConfirmed = "yes";
             }
-            callback();
+            return callback();
           }
         } else {
-          callback();
+          return callback();
         }
       };
-      i = 0;
-      email = void 0;
       series = [composeNewEmail, tryNextVariation, nextIteration];
-      nextIteration();
-      return this;
+      return nextIteration();
     };
     exit = function() {
-      masterCallback();
+      return masterCallback();
     };
-    masterCallback = void 0;
-    gmailTab = void 0;
-    currentPerson = void 0;
-    personIndex = void 0;
-    successfulEmailFormats = void 0;
-    gmailInitialLoad = void 0;
     return {
       start: start
     };

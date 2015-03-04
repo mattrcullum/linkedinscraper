@@ -2,72 +2,66 @@
 Created by matthew on 1/17/15.
 ###
 window.getProfileData = ->
+  masterCallback = false
+  currentPerson = false
+  personIndex = false
+  profileScrapeTab = false
+  status = {}
+
   start = (cb) ->
-    
-    # program control
-    nextIteration = ->
-      currentPerson = app.results[app.currentCompanyName][personIndex++]
-      if status.done or not currentPerson
-        exit()
-      else
-        executeSeries()
-      return
-    
-    # execute series after a one-time function call
-    #async.series([
-    #         init,
-    #         executeSeries
-    #         ]
-    #         );
-    executeSeries = ->
-      async.series series
-      return
+    log('getting profile data') if app.debug?
     masterCallback = cb
     personIndex = 0
     currentPerson = true
+
+    nextIteration = ->
+      log('going to next person') if app.debug?
+      currentPerson = app.results[app.currentCompanyName][personIndex++]
+      if status.done or not currentPerson
+        log('exiting because current person was nil') if app.debug?
+        exit()
+      else
+        async.series series
+
     series = [
-      createProfileScrapeTab
-      retrieveProfileData
+      createProfileScrapeTab,
+      retrieveProfileData,
       nextIteration
     ]
-    nextIteration()
-    return
-  createProfileScrapeTab = (callback) ->
-    
-    # create the tab with link argument
-    chrome.tabs.create
-      url: currentPerson.profileLink
-    , (tab) ->
-      tabUpdated = (tabID, changeInfo, tab) ->
-        if tabID is profileScrapeTab and changeInfo.status is "complete"
-          chrome.tabs.onUpdated.removeListener tabUpdated
-          setTimeout callback, app.settings.delay
-          log app.settings.delay
-        return
-      profileScrapeTab = tab.id
-      chrome.tabs.onUpdated.addListener tabUpdated
-      return
 
-    return
+    nextIteration()
+
+  createProfileScrapeTab = (callback) ->
+    log('creating profile view tab') if app.debug?
+    chrome.tabs.create(
+      url: currentPerson.profileLink,
+      (tab) ->
+        tabUpdated = (tabID, changeInfo, tab) ->
+          if tabID is profileScrapeTab and changeInfo.status is "complete"
+            log('tab done loading. Callback after delay') if app.debug?
+            chrome.tabs.onUpdated.removeListener tabUpdated
+            setTimeout callback, app.settings.delay
+        profileScrapeTab = tab.id
+        chrome.tabs.onUpdated.addListener tabUpdated
+    )
   retrieveProfileData = (callback) ->
-    
+    log('Asking content script for profile data') if app.debug?
     # get the required data from the tab
     handleResponse = (response) ->
+      log('Response received from content script') if app.debug?
       $.extend currentPerson, response
-      
+
       # we're done with the tab. remove it
-      chrome.tabs.remove profileScrapeTab
-      callback()
-      return
+      chrome.tabs.remove(
+        profileScrapeTab
+        ->
+          log('Done with profile retrieval')
+          callback()
+      )
+
     app.callTabAction profileScrapeTab, "getBasicInfo", handleResponse
-    this
-  
+
   # releases program control back to calling function
   exit = ->
     masterCallback()
-    return
-  masterCallback = undefined
-  currentPerson = undefined
-  personIndex = undefined
-  profileScrapeTab = undefined
   {start: start}

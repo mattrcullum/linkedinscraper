@@ -89,7 +89,6 @@ Created by matthew on 2/12/15.
     app.params = url.params;
     app.queue = queue;
     params = app.params;
-    debugger;
     app.bp = chrome.extension.getBackgroundPage();
     app.ko = ko;
     app.viewModel = models.view();

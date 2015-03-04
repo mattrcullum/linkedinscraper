@@ -9,7 +9,9 @@ var concat = require('gulp-concat');
 var coffee = require('gulp-coffee');
 var haml = require('gulp-haml');
 
-var scripts = ['app/scripts/content/*', 'app/scripts/background/*', 'app/scripts/app/*', 'app/views/*', 'app/scripts/helpers/*'];
+var scripts = ['app/scripts/content/*', 'app/scripts/background/*', 'app/scripts/app/*', 'app/scripts/helpers/*'];
+var views = ['app/views/*'];
+
 var mainFiles = ['app/scripts/content/content.js', 'app/scripts/background/background.js', 'app/scripts/app/app.js'];
 
 gulp.task('concat', function () {
@@ -62,7 +64,8 @@ gulp.task('js2coffee', function () {
 
 
 gulp.task('watch', function () {
-    gulp.watch(scripts, ['concat', 'haml'])
+    gulp.watch(scripts, ['concat']);
+    gulp.watch(views, ['haml']);
 });
 
 gulp.task('default', ['concat', 'haml', 'watch']);
