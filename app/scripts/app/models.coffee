@@ -19,7 +19,7 @@ models =
       app.bp.go()
 
     @invokeCSVDownload = ->
-      app.results.invokeCSVDownload()
+      app.results().invokeCSVDownload()
 
     @reset = ->
       go = confirm("This will clear all results and reset the extension. Proceed?")

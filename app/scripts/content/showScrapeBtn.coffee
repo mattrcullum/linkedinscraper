@@ -2,7 +2,7 @@
 Created by matthew on 12/12/14.
 ###
 add_scrape_button = ->
-  
+  urlHelper = window.urlHelper()
   # $employeesLinkHref contains relevant company IDs.
   link_containing_company_IDs = $(".how-connected .stats li .density")[0]
   

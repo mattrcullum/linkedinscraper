@@ -7,7 +7,7 @@ Created by matthew on 2/12/15.
   var add_scrape_button, first_path_segment, host_title, log, messageReceived, path_segments;
 
   Array.prototype.move = function(from, to) {
-    this.splice(to, 0, this.splice(from, 1)[0]);
+    return this.splice(to, 0, this.splice(from, 1)[0]);
   };
 
 
@@ -313,7 +313,8 @@ Created by matthew on 2/12/15.
    */
 
   add_scrape_button = function() {
-    var $follow_button, $scrape_btn, $scrape_btn_container, companyIDs, companyName, link_containing_company_IDs;
+    var $follow_button, $scrape_btn, $scrape_btn_container, companyIDs, companyName, link_containing_company_IDs, urlHelper;
+    urlHelper = window.urlHelper();
     link_containing_company_IDs = $(".how-connected .stats li .density")[0];
     companyIDs = urlHelper.getParam("f_CC", link_containing_company_IDs);
     companyName = $("span[itemprop=\"name\"]").text();

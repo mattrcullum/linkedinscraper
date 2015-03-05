@@ -7,7 +7,7 @@ Created by matthew on 2/12/15.
   var app, log, models, queue;
 
   Array.prototype.move = function(from, to) {
-    this.splice(to, 0, this.splice(from, 1)[0]);
+    return this.splice(to, 0, this.splice(from, 1)[0]);
   };
 
 
@@ -122,7 +122,7 @@ Created by matthew on 2/12/15.
         return app.bp.go();
       };
       this.invokeCSVDownload = function() {
-        return app.results.invokeCSVDownload();
+        return app.results().invokeCSVDownload();
       };
       this.reset = function() {
         var go;
@@ -184,23 +184,23 @@ Created by matthew on 2/12/15.
       companies = app.bp.app.results;
       csv = "FirstName,LastName,Title,Company,Email,Email Confirmed,Profile URL\n";
       $.each(companies, function(index, company) {
-        $.each(company, function(index, person) {
+        return $.each(company, function(index, person) {
           var dataString;
           dataString = [person.name.first || "", person.name.last || "", person.currentPosition || "", person.companyName, person.email || "", person.emailConfirmed, person.profileLink].map(function(item) {
             return "\"" + item + "\"";
           });
           dataString = dataString.join(",");
-          csv += dataString + "\n";
+          return csv += dataString + "\n";
         });
       });
       name = "";
       $.each(companies, function(index, item) {
-        name += item[0].companyName;
+        return name += item[0].companyName;
       });
       pom = document.createElement("a");
       pom.setAttribute("href", "data:text/csv;charset=utf-8," + encodeURIComponent(csv));
       pom.setAttribute("download", name + "Employees.csv");
-      pom.click();
+      return pom.click();
     };
     return {
       invokeCSVDownload: invokeCSVDownload

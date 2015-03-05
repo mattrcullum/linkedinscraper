@@ -19,21 +19,17 @@ app.results = ->
           "\"" + item + "\""
         )
         dataString = dataString.join(",")
-        
+
         #csv += index < companies[(companies.length-1)].length ? dataString + "\n" : dataString;
         csv += dataString + "\n"
-        return
-
-      return
-
     name = ""
     $.each companies, (index, item) ->
       name += item[0].companyName
-      return
 
     pom = document.createElement("a")
     pom.setAttribute "href", "data:text/csv;charset=utf-8," + encodeURIComponent(csv)
     pom.setAttribute "download", name + "Employees.csv"
     pom.click()
-    return
+  {
   invokeCSVDownload: invokeCSVDownload
+  }

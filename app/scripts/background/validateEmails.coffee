@@ -6,26 +6,26 @@ window.validateEmails = ->
   gmailTab = undefined
   currentPerson = undefined
   personIndex = undefined
-  successfulEmailFormats = undefined
   gmailInitialLoad = true
+  currentCompany = false
 
   start = (cb) ->
     log('validating emails') if app.debug?
     gmailInitialLoad = true
     masterCallback = cb
     personIndex = 0
-    successfulEmailFormats = []
+    currentCompany = app.currentCompany
 
     nextIteration = ->
       currentPerson = app.results[app.currentCompanyName][personIndex++]
-      if not currentPerson.name or currentPerson.name.skipPermutation
-        log('skipping person') if app.debug?
-        nextIteration()
+      if status.done or not currentPerson
+        debugMessage = if status.done then 'exiting because status.done' else 'exiting because currentPerson is ' + currentPerson
+        log(debugMessage) if app.debug?
+        exit()
       else
-        if status.done or not currentPerson
-          debugMessage = if status.done then 'exiting because status.done' else 'exiting because currentPerson is ' + currentPerson
-          log(debugMessage) if app.debug?
-          exit()
+        if not currentPerson.name or currentPerson.name.skipPermutation
+          log('skipping person') if app.debug?
+          nextIteration()
         else
           log('continuing to next person') if app.debug?
           executeSeries()
@@ -55,20 +55,27 @@ window.validateEmails = ->
     )
 
   arrangeEmails = (callback) ->
-    # these are the email combinations we permuted in the previous step
+    emailHits = currentCompany.emailFormatHits
     possibleEmails = currentPerson.possibleEmails
-    if possibleEmails and successfulEmailFormats.length
-      $.each successfulEmailFormats.reverse(), (index, item) ->
-        possibleEmails.move item, 0
+
+    if emailHits.length
+      sorted = emailHits.sort(
+        (a, b)->
+          b.count - a.count
+      )
+
+      $.each sorted, (index, item) ->
+        possibleEmails.move item.id, 0
+
     callback()
 
   findCurrentPersonsEmail = (callback) ->
-    timeout = (if gmailInitialLoad then 7000 else 800)
     email = undefined
     i = 0
 
     composeNewEmail = (composeNewEmailCb) ->
-      log('composing new email') if app.debug?
+      timeout = (if gmailInitialLoad then 7000 else 800)
+      log('composing new email' + timeout) if app.debug?
       waitForLoad = ->
         setTimeout composeNewEmailCb, timeout
       chrome.tabs.update(
@@ -76,13 +83,23 @@ window.validateEmails = ->
         url: "https://mail.google.com/mail/u/0/?#inbox?compose=new"
         waitForLoad
       )
+
       gmailInitialLoad = false
 
     tryNextVariation = (nextVariationCb) ->
       processResponse = (response) ->
         if response and response.correct
           currentPerson.email = email
-          successfulEmailFormats.push i - 1  if successfulEmailFormats.indexOf(i) is -1
+          currentPerson.emailConfirmed = "yes"
+
+          hitFound = false;
+          $.each app.currentCompany.emailFormatHits, (index, item)->
+            if item.id is i - 1
+              item.count += 1
+              hitFound = true
+          if !hitFound
+            app.currentCompany.emailFormatHits.push({id: i - 1, count: 1})
+
         nextVariationCb()
       app.callTabAction gmailTab, "tryEmail", processResponse,
         email: email
@@ -93,13 +110,9 @@ window.validateEmails = ->
       if possibleEmails
         email = currentPerson.possibleEmails[i++]
         if email and not currentPerson.email
+          log('trying next possible email '+currentPerson.email) if app.debug?
           async.series series
         else
-          unless currentPerson.email
-            currentPerson.email = possibleEmails[successfulEmailFormats[0] or 0]
-            currentPerson.emailConfirmed = ""
-          else
-            currentPerson.emailConfirmed = "yes"
           callback()
       else
         callback()

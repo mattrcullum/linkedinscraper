@@ -7,7 +7,7 @@ Created by matthew on 2/12/15.
   var log;
 
   Array.prototype.move = function(from, to) {
-    this.splice(to, 0, this.splice(from, 1)[0]);
+    return this.splice(to, 0, this.splice(from, 1)[0]);
   };
 
 
@@ -90,161 +90,7 @@ Created by matthew on 2/12/15.
     },
     currentCompany: "",
     currentCompanyName: "",
-    results: {
-      "apple": [
-        {
-          "name": {
-            "first": "John",
-            "last": "Wallace"
-          },
-          "profileLink": "https://www.linkedin.com/profile/view?id=1457210",
-          "headline": "Senior SW Engineering Recruiter at Apple        iOS Apps & Frameworks",
-          "location": "San Francisco Bay Area",
-          "industry": "Internet",
-          "companyName": "Apple",
-          "currentPosition": "Senior Engineering Recruiter - App & Framework Developers for iOS, WebKit, Safari, iPhone & iPad",
-          "pastPositions": ["Yahoo! Inc.", "Sony Computer Entertainment", "ONI Systems Inc. purchased by Ciena Corp. in 2003"],
-          "education": ["Menlo College"],
-          "emailConfirmed": "",
-          "possibleEmails": ["JohnWallace@apple.com", "John.Wallace@apple.com", "JWallace@apple.com", "J.Wallace@apple.com", "WallaceJohn@apple.com", "Wallace.John@apple.com", "John@apple.com", "Wallace@apple.com", "JW@apple.com"]
-        }, {
-          "name": {
-            "first": "Jacob",
-            "last": "Conway"
-          },
-          "profileLink": "https://www.linkedin.com/profile/view?id=1644330",
-          "headline": "Technical Sourcing Recruiter - Wireless Software at Apple",
-          "location": "Greater San Diego Area",
-          "industry": "Staffing and Recruiting",
-          "companyName": "Apple",
-          "currentPosition": "Technical Sourcing Recruiter - Wireless Software",
-          "pastPositions": ["Novatel Wireless", "TalentWar.net, Inc.", "Networked Recruiter"],
-          "education": ["Augustana College (SD)"],
-          "emailConfirmed": "",
-          "possibleEmails": ["JacobConway@apple.com", "Jacob.Conway@apple.com", "JConway@apple.com", "J.Conway@apple.com", "ConwayJacob@apple.com", "Conway.Jacob@apple.com", "Jacob@apple.com", "Conway@apple.com", "JC@apple.com"]
-        }, {
-          "name": {
-            "first": "Bill",
-            "last": "Dudney"
-          },
-          "profileLink": "https://www.linkedin.com/profile/view?id=480284",
-          "headline": "Writer of Code at Apple",
-          "location": "San Francisco Bay Area",
-          "industry": "Computer Software",
-          "companyName": "Apple",
-          "currentPosition": "UIKit Engineer",
-          "pastPositions": ["Apple Inc.", "Dudney.Net", "Virtuas Solutions"],
-          "education": ["Texas A&M University"],
-          "emailConfirmed": "",
-          "possibleEmails": ["BillDudney@apple.com", "Bill.Dudney@apple.com", "BDudney@apple.com", "B.Dudney@apple.com", "DudneyBill@apple.com", "Dudney.Bill@apple.com", "Bill@apple.com", "Dudney@apple.com", "BD@apple.com"]
-        }, {
-          "name": {
-            "first": "Brian",
-            "last": "Temple"
-          },
-          "profileLink": "https://www.linkedin.com/profile/view?id=2674208",
-          "headline": "Building software people love",
-          "location": "Greater Denver Area",
-          "industry": "Computer Software",
-          "companyName": "Apple",
-          "currentPosition": "iOS Engineer",
-          "pastPositions": ["Photobucket", "Wayin", "University of Colorado"],
-          "education": ["University of Colorado Boulder"],
-          "emailConfirmed": "",
-          "possibleEmails": ["BrianTemple@apple.com", "Brian.Temple@apple.com", "BTemple@apple.com", "B.Temple@apple.com", "TempleBrian@apple.com", "Temple.Brian@apple.com", "Brian@apple.com", "Temple@apple.com", "BT@apple.com"]
-        }, {
-          "name": {
-            "first": "Corey",
-            "last": "Carson"
-          },
-          "profileLink": "https://www.linkedin.com/profile/view?id=9816373",
-          "headline": "Systems Engineering Manager at Apple",
-          "location": "Greater Denver Area",
-          "industry": "Information Technology and Services",
-          "companyName": "Apple",
-          "currentPosition": "Systems Engineering Manager",
-          "pastPositions": ["Holcomb's Education Resource", "Maize USD 266"],
-          "education": ["Pittsburg State University"],
-          "emailConfirmed": "",
-          "possibleEmails": ["CoreyCarson@apple.com", "Corey.Carson@apple.com", "CCarson@apple.com", "C.Carson@apple.com", "CarsonCorey@apple.com", "Carson.Corey@apple.com", "Corey@apple.com", "Carson@apple.com", "CC@apple.com"]
-        }, {
-          "name": {
-            "first": "Samantha",
-            "last": "Kish"
-          },
-          "profileLink": "https://www.linkedin.com/profile/view?id=10254966",
-          "headline": "Global Supply Manager - Channel Procurement at Apple",
-          "location": "San Francisco Bay Area",
-          "industry": "Consumer Electronics",
-          "companyName": "Apple",
-          "currentPosition": "Global Supply Manager - Channel Procurement",
-          "pastPositions": ["Apple", "Johns Manville", "Honeywell"],
-          "education": ["University of Colorado at Denver"],
-          "emailConfirmed": "",
-          "possibleEmails": ["SamanthaKish@apple.com", "Samantha.Kish@apple.com", "SKish@apple.com", "S.Kish@apple.com", "KishSamantha@apple.com", "Kish.Samantha@apple.com", "Samantha@apple.com", "Kish@apple.com", "SK@apple.com"]
-        }, {
-          "name": {
-            "first": "Dimitri",
-            "last": "Geier"
-          },
-          "profileLink": "https://www.linkedin.com/profile/view?id=12063296",
-          "headline": "Dimitri Geier is a Senior Software Engineer at Apple",
-          "location": "San Francisco Bay Area",
-          "industry": "Telecommunications",
-          "companyName": "Apple",
-          "currentPosition": "Senior Software Engineer",
-          "pastPositions": ["Motorola", "Nextive Solutions", "Warner Music Group"],
-          "education": ["Universität zu Köln"],
-          "emailConfirmed": "",
-          "possibleEmails": ["DimitriGeier@apple.com", "Dimitri.Geier@apple.com", "DGeier@apple.com", "D.Geier@apple.com", "GeierDimitri@apple.com", "Geier.Dimitri@apple.com", "Dimitri@apple.com", "Geier@apple.com", "DG@apple.com"]
-        }, {
-          "name": {
-            "first": "Matthew",
-            "last": "Gaddis"
-          },
-          "profileLink": "https://www.linkedin.com/profile/view?id=12213953",
-          "headline": "UI Engineering Manager at Apple",
-          "location": "San Francisco Bay Area",
-          "industry": "Internet",
-          "companyName": "Apple",
-          "currentPosition": "UI Engineering Manager",
-          "pastPositions": ["Scout Labs", "PlayCoed", "Self"],
-          "education": ["University of Colorado Boulder"],
-          "emailConfirmed": "",
-          "possibleEmails": ["MatthewGaddis@apple.com", "Matthew.Gaddis@apple.com", "MGaddis@apple.com", "M.Gaddis@apple.com", "GaddisMatthew@apple.com", "Gaddis.Matthew@apple.com", "Matthew@apple.com", "Gaddis@apple.com", "MG@apple.com"]
-        }, {
-          "name": {
-            "first": "Tri",
-            "last": "Vuong"
-          },
-          "profileLink": "https://www.linkedin.com/profile/view?id=14068282",
-          "headline": "Software Engineer at Apple",
-          "location": "San Francisco Bay Area",
-          "industry": "Computer Software",
-          "companyName": "Apple",
-          "currentPosition": "Software Engineer",
-          "pastPositions": ["Twitter", "YP", "Better The World"],
-          "education": ["University of Toronto"],
-          "emailConfirmed": "",
-          "possibleEmails": ["TriVuong@apple.com", "Tri.Vuong@apple.com", "TVuong@apple.com", "T.Vuong@apple.com", "VuongTri@apple.com", "Vuong.Tri@apple.com", "Tri@apple.com", "Vuong@apple.com", "TV@apple.com"]
-        }, {
-          "name": {
-            "first": "Craig",
-            "last": "Bartels"
-          },
-          "profileLink": "https://www.linkedin.com/profile/view?id=15174289",
-          "headline": "Information Security at Apple",
-          "location": "London, United Kingdom",
-          "industry": "Information Technology and Services",
-          "companyName": "Apple",
-          "currentPosition": "Information Security",
-          "pastPositions": ["Apple", "Honeywell", "IBM"],
-          "education": ["University of Oxford"],
-          "emailConfirmed": "",
-          "possibleEmails": ["CraigBartels@apple.com", "Craig.Bartels@apple.com", "CBartels@apple.com", "C.Bartels@apple.com", "BartelsCraig@apple.com", "Bartels.Craig@apple.com", "Craig@apple.com", "Bartels@apple.com", "CB@apple.com"]
-        }
-      ]
-    },
+    results: {},
     debug: true
   };
 
@@ -252,25 +98,16 @@ Created by matthew on 2/12/15.
     app.settings.scraper.limit = 8;
   }
 
-  window.queue = [
-    {
-      "emailDomain": "apple.com",
-      "companyName": "Apple",
-      "companyID": "162479",
-      "titleFilter": null,
-      "skipEmails": false,
-      "id": "Apple162479"
-    }
-  ];
+  window.queue = [];
 
   window.settings = {};
 
   window.go = function() {
     var i, nextQueueItem, routine;
     i = 0;
-    routine = [validateEmails().start, nextQueueItem];
     nextQueueItem = function() {
       app.currentCompany = queue[i++];
+      app.currentCompany.emailFormatHits = [];
       if (app.currentCompany && app.currentCompany.companyName) {
         if (app.debug) {
           log("Queued " + app.currentCompany.companyName);
@@ -281,14 +118,14 @@ Created by matthew on 2/12/15.
         }
         return async.series(routine);
       } else {
-        console.log(app.results);
         alert("Scraping is done! You may now close gmail.");
         if (app.debug) {
-          return log('Scrape finished');
+          return log('scrape finished. Results:' + app.results);
         }
       }
     };
-    nextQueueItem();
+    routine = [scraper().start, getProfileData().start, getMissingNames().start, permuteEmails().start, validateEmails().start, guessEmails, nextQueueItem];
+    return nextQueueItem();
   };
 
 
@@ -503,6 +340,24 @@ Created by matthew on 2/12/15.
     };
   };
 
+  window.guessEmails = function() {
+    return $.each(app.results[app.currentCompanyName], function(index, value) {
+      var emailFormatHits, mostLikelyIndex, sorted;
+      if (!value.email && value.name && value.name.first && value.name.last) {
+        emailFormatHits = app.currentCompany.emailFormatHits;
+        mostLikelyIndex = 0;
+        if (emailFormatHits.length) {
+          sorted = emailFormatHits ? emailFormatHits.sort(function(a, b) {
+            return b.count - a.count;
+          }) : void 0;
+          mostLikelyIndex = sorted[0].id;
+        }
+        value.email = value.possibleEmails[mostLikelyIndex];
+        return value.emailConfirmed = '';
+      }
+    });
+  };
+
 
   /**
   Created by matthew on 12/15/14.
@@ -682,13 +537,13 @@ Created by matthew on 2/12/15.
    */
 
   window.validateEmails = function() {
-    var arrangeEmails, createGmailTab, currentPerson, exit, findCurrentPersonsEmail, gmailInitialLoad, gmailTab, masterCallback, personIndex, start, successfulEmailFormats;
+    var arrangeEmails, createGmailTab, currentCompany, currentPerson, exit, findCurrentPersonsEmail, gmailInitialLoad, gmailTab, masterCallback, personIndex, start;
     masterCallback = void 0;
     gmailTab = void 0;
     currentPerson = void 0;
     personIndex = void 0;
-    successfulEmailFormats = void 0;
     gmailInitialLoad = true;
+    currentCompany = false;
     start = function(cb) {
       var executeSeries, nextIteration, series;
       if (app.debug != null) {
@@ -697,22 +552,22 @@ Created by matthew on 2/12/15.
       gmailInitialLoad = true;
       masterCallback = cb;
       personIndex = 0;
-      successfulEmailFormats = [];
+      currentCompany = app.currentCompany;
       nextIteration = function() {
         var debugMessage;
         currentPerson = app.results[app.currentCompanyName][personIndex++];
-        if (!currentPerson.name || currentPerson.name.skipPermutation) {
+        if (status.done || !currentPerson) {
+          debugMessage = status.done ? 'exiting because status.done' : 'exiting because currentPerson is ' + currentPerson;
           if (app.debug != null) {
-            log('skipping person');
+            log(debugMessage);
           }
-          return nextIteration();
+          return exit();
         } else {
-          if (status.done || !currentPerson) {
-            debugMessage = status.done ? 'exiting because status.done' : 'exiting because currentPerson is ' + currentPerson;
+          if (!currentPerson.name || currentPerson.name.skipPermutation) {
             if (app.debug != null) {
-              log(debugMessage);
+              log('skipping person');
             }
-            return exit();
+            return nextIteration();
           } else {
             if (app.debug != null) {
               log('continuing to next person');
@@ -739,24 +594,28 @@ Created by matthew on 2/12/15.
       });
     };
     arrangeEmails = function(callback) {
-      var possibleEmails;
+      var emailHits, possibleEmails, sorted;
+      emailHits = currentCompany.emailFormatHits;
       possibleEmails = currentPerson.possibleEmails;
-      if (possibleEmails && successfulEmailFormats.length) {
-        $.each(successfulEmailFormats.reverse(), function(index, item) {
-          return possibleEmails.move(item, 0);
+      if (emailHits.length) {
+        sorted = emailHits.sort(function(a, b) {
+          return b.count - a.count;
+        });
+        $.each(sorted, function(index, item) {
+          return possibleEmails.move(item.id, 0);
         });
       }
       return callback();
     };
     findCurrentPersonsEmail = function(callback) {
-      var composeNewEmail, email, i, nextIteration, series, timeout, tryNextVariation;
-      timeout = (gmailInitialLoad ? 7000 : 800);
+      var composeNewEmail, email, i, nextIteration, series, tryNextVariation;
       email = void 0;
       i = 0;
       composeNewEmail = function(composeNewEmailCb) {
-        var waitForLoad;
+        var timeout, waitForLoad;
+        timeout = (gmailInitialLoad ? 7000 : 800);
         if (app.debug != null) {
-          log('composing new email');
+          log('composing new email' + timeout);
         }
         waitForLoad = function() {
           return setTimeout(composeNewEmailCb, timeout);
@@ -769,10 +628,22 @@ Created by matthew on 2/12/15.
       tryNextVariation = function(nextVariationCb) {
         var processResponse;
         processResponse = function(response) {
+          var hitFound;
           if (response && response.correct) {
             currentPerson.email = email;
-            if (successfulEmailFormats.indexOf(i) === -1) {
-              successfulEmailFormats.push(i - 1);
+            currentPerson.emailConfirmed = "yes";
+            hitFound = false;
+            $.each(app.currentCompany.emailFormatHits, function(index, item) {
+              if (item.id === i - 1) {
+                item.count += 1;
+                return hitFound = true;
+              }
+            });
+            if (!hitFound) {
+              app.currentCompany.emailFormatHits.push({
+                id: i - 1,
+                count: 1
+              });
             }
           }
           return nextVariationCb();
@@ -788,14 +659,11 @@ Created by matthew on 2/12/15.
         if (possibleEmails) {
           email = currentPerson.possibleEmails[i++];
           if (email && !currentPerson.email) {
+            if (app.debug != null) {
+              log('trying next possible email ' + currentPerson.email);
+            }
             return async.series(series);
           } else {
-            if (!currentPerson.email) {
-              currentPerson.email = possibleEmails[successfulEmailFormats[0] || 0];
-              currentPerson.emailConfirmed = "";
-            } else {
-              currentPerson.emailConfirmed = "yes";
-            }
             return callback();
           }
         } else {
