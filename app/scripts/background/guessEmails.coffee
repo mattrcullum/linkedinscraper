@@ -1,6 +1,6 @@
 window.guessEmails = (callback)->
   $.each app.results[app.currentCompanyName], (index, value) ->
-    if not value.email and value.name and value.name.first and value.name.last
+    if not value.email and not value.emailConfirmed and value.name and value.name.first and value.name.last
       emailFormatHits = app.currentCompany.emailFormatHits
 
       mostLikelyIndex = 0
@@ -11,5 +11,5 @@ window.guessEmails = (callback)->
         mostLikelyIndex = sorted[0].id
 
       value.email = value.possibleEmails[mostLikelyIndex]
-      value.emailConfirmed = ''
+      value.emailConfirmed = false
   callback()

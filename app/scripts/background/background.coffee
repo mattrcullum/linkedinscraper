@@ -28,7 +28,7 @@ window.app =
   }
   debug: false
 
-app.settings.scraper.limit = 8 if app.debug
+app.settings.scraper.limit = 3 if app.debug
 
 window.queue = [
 #  {"emailDomain":"apple.com","companyName":"Apple","companyID":"162479","titleFilter":null,"skipEmails":false,"id":"Apple162479"}

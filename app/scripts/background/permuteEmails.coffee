@@ -34,7 +34,7 @@ window.permuteEmails = ->
   permuteEmails = (cb) ->
     $.each app.results, (index, resultset) ->
       $.each resultset, (index, person) ->
-        person.emailConfirmed = ""
+        person.emailConfirmed = false
         name = person.name
         if name and not name.skipPermutation
           try

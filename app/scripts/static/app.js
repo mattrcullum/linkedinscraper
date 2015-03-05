@@ -187,7 +187,7 @@ Created by matthew on 2/12/15.
       $.each(companies, function(index, company) {
         return $.each(company, function(index, person) {
           var dataString;
-          dataString = [person.name.first || "", person.name.last || "", person.currentPosition || "", person.companyName, person.email || "", person.emailConfirmed, person.profileLink].map(function(item) {
+          dataString = [person.name.first || "", person.name.last || "", person.currentPosition || "", person.companyName, person.email || "", person.emailConfirmed || "", person.profileLink].map(function(item) {
             return "\"" + item + "\"";
           });
           dataString = dataString.join(",");

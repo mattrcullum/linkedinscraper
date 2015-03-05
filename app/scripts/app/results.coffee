@@ -13,7 +13,7 @@ app.results = ->
           person.currentPosition or ""
           person.companyName
           person.email or ""
-          person.emailConfirmed
+          person.emailConfirmed or ""
           person.profileLink
         ].map((item) ->
           "\"" + item + "\""

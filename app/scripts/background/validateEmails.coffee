@@ -3,7 +3,7 @@ Created by matthew on 1/22/15.
 ###
 window.validateEmails = ->
   masterCallback = undefined
-  gmailTab = undefined
+  gmailTab = false
   currentPerson = undefined
   personIndex = undefined
   gmailInitialLoad = true
@@ -13,9 +13,9 @@ window.validateEmails = ->
     log('validating emails') if app.debug?
     gmailInitialLoad = true
     masterCallback = cb
+    gmailTab = false
     personIndex = 0
     currentCompany = app.currentCompany
-
     nextIteration = ->
       currentPerson = app.results[app.currentCompanyName][personIndex++]
       if status.done or not currentPerson
@@ -75,7 +75,7 @@ window.validateEmails = ->
 
     composeNewEmail = (composeNewEmailCb) ->
       timeout = (if gmailInitialLoad then 7000 else 800)
-      log('composing new email' + timeout) if app.debug?
+      log('composing new email in' + timeout + 'ms') if app.debug?
       waitForLoad = ->
         setTimeout composeNewEmailCb, timeout
       chrome.tabs.update(
@@ -91,7 +91,6 @@ window.validateEmails = ->
         if response and response.correct
           currentPerson.email = email
           currentPerson.emailConfirmed = "yes"
-
           hitFound = false;
           $.each app.currentCompany.emailFormatHits, (index, item)->
             if item.id is i - 1
@@ -110,7 +109,7 @@ window.validateEmails = ->
       if possibleEmails
         email = currentPerson.possibleEmails[i++]
         if email and not currentPerson.email
-          log('trying next possible email '+currentPerson.email) if app.debug?
+          log('trying next possible email ' + currentPerson.email) if app.debug?
           async.series series
         else
           callback()
@@ -126,5 +125,6 @@ window.validateEmails = ->
     nextIteration()
 
   exit = ->
+    gmailInitialLoad = true
     masterCallback()
   {start: start}

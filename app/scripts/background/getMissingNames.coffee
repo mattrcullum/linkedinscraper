@@ -13,7 +13,6 @@ window.getMissingNames = ->
     log('get missing names') if app.debug?
     masterCallback = cb
     personIndex = 0
-    currentPerson = true
 
     # program control
     nextIteration = ->
@@ -23,7 +22,7 @@ window.getMissingNames = ->
         log(debugMessage) if app.debug?
         exit()
       else
-        if currentPerson.name.isHidden or not currentPerson.name.last
+        if currentPerson.name.isHidden or not currentPerson.name.last or not currentPerson.name.first
           executeSeries()
         else
           nextIteration()

@@ -96,7 +96,7 @@ Created by matthew on 2/12/15.
   };
 
   if (app.debug) {
-    app.settings.scraper.limit = 8;
+    app.settings.scraper.limit = 3;
   }
 
   window.queue = [];
@@ -177,7 +177,6 @@ Created by matthew on 2/12/15.
       }
       masterCallback = cb;
       personIndex = 0;
-      currentPerson = true;
       nextIteration = function() {
         var debugMessage;
         currentPerson = app.results[app.currentCompanyName][personIndex++];
@@ -188,7 +187,7 @@ Created by matthew on 2/12/15.
           }
           return exit();
         } else {
-          if (currentPerson.name.isHidden || !currentPerson.name.last) {
+          if (currentPerson.name.isHidden || !currentPerson.name.last || !currentPerson.name.first) {
             return executeSeries();
           } else {
             return nextIteration();
@@ -349,7 +348,7 @@ Created by matthew on 2/12/15.
   window.guessEmails = function(callback) {
     $.each(app.results[app.currentCompanyName], function(index, value) {
       var emailFormatHits, mostLikelyIndex, sorted;
-      if (!value.email && value.name && value.name.first && value.name.last) {
+      if (!value.email && !value.emailConfirmed && value.name && value.name.first && value.name.last) {
         emailFormatHits = app.currentCompany.emailFormatHits;
         mostLikelyIndex = 0;
         if (emailFormatHits.length) {
@@ -359,7 +358,7 @@ Created by matthew on 2/12/15.
           mostLikelyIndex = sorted[0].id;
         }
         value.email = value.possibleEmails[mostLikelyIndex];
-        return value.emailConfirmed = '';
+        return value.emailConfirmed = false;
       }
     });
     return callback();
@@ -399,7 +398,7 @@ Created by matthew on 2/12/15.
       $.each(app.results, function(index, resultset) {
         return $.each(resultset, function(index, person) {
           var err, initial, name;
-          person.emailConfirmed = "";
+          person.emailConfirmed = false;
           name = person.name;
           if (name && !name.skipPermutation) {
             try {
@@ -508,6 +507,7 @@ Created by matthew on 2/12/15.
           app.results[app.currentCompanyName] = app.results[app.currentCompanyName].concat(response.linkList);
         }
         if (app.results[app.currentCompanyName].length >= limit) {
+          app.results[app.currentCompanyName].splice(limit, Number.MAX_VALUE);
           status.done = true;
           return callback();
         } else {
@@ -546,7 +546,7 @@ Created by matthew on 2/12/15.
   window.validateEmails = function() {
     var arrangeEmails, createGmailTab, currentCompany, currentPerson, exit, findCurrentPersonsEmail, gmailInitialLoad, gmailTab, masterCallback, personIndex, start;
     masterCallback = void 0;
-    gmailTab = void 0;
+    gmailTab = false;
     currentPerson = void 0;
     personIndex = void 0;
     gmailInitialLoad = true;
@@ -558,6 +558,7 @@ Created by matthew on 2/12/15.
       }
       gmailInitialLoad = true;
       masterCallback = cb;
+      gmailTab = false;
       personIndex = 0;
       currentCompany = app.currentCompany;
       nextIteration = function() {
@@ -622,7 +623,7 @@ Created by matthew on 2/12/15.
         var timeout, waitForLoad;
         timeout = (gmailInitialLoad ? 7000 : 800);
         if (app.debug != null) {
-          log('composing new email' + timeout);
+          log('composing new email in' + timeout + 'ms');
         }
         waitForLoad = function() {
           return setTimeout(composeNewEmailCb, timeout);
@@ -681,6 +682,7 @@ Created by matthew on 2/12/15.
       return nextIteration();
     };
     exit = function() {
+      gmailInitialLoad = true;
       return masterCallback();
     };
     return {

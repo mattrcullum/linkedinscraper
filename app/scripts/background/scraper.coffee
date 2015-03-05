@@ -86,6 +86,7 @@ window.scraper = ->
 
       # when debugging, limits the number of profile links we collect
       if app.results[app.currentCompanyName].length >= limit
+        app.results[app.currentCompanyName].splice limit, Number.MAX_VALUE
         status.done = true
         callback()
       else
