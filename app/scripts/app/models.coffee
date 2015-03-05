@@ -5,7 +5,8 @@ models =
     companyIDsParam = app.params["companyID"]
 
     #variables
-    @delay = app.ko.observable(app.bp.app.settings.delay)
+    @minDelay = app.ko.observable(app.bp.app.settings.minDelay)
+    @maxDelay = app.ko.observable(app.bp.app.settings.maxDelay)
     @queue = app.ko.observableArray(app.bp.queue)
     @emailDomain = app.ko.observable(companyParam.toLowerCase() + ".com")
     @companyName = app.ko.observable(companyParam)

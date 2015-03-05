@@ -40,7 +40,9 @@ window.getProfileData = ->
           if tabID is profileScrapeTab and changeInfo.status is "complete"
             log('tab done loading. Callback after delay') if app.debug?
             chrome.tabs.onUpdated.removeListener tabUpdated
-            setTimeout callback, app.settings.delay
+            delay = Math.random() * (app.settings.maxDelay - app.settings.minDelay) + app.settings.minDelay
+            log('delay is set to: ' + delay + 'ms') if app.debug?
+            setTimeout callback, delay
         profileScrapeTab = tab.id
         chrome.tabs.onUpdated.addListener tabUpdated
     )

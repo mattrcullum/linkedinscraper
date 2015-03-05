@@ -22,9 +22,13 @@
 
         %br/
         %form.form-horizontal
-          .form-group
-            %p Delay in milliseconds between profile views
-            %input(data-bind="value: delay" type="number")/
+          .form-group.col-md-4
+            %p Min. delay
+            %input(data-bind="value: minDelay" type="number")/
+            %span
+          .form-group.col-md-4
+            %p Max. delay
+            %input(data-bind="value: maxDelay" type="number")/
             %span
           .form-group
             %button.btn.btn-primary.form-control(data-bind="click: start") Start

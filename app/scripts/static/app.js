@@ -110,7 +110,8 @@ Created by matthew on 2/12/15.
       self = this;
       companyParam = app.params["company"];
       companyIDsParam = app.params["companyID"];
-      this.delay = app.ko.observable(app.bp.app.settings.delay);
+      this.minDelay = app.ko.observable(app.bp.app.settings.minDelay);
+      this.maxDelay = app.ko.observable(app.bp.app.settings.maxDelay);
       this.queue = app.ko.observableArray(app.bp.queue);
       this.emailDomain = app.ko.observable(companyParam.toLowerCase() + ".com");
       this.companyName = app.ko.observable(companyParam);

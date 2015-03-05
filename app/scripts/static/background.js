@@ -86,12 +86,13 @@ Created by matthew on 2/12/15.
       scraper: {
         limit: 1000000
       },
-      delay: 500
+      minDelay: 700,
+      maxDelay: 2100
     },
     currentCompany: "",
     currentCompanyName: "",
     results: {},
-    debug: true
+    debug: false
   };
 
   if (app.debug) {
@@ -107,12 +108,12 @@ Created by matthew on 2/12/15.
     i = 0;
     nextQueueItem = function() {
       app.currentCompany = queue[i++];
-      app.currentCompany.emailFormatHits = [];
       if (app.currentCompany && app.currentCompany.companyName) {
         if (app.debug) {
           log("Queued " + app.currentCompany.companyName);
         }
         app.currentCompanyName = app.currentCompany.companyName.replace(/\s+/g, "").replace(/\./g, "").toLowerCase();
+        app.currentCompany.emailFormatHits = [];
         if (!app.results[app.currentCompanyName]) {
           app.results[app.currentCompanyName] = [];
         }
@@ -303,12 +304,17 @@ Created by matthew on 2/12/15.
       }, function(tab) {
         var tabUpdated;
         tabUpdated = function(tabID, changeInfo, tab) {
+          var delay;
           if (tabID === profileScrapeTab && changeInfo.status === "complete") {
             if (app.debug != null) {
               log('tab done loading. Callback after delay');
             }
             chrome.tabs.onUpdated.removeListener(tabUpdated);
-            return setTimeout(callback, app.settings.delay);
+            delay = Math.random() * (app.settings.maxDelay - app.settings.minDelay) + app.settings.minDelay;
+            if (app.debug != null) {
+              log('delay is set to: ' + delay + 'ms');
+            }
+            return setTimeout(callback, delay);
           }
         };
         profileScrapeTab = tab.id;
@@ -340,8 +346,8 @@ Created by matthew on 2/12/15.
     };
   };
 
-  window.guessEmails = function() {
-    return $.each(app.results[app.currentCompanyName], function(index, value) {
+  window.guessEmails = function(callback) {
+    $.each(app.results[app.currentCompanyName], function(index, value) {
       var emailFormatHits, mostLikelyIndex, sorted;
       if (!value.email && value.name && value.name.first && value.name.last) {
         emailFormatHits = app.currentCompany.emailFormatHits;
@@ -356,6 +362,7 @@ Created by matthew on 2/12/15.
         return value.emailConfirmed = '';
       }
     });
+    return callback();
   };
 
 
