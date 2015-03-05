@@ -32,29 +32,28 @@ window.permuteEmails = ->
     .replace /é/g, "e"
 
   permuteEmails = (cb) ->
-    $.each app.results, (index, resultset) ->
-      $.each resultset, (index, person) ->
-        person.emailConfirmed = false
-        name = person.name
-        if name and not name.skipPermutation
-          try
-            initial =
-              first: name.first[0]
-              last: name.last[0]
-          catch err
-            console.error err
-          person.possibleEmails = [
-            name.first + name.last
-            name.first + "." + name.last
-            initial.first + name.last
-            initial.first + "." + name.last
-            name.last + name.first
-            name.last + "." + name.first
-            name.first
-            name.last
-            initial.first + initial.last
-          ].map((emailAddress) ->
-            convertStringToAscii emailAddress + "@" + app.currentCompany.emailDomain
-          )
+    $.each app.results[app.currentCompanyName], (index, person) ->
+      person.emailConfirmed = false
+      name = person.name
+      if name and not name.skipPermutation
+        try
+          initial =
+            first: name.first[0]
+            last: name.last[0]
+        catch err
+          console.error err
+        person.possibleEmails = [
+          name.first + name.last
+          name.first + "." + name.last
+          initial.first + name.last
+          initial.first + "." + name.last
+          name.last + name.first
+          name.last + "." + name.first
+          name.first
+          name.last
+          initial.first + initial.last
+        ].map((emailAddress) ->
+          convertStringToAscii emailAddress + "@" + app.currentCompany.emailDomain
+        )
     cb()
   {start: start}

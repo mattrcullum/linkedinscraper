@@ -346,10 +346,15 @@ Created by matthew on 2/12/15.
   };
 
   window.guessEmails = function(callback) {
+    var emailFormatHits;
+    emailFormatHits = app.currentCompany.emailFormatHits;
+    if (!emailFormatHits.length) {
+      callback();
+    }
     $.each(app.results[app.currentCompanyName], function(index, value) {
-      var emailFormatHits, mostLikelyIndex, sorted;
+      var mostLikelyIndex, sorted;
       if (!value.email && !value.emailConfirmed && value.name && value.name.first && value.name.last) {
-        emailFormatHits = app.currentCompany.emailFormatHits;
+        debugger;
         mostLikelyIndex = 0;
         if (emailFormatHits.length) {
           sorted = emailFormatHits ? emailFormatHits.sort(function(a, b) {
@@ -395,26 +400,24 @@ Created by matthew on 2/12/15.
       return email.replace(/ö/g, "o").replace(/ç/g, "c").replace(/ş/g, "s").replace(/ı/g, "i").replace(/ğ/g, "g").replace(/ü/g, "u").replace(/é/g, "e");
     };
     permuteEmails = function(cb) {
-      $.each(app.results, function(index, resultset) {
-        return $.each(resultset, function(index, person) {
-          var err, initial, name;
-          person.emailConfirmed = false;
-          name = person.name;
-          if (name && !name.skipPermutation) {
-            try {
-              initial = {
-                first: name.first[0],
-                last: name.last[0]
-              };
-            } catch (_error) {
-              err = _error;
-              console.error(err);
-            }
-            return person.possibleEmails = [name.first + name.last, name.first + "." + name.last, initial.first + name.last, initial.first + "." + name.last, name.last + name.first, name.last + "." + name.first, name.first, name.last, initial.first + initial.last].map(function(emailAddress) {
-              return convertStringToAscii(emailAddress + "@" + app.currentCompany.emailDomain);
-            });
+      $.each(app.results[app.currentCompanyName], function(index, person) {
+        var err, initial, name;
+        person.emailConfirmed = false;
+        name = person.name;
+        if (name && !name.skipPermutation) {
+          try {
+            initial = {
+              first: name.first[0],
+              last: name.last[0]
+            };
+          } catch (_error) {
+            err = _error;
+            console.error(err);
           }
-        });
+          return person.possibleEmails = [name.first + name.last, name.first + "." + name.last, initial.first + name.last, initial.first + "." + name.last, name.last + name.first, name.last + "." + name.first, name.first, name.last, initial.first + initial.last].map(function(emailAddress) {
+            return convertStringToAscii(emailAddress + "@" + app.currentCompany.emailDomain);
+          });
+        }
       });
       return cb();
     };
