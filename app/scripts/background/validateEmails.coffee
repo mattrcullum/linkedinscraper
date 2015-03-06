@@ -56,7 +56,7 @@ window.validateEmails = ->
 
   arrangeEmails = (callback) ->
     emailHits = currentCompany.emailFormatHits
-    possibleEmails = currentPerson.possibleEmails
+    arrangedEmails = currentPerson.possibleEmails.slice 0
 
     if emailHits.length
       sorted = emailHits.sort(
@@ -65,7 +65,8 @@ window.validateEmails = ->
       )
 
       $.each sorted, (index, item) ->
-        possibleEmails.move item.id, 0
+        arrangedEmails.move item.id, 0
+    currentPerson.arrangedEmails = arrangedEmails
 
     callback()
 
@@ -91,15 +92,17 @@ window.validateEmails = ->
         if response and response.correct
           currentPerson.email = email
           currentPerson.emailConfirmed = "yes"
-          hitFound = false;
+          currentIndex = currentPerson.possibleEmails.indexOf(email)
+          emailFormatHits = app.currentCompany.emailFormatHits
 
-          $.each app.currentCompany.emailFormatHits, (index, item)->
-            if item.id is i - 1
-              item.count += 1
-              hitFound = true
-          if !hitFound
-            app.currentCompany.emailFormatHits.push({id: i - 1, count: 1})
+          hit = $.grep app.currentCompany.emailFormatHits, (a)->
+            a.id is currentIndex
 
+          if hit.length
+            hit[0].count++
+          else
+            emailFormatHits.push({id: currentIndex, count: 1})
+          debugger
 
         nextVariationCb()
       app.callTabAction gmailTab, "tryEmail", processResponse,
@@ -107,9 +110,9 @@ window.validateEmails = ->
         name: currentPerson.name
 
     nextIteration = ->
-      possibleEmails = currentPerson.possibleEmails
-      if possibleEmails
-        email = currentPerson.possibleEmails[i++]
+      arrangedEmails = currentPerson.arrangedEmails
+      if arrangedEmails
+        email = currentPerson.arrangedEmails[i++]
         if email and not currentPerson.email
           log('trying next possible email ' + currentPerson.email) if app.debug?
           async.series series

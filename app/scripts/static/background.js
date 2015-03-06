@@ -603,17 +603,18 @@ Created by matthew on 2/12/15.
       });
     };
     arrangeEmails = function(callback) {
-      var emailHits, possibleEmails, sorted;
+      var arrangedEmails, emailHits, sorted;
       emailHits = currentCompany.emailFormatHits;
-      possibleEmails = currentPerson.possibleEmails;
+      arrangedEmails = currentPerson.possibleEmails.slice(0);
       if (emailHits.length) {
         sorted = emailHits.sort(function(a, b) {
           return b.count - a.count;
         });
         $.each(sorted, function(index, item) {
-          return possibleEmails.move(item.id, 0);
+          return arrangedEmails.move(item.id, 0);
         });
       }
+      currentPerson.arrangedEmails = arrangedEmails;
       return callback();
     };
     findCurrentPersonsEmail = function(callback) {
@@ -637,23 +638,24 @@ Created by matthew on 2/12/15.
       tryNextVariation = function(nextVariationCb) {
         var processResponse;
         processResponse = function(response) {
-          var hitFound;
+          var currentIndex, emailFormatHits, hit;
           if (response && response.correct) {
             currentPerson.email = email;
             currentPerson.emailConfirmed = "yes";
-            hitFound = false;
-            $.each(app.currentCompany.emailFormatHits, function(index, item) {
-              if (item.id === i - 1) {
-                item.count += 1;
-                return hitFound = true;
-              }
+            currentIndex = currentPerson.possibleEmails.indexOf(email);
+            emailFormatHits = app.currentCompany.emailFormatHits;
+            hit = $.grep(app.currentCompany.emailFormatHits, function(a) {
+              return a.id === currentIndex;
             });
-            if (!hitFound) {
-              app.currentCompany.emailFormatHits.push({
-                id: i - 1,
+            if (hit.length) {
+              hit[0].count++;
+            } else {
+              emailFormatHits.push({
+                id: currentIndex,
                 count: 1
               });
             }
+            debugger;
           }
           return nextVariationCb();
         };
@@ -663,10 +665,10 @@ Created by matthew on 2/12/15.
         });
       };
       nextIteration = function() {
-        var possibleEmails;
-        possibleEmails = currentPerson.possibleEmails;
-        if (possibleEmails) {
-          email = currentPerson.possibleEmails[i++];
+        var arrangedEmails;
+        arrangedEmails = currentPerson.arrangedEmails;
+        if (arrangedEmails) {
+          email = currentPerson.arrangedEmails[i++];
           if (email && !currentPerson.email) {
             if (app.debug != null) {
               log('trying next possible email ' + currentPerson.email);
