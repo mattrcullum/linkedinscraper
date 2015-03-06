@@ -92,12 +92,14 @@ window.validateEmails = ->
           currentPerson.email = email
           currentPerson.emailConfirmed = "yes"
           hitFound = false;
+
           $.each app.currentCompany.emailFormatHits, (index, item)->
             if item.id is i - 1
               item.count += 1
               hitFound = true
           if !hitFound
             app.currentCompany.emailFormatHits.push({id: i - 1, count: 1})
+
 
         nextVariationCb()
       app.callTabAction gmailTab, "tryEmail", processResponse,
@@ -125,6 +127,5 @@ window.validateEmails = ->
     nextIteration()
 
   exit = ->
-    gmailInitialLoad = true
     masterCallback()
   {start: start}

@@ -96,7 +96,7 @@ Created by matthew on 2/12/15.
   };
 
   if (app.debug) {
-    app.settings.scraper.limit = 3;
+    app.settings.scraper.limit = 9;
   }
 
   window.queue = [];
@@ -348,24 +348,22 @@ Created by matthew on 2/12/15.
   window.guessEmails = function(callback) {
     var emailFormatHits;
     emailFormatHits = app.currentCompany.emailFormatHits;
-    if (!emailFormatHits.length) {
-      callback();
-    }
-    $.each(app.results[app.currentCompanyName], function(index, value) {
-      var mostLikelyIndex, sorted;
-      if (!value.email && !value.emailConfirmed && value.name && value.name.first && value.name.last) {
-        debugger;
-        mostLikelyIndex = 0;
-        if (emailFormatHits.length) {
+    if (emailFormatHits.length) {
+      $.each(app.results[app.currentCompanyName], function(index, value) {
+        var mostLikelyIndex, sorted;
+        if (!value.emailConfirmed && value.name && value.name.first && value.name.last) {
           sorted = emailFormatHits ? emailFormatHits.sort(function(a, b) {
             return b.count - a.count;
           }) : void 0;
           mostLikelyIndex = sorted[0].id;
+          value.email = value.possibleEmails[mostLikelyIndex];
+          value.emailConfirmed = false;
+          if (app.debug) {
+            return log('setting email for ' + value.name.first + ' ' + value.name.last + ' to ' + value.email);
+          }
         }
-        value.email = value.possibleEmails[mostLikelyIndex];
-        return value.emailConfirmed = false;
-      }
-    });
+      });
+    }
     return callback();
   };
 
@@ -685,7 +683,6 @@ Created by matthew on 2/12/15.
       return nextIteration();
     };
     exit = function() {
-      gmailInitialLoad = true;
       return masterCallback();
     };
     return {

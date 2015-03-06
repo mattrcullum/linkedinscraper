@@ -1,18 +1,14 @@
 window.guessEmails = (callback)->
   emailFormatHits = app.currentCompany.emailFormatHits
-  unless emailFormatHits.length
-    callback()
+  if emailFormatHits.length
+    $.each app.results[app.currentCompanyName], (index, value) ->
+      if not value.emailConfirmed and value.name and value.name.first and value.name.last
 
-  $.each app.results[app.currentCompanyName], (index, value) ->
-    if not value.email and not value.emailConfirmed and value.name and value.name.first and value.name.last
-      debugger
-      mostLikelyIndex = 0
-
-      if emailFormatHits.length
         sorted = if emailFormatHits then emailFormatHits.sort (a, b)->
           b.count - a.count
         mostLikelyIndex = sorted[0].id
 
-      value.email = value.possibleEmails[mostLikelyIndex]
-      value.emailConfirmed = false
+        value.email = value.possibleEmails[mostLikelyIndex]
+        value.emailConfirmed = false
+        log('setting email for ' + value.name.first + ' ' + value.name.last + ' to ' + value.email) if app.debug
   callback()
